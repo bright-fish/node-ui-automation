@@ -1,13 +1,16 @@
 {
   "targets": [
     {
-      "target_name": "microsoft-ui-automation",
+      "target_name": "Automation",
       "sources": [ 
-            "binding.cc",
+            "IUIAutomationElementWrapper.cc" ,
             "IUIAutomationWrapper.cc", 
-            "IUIAutomationElementWrapper.cc" 
-        ],
-      "include_dirs" : [ "<!(node -e \"require('nan')\")" ]
+            "binding.cc",
+      ],
+      "include_dirs" : [ "<!(node -e \"require('nan')\")" ],
+      "libraries" : [
+        "uiautomationcore.lib"
+      ]
     }
   ]
 }

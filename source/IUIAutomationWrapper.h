@@ -1,6 +1,8 @@
 #pragma once
 
 #include "shared.h"
+#include "IUIAutomationElementWrapper.h"
+
 
 class IUIAutomationWrapper : public Nan::ObjectWrap {
   public:

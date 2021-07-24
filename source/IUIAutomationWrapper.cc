@@ -1,5 +1,5 @@
+
 #include "IUIAutomationWrapper.h"
-#include "IUIAutomationElementWrapper.h"
 
 
 using v8::Local;
@@ -53,7 +53,7 @@ NAN_METHOD(IUIAutomationWrapper::GetRootElement)
     HRESULT hr = obj->m_pAutomation->GetRootElement(&pRoot);
 
     // v8::Local<v8::Object> element = Local<Object>::New()
-    auto element = new IUIAutomationElementWrapper(pRoot);
+    // auto element = new IUIAutomationElementWrapper(pRoot);
 
     // todo: info.GetReturnValue().Set();
 }
