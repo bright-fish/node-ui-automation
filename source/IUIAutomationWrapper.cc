@@ -1,6 +1,4 @@
-
-#include "IUIAutomationWrapper.h"
-
+#include "Library.h"
 
 using v8::Local;
 using v8::Object;
@@ -53,7 +51,8 @@ NAN_METHOD(IUIAutomationWrapper::GetRootElement)
     HRESULT hr = obj->m_pAutomation->GetRootElement(&pRoot);
 
     // v8::Local<v8::Object> element = Local<Object>::New()
-    // auto element = new IUIAutomationElementWrapper(pRoot);
+    auto element = new IUIAutomationElementWrapper(pRoot);
 
-    // todo: info.GetReturnValue().Set();
+    // todo: needs to return the IUIAutomationElementWrapper to node so it can be used.
+    // info.GetReturnValue().Set(element);
 }

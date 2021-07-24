@@ -1,6 +1,6 @@
 #pragma once
 
-#include "shared.h"
+#include "Shared.h"
 
 class IUIAutomationElementWrapper : public Nan::ObjectWrap {
   public:
@@ -12,7 +12,6 @@ class IUIAutomationElementWrapper : public Nan::ObjectWrap {
 
     ~IUIAutomationElementWrapper();
 
-    static NAN_METHOD(New);
     static NAN_METHOD(FindFirst);
     static Nan::Persistent<v8::Function> constructor;
 };
