@@ -7,17 +7,32 @@ Nan::Persistent<v8::Function> IUIAutomationWrapper::constructor;
 
 IUIAutomationWrapper::IUIAutomationWrapper()
 {
+    HRESULT hr = CoInitialize(NULL);
+
+    if (FAILED(hr))
+    {
+    }
+
+    hr = CoCreateInstance(__uuidof(CUIAutomation8), NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&m_pAutomation));
+
+    if (FAILED(hr))
+    {
+        // todo: Make it an error.
+        wprintf(L"Failed to create a CUIAutomation8, HR: 0x%08x\n", hr);
+        return;
+    }
 }
 
 IUIAutomationWrapper::~IUIAutomationWrapper()
 {
+    CoUninitialize();
 }
 
 NAN_MODULE_INIT(IUIAutomationWrapper::Init)
 {
     v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
     tpl->SetClassName(Nan::New("IUIAutomation").ToLocalChecked());
-    tpl->InstanceTemplate()->SetInternalFieldCount(0);
+    tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
     Nan::SetPrototypeMethod(tpl, "getRootElement", GetRootElement);
 
@@ -44,15 +59,19 @@ NAN_METHOD(IUIAutomationWrapper::New)
 
 NAN_METHOD(IUIAutomationWrapper::GetRootElement)
 {
-    IUIAutomationWrapper *obj = Nan::ObjectWrap::Unwrap<IUIAutomationWrapper>(info.This());
+    auto isolate = info.GetIsolate();
 
-    IUIAutomationElement *pRoot = NULL;
+    IUIAutomationWrapper *pAutomationWrapper = Nan::ObjectWrap::Unwrap<IUIAutomationWrapper>(info.This());
 
-    HRESULT hr = obj->m_pAutomation->GetRootElement(&pRoot);
+    IUIAutomationElement *pRootElement = NULL;
 
-    // v8::Local<v8::Object> element = Local<Object>::New()
-    auto element = new IUIAutomationElementWrapper(pRoot);
+    HRESULT hr = pAutomationWrapper->m_pAutomation->GetRootElement(&pRootElement);
 
-    // todo: needs to return the IUIAutomationElementWrapper to node so it can be used.
-    // info.GetReturnValue().Set(element);
+    if (FAILED(hr))
+    {
+    }
+
+    IUIAutomationElementWrapper::NewInstance(info, pRootElement);
+
+    // info.GetReturnValue().Set(elementWrapper);
 }
