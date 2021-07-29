@@ -42,15 +42,22 @@ void IUIAutomationElementWrapper::NewInstance(const Nan::FunctionCallbackInfo<v8
     info.GetReturnValue().Set(instance);
 }
 
-NAN_METHOD(IUIAutomationElementWrapper::FindFirst)
+void IUIAutomationElementWrapper::FindFirst(const Nan::FunctionCallbackInfo<v8::Value> &info)
 {
+    auto isolate = info.GetIsolate();
+
+    auto context = isolate->GetCurrentContext();
+
     IUIAutomationElementWrapper *obj = Nan::ObjectWrap::Unwrap<IUIAutomationElementWrapper>(info.This());
 
-    // IUIAutomationElement *pRoot = NULL;
+    auto treeScopeRaw = info[0].As<v8::Int32>()->Value();
+    auto treeScope = static_cast<TreeScope>(treeScopeRaw);
 
-    // HRESULT hr = obj->m_pAutomationElement->FindFirst();
+    auto pConditionRaw = info[1].As<v8::External>()->Value();
+    auto pCondition = reinterpret_cast<IUIAutomationCondition *>(pConditionRaw);
 
-    // v8::Local<v8::Object> element = Local<Object>::New()
+    IUIAutomationElement *pFoundElement = NULL;
+    HRESULT hr = obj->m_pAutomationElement->FindFirst(treeScope, pCondition, &pFoundElement);
 
-    // info.GetReturnValue().Set(element);
+    IUIAutomationElementWrapper::NewInstance(info, pFoundElement);
 }

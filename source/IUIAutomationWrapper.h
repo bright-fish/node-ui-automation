@@ -15,5 +15,6 @@ private:
 
   static NAN_METHOD(New);
   static NAN_METHOD(GetRootElement);
+  static NAN_METHOD(CreatePropertyCondition);
   static Nan::Persistent<v8::Function> constructor;
 };

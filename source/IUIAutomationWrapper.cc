@@ -75,3 +75,27 @@ NAN_METHOD(IUIAutomationWrapper::GetRootElement)
 
     // info.GetReturnValue().Set(elementWrapper);
 }
+
+NAN_METHOD(IUIAutomationWrapper::CreatePropertyCondition)
+{
+    auto isolate = info.GetIsolate();
+
+    auto propertyIdIndex = info[0].As<v8::Int32>()->Value();
+    auto propertyId = static_cast<PROPERTYID>(propertyIdIndex);
+
+    IUIAutomationWrapper *pAutomationWrapper = Nan::ObjectWrap::Unwrap<IUIAutomationWrapper>(info.This());
+
+    IUIAutomationCondition *pCondition = NULL;
+
+    // todo: somehow marshal whatever comes in into the correct variant.  
+    VARIANT variant;
+    variant.vt = VT_BOOL;
+    variant.boolVal = VARIANT_TRUE;
+
+    HRESULT hr = pAutomationWrapper->m_pAutomation->CreatePropertyCondition(propertyId, variant, &pCondition);
+    if (FAILED(hr))
+    {
+    }
+
+    info.GetReturnValue().Set(v8::External::New(isolate, pCondition));
+}

@@ -18,3 +18,12 @@ private:
   
   static Nan::Persistent<v8::Function> constructor;
 };
+
+
+// PropertyIds
+// EventIds
+// AttributeIds
+// ControlTypeIds
+// AnnotationTypes
+// StyleIds
+// LandmarkTypeIds
