@@ -17,4 +17,6 @@ private:
   static NAN_METHOD(GetRootElement);
   static NAN_METHOD(CreatePropertyCondition);
   static Nan::Persistent<v8::Function> constructor;
+
+  static VARIANT ToVariant(v8::Isolate* isolate, v8::Local<v8::Value> local, PROPERTYID propertyId);
 };

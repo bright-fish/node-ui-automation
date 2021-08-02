@@ -25,21 +25,22 @@ NAN_MODULE_INIT(IUIAutomationElementWrapper::Init)
     Nan::SetPrototypeMethod(tpl, "findFirst", FindFirst);
 
     constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
-    Nan::Set(target, Nan::New("IUIAutomationElement").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
 }
 
-void IUIAutomationElementWrapper::NewInstance(const Nan::FunctionCallbackInfo<v8::Value> &info, IUIAutomationElement *pElement)
+Local<v8::Object> IUIAutomationElementWrapper::NewInstance(const Nan::FunctionCallbackInfo<v8::Value> &info, IUIAutomationElement *pElement)
 {
-    v8::Isolate *isolate = info.GetIsolate();
+    auto isolate = info.GetIsolate();
+    auto context = isolate->GetCurrentContext();
 
-    const unsigned argc = 1;
-    Local<v8::Value> argv[argc] = {info[0]};
     Local<v8::Function> constructorFunction = Local<v8::Function>::New(isolate, constructor);
-    Local<v8::Context> context = isolate->GetCurrentContext();
 
-    auto instance = constructorFunction->NewInstance(context, argc, argv).ToLocalChecked();
+    auto instance = constructorFunction->NewInstance(context).ToLocalChecked();
 
-    info.GetReturnValue().Set(instance);
+    auto pElementWrapper = new IUIAutomationElementWrapper(pElement);
+
+    instance->SetInternalField(0, v8::External::New(isolate, pElementWrapper));
+
+    return instance;
 }
 
 void IUIAutomationElementWrapper::FindFirst(const Nan::FunctionCallbackInfo<v8::Value> &info)
@@ -47,17 +48,22 @@ void IUIAutomationElementWrapper::FindFirst(const Nan::FunctionCallbackInfo<v8::
     auto isolate = info.GetIsolate();
 
     auto context = isolate->GetCurrentContext();
+    
+    auto pAutomationElementWrapperRaw = info.This()->GetInternalField(0).As<v8::External>()->Value();
 
-    IUIAutomationElementWrapper *obj = Nan::ObjectWrap::Unwrap<IUIAutomationElementWrapper>(info.This());
+    auto pAutomationElementWrapper = static_cast<IUIAutomationElementWrapper *>(pAutomationElementWrapperRaw);
 
     auto treeScopeRaw = info[0].As<v8::Int32>()->Value();
     auto treeScope = static_cast<TreeScope>(treeScopeRaw);
 
-    auto pConditionRaw = info[1].As<v8::External>()->Value();
-    auto pCondition = reinterpret_cast<IUIAutomationCondition *>(pConditionRaw);
+    auto pConditionWrapperRaw = info[1].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
+
+    auto pConditionWrapper = static_cast<IUIAutomationCondition *>(pConditionWrapperRaw);
 
     IUIAutomationElement *pFoundElement = NULL;
-    HRESULT hr = obj->m_pAutomationElement->FindFirst(treeScope, pCondition, &pFoundElement);
+    HRESULT hr = pAutomationElementWrapper->m_pAutomationElement->FindFirst(treeScope, pConditionWrapper, &pFoundElement);
 
-    IUIAutomationElementWrapper::NewInstance(info, pFoundElement);
+    auto foundElement = IUIAutomationElementWrapper::NewInstance(info, pFoundElement);
+
+    info.GetReturnValue().Set(foundElement);
 }

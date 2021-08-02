@@ -33,8 +33,9 @@ NAN_MODULE_INIT(IUIAutomationWrapper::Init)
     v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
     tpl->SetClassName(Nan::New("IUIAutomation").ToLocalChecked());
     tpl->InstanceTemplate()->SetInternalFieldCount(1);
-
+    
     Nan::SetPrototypeMethod(tpl, "getRootElement", GetRootElement);
+    Nan::SetPrototypeMethod(tpl, "createPropertyCondition", CreatePropertyCondition);
 
     constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
     Nan::Set(target, Nan::New("IUIAutomation").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
@@ -64,16 +65,15 @@ NAN_METHOD(IUIAutomationWrapper::GetRootElement)
     IUIAutomationWrapper *pAutomationWrapper = Nan::ObjectWrap::Unwrap<IUIAutomationWrapper>(info.This());
 
     IUIAutomationElement *pRootElement = NULL;
-
     HRESULT hr = pAutomationWrapper->m_pAutomation->GetRootElement(&pRootElement);
 
     if (FAILED(hr))
     {
     }
 
-    IUIAutomationElementWrapper::NewInstance(info, pRootElement);
+    auto elementWrapper = IUIAutomationElementWrapper::NewInstance(info, pRootElement);
 
-    // info.GetReturnValue().Set(elementWrapper);
+    info.GetReturnValue().Set(elementWrapper);
 }
 
 NAN_METHOD(IUIAutomationWrapper::CreatePropertyCondition)
@@ -85,17 +85,42 @@ NAN_METHOD(IUIAutomationWrapper::CreatePropertyCondition)
 
     IUIAutomationWrapper *pAutomationWrapper = Nan::ObjectWrap::Unwrap<IUIAutomationWrapper>(info.This());
 
-    IUIAutomationCondition *pCondition = NULL;
+    auto variant = ToVariant(isolate, info[1], propertyId);
 
-    // todo: somehow marshal whatever comes in into the correct variant.  
-    VARIANT variant;
-    variant.vt = VT_BOOL;
-    variant.boolVal = VARIANT_TRUE;
+    IUIAutomationCondition *pCondition = NULL;
 
     HRESULT hr = pAutomationWrapper->m_pAutomation->CreatePropertyCondition(propertyId, variant, &pCondition);
     if (FAILED(hr))
     {
     }
 
-    info.GetReturnValue().Set(v8::External::New(isolate, pCondition));
+    auto condition = IUIAutomationConditionWrapper::NewInstance(info, pCondition);
+
+    info.GetReturnValue().Set(condition);
+}
+
+VARIANT IUIAutomationWrapper::ToVariant(v8::Isolate *isolate, Local<v8::Value> local, PROPERTYID propertyId)
+{
+    VARIANT variant;
+
+    switch (propertyId)
+    {
+    case UIA_NamePropertyId:
+    case UIA_CulturePropertyId:
+    case UIA_AriaRolePropertyId:
+    {
+        variant.vt = VT_BSTR;
+        
+        v8::String::Utf8Value utf8_value(isolate, local);
+
+        variant.bstrVal = _bstr_t(*utf8_value);
+    }
+    break;
+    case UIA_ProcessIdPropertyId:
+        variant.vt = VT_UINT;
+        variant.lVal = local.As<v8::Int32>()->Value();
+        break;
+    }
+
+    return variant;
 }

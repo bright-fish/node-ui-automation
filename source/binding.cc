@@ -10,6 +10,7 @@ void InitAll(Local<Object> exports)
     IUIAutomationElementWrapper::Init(exports);
     UIA_PropertyIdsWrapper::Init(exports);
     TreeScopeWrapper::Init(exports);
+    IUIAutomationConditionWrapper::Init(exports);
 }
 
 NODE_MODULE(NODE_GYP_MODULE_NAME, InitAll)
