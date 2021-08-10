@@ -10,5 +10,5 @@ const component = desktopElement.findFirst(TreeScope.TreeScope_Subtree, property
 
 // const controlViewWalker = automation.get_ControlViewWalker();
 
-
 console.log(component.name);
+console.log(component.processId);

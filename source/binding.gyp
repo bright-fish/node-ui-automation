@@ -8,7 +8,9 @@
             "binding.cc",
             "UIA_PropertyIdsWrapper.cc",
             "TreeScopeWrapper.cc",
-            "IUIAutomationConditionWrapper.cc"
+            "IUIAutomationConditionWrapper.cc",
+            "RectWrapper.cc",
+            "IUIAutomationElementArrayWrapper.cc"
       ],
       "include_dirs" : [ "<!(node -e \"require('nan')\")" ],
       "libraries" : [

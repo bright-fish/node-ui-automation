@@ -71,7 +71,7 @@ NAN_METHOD(IUIAutomationWrapper::GetRootElement)
     {
     }
 
-    auto elementWrapper = IUIAutomationElementWrapper::NewInstance(info, pRootElement);
+    auto elementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, pRootElement);
 
     info.GetReturnValue().Set(elementWrapper);
 }
