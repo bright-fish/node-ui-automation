@@ -14,10 +14,7 @@ https://docs.microsoft.com/en-us/windows/win32/winauto/uiauto-howto-topics-for-u
 
 ## todo: 
 
-* Implement node npm package build cycle.  
 
-* Finish up the element wrappers property implementation.  
-* Implement cached properties in IUIAutomationElementWrapper.
 * Implement all cases in function toVariant in IUIAutomationWrapper.  
 * Implement functions in IUIAutomationElementWrapper.  
     * pAutomationElementWrapper->m_pAutomationElement->FindAll();

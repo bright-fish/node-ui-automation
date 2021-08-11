@@ -18,7 +18,7 @@ IUIAutomationElementWrapper::~IUIAutomationElementWrapper()
 {
 }
 
-void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info)
+void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info)
 {
     auto isolate = info.GetIsolate();
 
@@ -28,7 +28,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
     Nan::Utf8String utf8PropertyName(property);
     std::string sPropertyName(*utf8PropertyName);
 
-    if (sPropertyName == "name")
+    if (sPropertyName == "currentName")
     {
         BSTR name = NULL;
 
@@ -39,7 +39,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "acceleratorKey")
+    else if (sPropertyName == "currentAcceleratorKey")
     {
         BSTR acceloratorKey = NULL;
 
@@ -50,7 +50,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "accessKey")
+    else if (sPropertyName == "currentAccessKey")
     {
         BSTR accessKey = NULL;
 
@@ -61,7 +61,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "ariaProperties")
+    else if (sPropertyName == "currentAriaProperties")
     {
         BSTR ariaProperties = NULL;
 
@@ -72,7 +72,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "ariaRole")
+    else if (sPropertyName == "currentAriaRole")
     {
         BSTR ariaRole = NULL;
 
@@ -83,7 +83,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "automationId")
+    else if (sPropertyName == "currentAutomationId")
     {
         BSTR automationId = NULL;
 
@@ -94,7 +94,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "boundingRectangle")
+    else if (sPropertyName == "currentBoundingRectangle")
     {
         RECT boundingRectangle;
 
@@ -107,7 +107,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "className")
+    else if (sPropertyName == "currentClassName")
     {
         BSTR className = NULL;
 
@@ -118,7 +118,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "controllerFor")
+    else if (sPropertyName == "currentControllerFor")
     {
         IUIAutomationElementArray *controllerFor;
         pAutomationElementWrapper->m_pAutomationElement->get_CurrentControllerFor(&controllerFor);
@@ -130,7 +130,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "controlType")
+    else if (sPropertyName == "currentControlType")
     {
         CONTROLTYPEID controlTypeId = NULL;
 
@@ -140,7 +140,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "culture")
+    else if (sPropertyName == "currentCulture")
     {
         int culture;
 
@@ -151,7 +151,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "describedBy")
+    else if (sPropertyName == "currentDescribedBy")
     {
         IUIAutomationElementArray *describedBy;
 
@@ -164,7 +164,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "flowsTo")
+    else if (sPropertyName == "currentFlowsTo")
     {
         IUIAutomationElementArray *flowsTo;
 
@@ -177,7 +177,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "frameworkId")
+    else if (sPropertyName == "currentFrameworkId")
     {
         BSTR frameworkId = NULL;
 
@@ -188,7 +188,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "hasKeyboardFocus")
+    else if (sPropertyName == "currentHasKeyboardFocus")
     {
         BOOL hasKeyboardFocus = NULL;
         pAutomationElementWrapper->m_pAutomationElement->get_CurrentHasKeyboardFocus(&hasKeyboardFocus);
@@ -198,7 +198,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "helpText")
+    else if (sPropertyName == "currentHelpText")
     {
         BSTR helpText = NULL;
 
@@ -209,7 +209,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "isContentElement")
+    else if (sPropertyName == "currentIsContentElement")
     {
         BOOL isContentElement = NULL;
 
@@ -220,7 +220,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "isControlElement")
+    else if (sPropertyName == "currentIsControlElement")
     {
         BOOL isControlElement = NULL;
 
@@ -231,7 +231,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "isDataValidForForm")
+    else if (sPropertyName == "currentIsDataValidForForm")
     {
         BOOL isDataValidForForm = NULL;
 
@@ -242,7 +242,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "isEnabled")
+    else if (sPropertyName == "currentIsEnabled")
     {
         BOOL isEnabled = NULL;
 
@@ -253,7 +253,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "isKeyboardFocusable")
+    else if (sPropertyName == "currentIsKeyboardFocusable")
     {
         BOOL isKeyboardFocusable = NULL;
 
@@ -264,7 +264,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "isOffscreen")
+    else if (sPropertyName == "currentIsOffscreen")
     {
         BOOL isOffscreen = NULL;
 
@@ -275,7 +275,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "isPassword")
+    else if (sPropertyName == "currentIsPassword")
     {
         BOOL isPassword = NULL;
 
@@ -286,7 +286,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "isRequiredForForm")
+    else if (sPropertyName == "currentIsRequiredForForm")
     {
         BOOL isRequiredForForm = NULL;
 
@@ -297,7 +297,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "itemStatus")
+    else if (sPropertyName == "currentItemStatus")
     {
         BSTR itemStatus = NULL;
 
@@ -308,7 +308,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "itemType")
+    else if (sPropertyName == "currentItemType")
     {
         BSTR itemType = NULL;
 
@@ -319,7 +319,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "labeledBy")
+    else if (sPropertyName == "currentLabeledBy")
     {
         IUIAutomationElement *element;
 
@@ -332,7 +332,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "localizedControlType")
+    else if (sPropertyName == "currentLocalizedControlType")
     {
         BSTR localizedControlType = NULL;
 
@@ -343,7 +343,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "nativeWindowHandle")
+    else if (sPropertyName == "currentNativeWindowHandle")
     {
         UIA_HWND nativeWindowHandle;
 
@@ -353,7 +353,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "orientation")
+    else if (sPropertyName == "currentOrientation")
     {
         OrientationType orientationType;
 
@@ -363,7 +363,7 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "processId")
+    else if (sPropertyName == "currentProcessId")
     {
         int processId;
 
@@ -373,11 +373,602 @@ void IUIAutomationElementWrapper::GetProperty(v8::Local<v8::String> property, co
 
         return;
     }
-    else if (sPropertyName == "providerDescription")
+    else if (sPropertyName == "currentProviderDescription")
     {
         BSTR providerDescription = NULL;
 
         pAutomationElementWrapper->m_pAutomationElement->get_CurrentProviderDescription(&providerDescription);
+
+        info.GetReturnValue()
+            .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(providerDescription)).ToLocalChecked());
+
+        return;
+    }
+    else
+    {
+        throw std::exception("Not Implemented. ");
+    }
+}
+
+void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info)
+{
+    auto isolate = info.GetIsolate();
+
+    auto pAutomationElementWrapperRaw = info.Holder()->GetInternalField(0).As<v8::External>()->Value();
+    auto pAutomationElementWrapper = static_cast<IUIAutomationElementWrapper *>(pAutomationElementWrapperRaw);
+
+    Nan::Utf8String utf8PropertyName(property);
+    std::string sPropertyName(*utf8PropertyName);
+
+    if (sPropertyName == "cachedName")
+    {
+        BSTR name = NULL;
+
+        pAutomationElementWrapper->m_pAutomationElement->get_CachedName(&name);
+
+        if (!name)
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(name)).ToLocalChecked());
+
+        return;
+    }
+    else if (sPropertyName == "cachedAcceleratorKey")
+    {
+        BSTR acceloratorKey = NULL;
+
+        pAutomationElementWrapper->m_pAutomationElement->get_CachedAcceleratorKey(&acceloratorKey);
+
+        if (!acceloratorKey)
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(acceloratorKey)).ToLocalChecked());
+
+        return;
+    }
+    else if (sPropertyName == "cachedAccessKey")
+    {
+        BSTR accessKey = NULL;
+
+        pAutomationElementWrapper->m_pAutomationElement->get_CachedAccessKey(&accessKey);
+
+        if (!accessKey)
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(accessKey)).ToLocalChecked());
+
+        return;
+    }
+    else if (sPropertyName == "cachedAriaProperties")
+    {
+        BSTR ariaProperties = NULL;
+
+        pAutomationElementWrapper->m_pAutomationElement->get_CachedAriaProperties(&ariaProperties);
+
+        if (!ariaProperties)
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(ariaProperties)).ToLocalChecked());
+
+        return;
+    }
+    else if (sPropertyName == "cachedAriaRole")
+    {
+        BSTR ariaRole = NULL;
+
+        pAutomationElementWrapper->m_pAutomationElement->get_CachedAriaRole(&ariaRole);
+
+        if (!ariaRole)
+        {
+            info.GetReturnValue()
+                .SetNull();
+
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(ariaRole)).ToLocalChecked());
+
+        return;
+    }
+    else if (sPropertyName == "cachedAutomationId")
+    {
+        BSTR automationId = NULL;
+
+        pAutomationElementWrapper->m_pAutomationElement->get_CachedAutomationId(&automationId);
+
+        if (!automationId)
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(automationId)).ToLocalChecked());
+
+        return;
+    }
+    else if (sPropertyName == "cachedBoundingRectangle")
+    {
+        RECT boundingRectangle;
+
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedBoundingRectangle(&boundingRectangle);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+
+            return;
+        }
+
+        auto boundingRectangleWrapper = RectWrapper::NewInstance(isolate, &boundingRectangle);
+
+        info.GetReturnValue()
+            .Set(boundingRectangleWrapper);
+
+        return;
+    }
+    else if (sPropertyName == "cachedClassName")
+    {
+        BSTR className = NULL;
+
+        pAutomationElementWrapper->m_pAutomationElement->get_CachedClassName(&className);
+
+        if (!className)
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(className)).ToLocalChecked());
+
+        return;
+    }
+    else if (sPropertyName == "cachedControllerFor")
+    {
+        IUIAutomationElementArray *controllerFor;
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedControllerFor(&controllerFor);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        auto controllerForWrapper = IUIAutomationElementArrayWrapper::NewInstance(isolate, controllerFor);
+
+        info.GetReturnValue()
+            .Set(controllerForWrapper);
+
+        return;
+    }
+    else if (sPropertyName == "cachedControlType")
+    {
+        CONTROLTYPEID controlTypeId = NULL;
+
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedControlType(&controlTypeId);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue().Set(v8::Int32::New(isolate, controlTypeId));
+
+        return;
+    }
+    else if (sPropertyName == "cachedCulture")
+    {
+        int culture;
+
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedCulture(&culture);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::Int32::New(isolate, culture));
+
+        return;
+    }
+    else if (sPropertyName == "cachedDescribedBy")
+    {
+        IUIAutomationElementArray *describedBy;
+
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedDescribedBy(&describedBy);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        auto describedByWrapper = IUIAutomationElementArrayWrapper::NewInstance(isolate, describedBy);
+
+        info.GetReturnValue()
+            .Set(describedByWrapper);
+
+        return;
+    }
+    else if (sPropertyName == "cachedFlowsTo")
+    {
+        IUIAutomationElementArray *flowsTo;
+
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedFlowsTo(&flowsTo);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        auto flowsToWrapper = IUIAutomationElementArrayWrapper::NewInstance(isolate, flowsTo);
+
+        info.GetReturnValue()
+            .Set(flowsToWrapper);
+
+        return;
+    }
+    else if (sPropertyName == "cachedFrameworkId")
+    {
+        BSTR frameworkId = NULL;
+
+        pAutomationElementWrapper->m_pAutomationElement->get_CachedFrameworkId(&frameworkId);
+
+        if (!frameworkId)
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(frameworkId)).ToLocalChecked());
+
+        return;
+    }
+    else if (sPropertyName == "cachedHasKeyboardFocus")
+    {
+        BOOL hasKeyboardFocus = NULL;
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedHasKeyboardFocus(&hasKeyboardFocus);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::Boolean::New(isolate, hasKeyboardFocus));
+
+        return;
+    }
+    else if (sPropertyName == "cachedHelpText")
+    {
+        BSTR helpText = NULL;
+
+        pAutomationElementWrapper->m_pAutomationElement->get_CachedHelpText(&helpText);
+
+        if (!helpText)
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(helpText)).ToLocalChecked());
+
+        return;
+    }
+    else if (sPropertyName == "cachedIsContentElement")
+    {
+        BOOL isContentElement = NULL;
+
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedIsContentElement(&isContentElement);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::Boolean::New(isolate, isContentElement));
+
+        return;
+    }
+    else if (sPropertyName == "cachedIsControlElement")
+    {
+        BOOL isControlElement = NULL;
+
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedIsControlElement(&isControlElement);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::Boolean::New(isolate, isControlElement));
+
+        return;
+    }
+    else if (sPropertyName == "cachedIsDataValidForForm")
+    {
+        BOOL isDataValidForForm = NULL;
+
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedIsDataValidForForm(&isDataValidForForm);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::Boolean::New(isolate, isDataValidForForm));
+
+        return;
+    }
+    else if (sPropertyName == "cachedIsEnabled")
+    {
+        BOOL isEnabled = NULL;
+
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedIsEnabled(&isEnabled);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::Boolean::New(isolate, isEnabled));
+
+        return;
+    }
+    else if (sPropertyName == "cachedIsKeyboardFocusable")
+    {
+        BOOL isKeyboardFocusable = NULL;
+
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedIsKeyboardFocusable(&isKeyboardFocusable);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::Boolean::New(isolate, isKeyboardFocusable));
+
+        return;
+    }
+    else if (sPropertyName == "cachedIsOffscreen")
+    {
+        BOOL isOffscreen = NULL;
+
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedIsOffscreen(&isOffscreen);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::Boolean::New(isolate, isOffscreen));
+
+        return;
+    }
+    else if (sPropertyName == "cachedIsPassword")
+    {
+        BOOL isPassword = NULL;
+
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedIsPassword(&isPassword);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::Boolean::New(isolate, isPassword));
+
+        return;
+    }
+    else if (sPropertyName == "cachedIsRequiredForForm")
+    {
+        BOOL isRequiredForForm = NULL;
+
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedIsRequiredForForm(&isRequiredForForm);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::Boolean::New(isolate, isRequiredForForm));
+
+        return;
+    }
+    else if (sPropertyName == "cachedItemStatus")
+    {
+        BSTR itemStatus = NULL;
+
+        pAutomationElementWrapper->m_pAutomationElement->get_CachedItemStatus(&itemStatus);
+
+        if (!itemStatus)
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(itemStatus)).ToLocalChecked());
+
+        return;
+    }
+    else if (sPropertyName == "cachedItemType")
+    {
+        BSTR itemType = NULL;
+
+        pAutomationElementWrapper->m_pAutomationElement->get_CachedItemType(&itemType);
+
+        if (!itemType)
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(itemType)).ToLocalChecked());
+
+        return;
+    }
+    else if (sPropertyName == "cachedLabeledBy")
+    {
+        IUIAutomationElement *element;
+
+        pAutomationElementWrapper->m_pAutomationElement->get_CachedLabeledBy(&element);
+
+        auto elementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, element);
+
+        info.GetReturnValue()
+            .Set(elementWrapper);
+
+        return;
+    }
+    else if (sPropertyName == "cachedLocalizedControlType")
+    {
+        BSTR localizedControlType = NULL;
+
+        pAutomationElementWrapper->m_pAutomationElement->get_CachedLocalizedControlType(&localizedControlType);
+
+        if (!localizedControlType)
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue()
+            .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(localizedControlType)).ToLocalChecked());
+
+        return;
+    }
+    else if (sPropertyName == "cachedNativeWindowHandle")
+    {
+        UIA_HWND nativeWindowHandle;
+
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedNativeWindowHandle(&nativeWindowHandle);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue().Set(v8::External::New(isolate, nativeWindowHandle));
+
+        return;
+    }
+    else if (sPropertyName == "cachedOrientation")
+    {
+        OrientationType orientationType;
+
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedOrientation(&orientationType);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue().Set(v8::Int32::New(isolate, orientationType));
+
+        return;
+    }
+    else if (sPropertyName == "cachedProcessId")
+    {
+        int processId;
+
+        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedProcessId(&processId);
+
+        if (FAILED(hResult))
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
+
+        info.GetReturnValue().Set(v8::Int32::New(isolate, processId));
+
+        return;
+    }
+    else if (sPropertyName == "cachedProviderDescription")
+    {
+        BSTR providerDescription = NULL;
+
+        pAutomationElementWrapper->m_pAutomationElement->get_CachedProviderDescription(&providerDescription);
+
+        if (!providerDescription)
+        {
+            info.GetReturnValue()
+                .SetNull();
+            return;
+        }
 
         info.GetReturnValue()
             .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(providerDescription)).ToLocalChecked());
@@ -403,38 +994,71 @@ NAN_MODULE_INIT(IUIAutomationElementWrapper::Init)
 
     Nan::SetPrototypeMethod(functionTemplate, "findFirst", FindFirst);
 
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "name").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "acceleratorKey").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "accessKey").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "ariaProperties").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "ariaRole").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "automationId").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "boundingRectangle").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "className").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "controllerFor").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "controlType").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "culture").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "describedBy").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "flowsTo").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "frameworkId").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "hasKeyboardFocus").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "helpText").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "isContentElement").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "isControlElement").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "isDataValidForForm").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "isEnabled").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "isKeyboardFocusable").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "isOffscreen").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "isPassword").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "isRequiredForForm").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "itemStatus").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "itemType").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "labeledBy").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "localizedControlType").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "nativeWindowHandle").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "orientation").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "processId").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "providerDescription").ToLocalChecked(), GetProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentName").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentAcceleratorKey").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentAccessKey").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentAriaProperties").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentAriaRole").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentAutomationId").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentBoundingRectangle").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentClassName").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentControllerFor").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentControlType").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentCulture").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentDescribedBy").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentFlowsTo").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentFrameworkId").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentHasKeyboardFocus").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentHelpText").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentIsContentElement").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentIsControlElement").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentIsDataValidForForm").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentIsEnabled").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentIsKeyboardFocusable").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentIsOffscreen").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentIsPassword").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentIsRequiredForForm").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentItemStatus").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentItemType").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentLabeledBy").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentLocalizedControlType").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentNativeWindowHandle").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentOrientation").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentProcessId").ToLocalChecked(), GetCurrentProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "currentProviderDescription").ToLocalChecked(), GetCurrentProperty);
+
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedName").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedAcceleratorKey").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedAccessKey").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedAriaProperties").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedAriaRole").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedAutomationId").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedBoundingRectangle").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedClassName").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedControllerFor").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedControlType").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedCulture").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedDescribedBy").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedFlowsTo").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedFrameworkId").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedHasKeyboardFocus").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedHelpText").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedIsContentElement").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedIsControlElement").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedIsDataValidForForm").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedIsEnabled").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedIsKeyboardFocusable").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedIsOffscreen").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedIsPassword").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedIsRequiredForForm").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedItemStatus").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedItemType").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedLabeledBy").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedLocalizedControlType").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedNativeWindowHandle").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedOrientation").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedProcessId").ToLocalChecked(), GetCachedProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "cachedProviderDescription").ToLocalChecked(), GetCachedProperty);
 
     constructor.Reset(Nan::GetFunction(functionTemplate).ToLocalChecked());
 }

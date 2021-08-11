@@ -9,7 +9,8 @@ public:
   static v8::Local<v8::Value> NewInstance(v8::Isolate *isolate, IUIAutomationElement *pElement);
   explicit IUIAutomationElementWrapper(IUIAutomationElement *element);
 
-  static void GetProperty(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info);
+  static void GetCurrentProperty(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info);
+  static void GetCachedProperty(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info);
 
 private:
   IUIAutomationElement *m_pAutomationElement;
