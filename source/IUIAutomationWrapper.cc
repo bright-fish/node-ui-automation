@@ -33,7 +33,7 @@ NAN_MODULE_INIT(IUIAutomationWrapper::Init)
     v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
     tpl->SetClassName(Nan::New("IUIAutomation").ToLocalChecked());
     tpl->InstanceTemplate()->SetInternalFieldCount(1);
-    
+
     Nan::SetPrototypeMethod(tpl, "getRootElement", GetRootElement);
     Nan::SetPrototypeMethod(tpl, "createPropertyCondition", CreatePropertyCondition);
 
@@ -85,7 +85,7 @@ NAN_METHOD(IUIAutomationWrapper::CreatePropertyCondition)
 
     IUIAutomationWrapper *pAutomationWrapper = Nan::ObjectWrap::Unwrap<IUIAutomationWrapper>(info.This());
 
-    auto variant = ToVariant(isolate, info[1], propertyId);
+    auto variant = ToVariant(isolate, info[1]);
 
     IUIAutomationCondition *pCondition = NULL;
 
@@ -99,27 +99,28 @@ NAN_METHOD(IUIAutomationWrapper::CreatePropertyCondition)
     info.GetReturnValue().Set(condition);
 }
 
-VARIANT IUIAutomationWrapper::ToVariant(v8::Isolate *isolate, Local<v8::Value> local, PROPERTYID propertyId)
+VARIANT IUIAutomationWrapper::ToVariant(v8::Isolate *isolate, v8::Local<v8::Value> local)
 {
+    auto context = isolate->GetCurrentContext();
+
     VARIANT variant;
 
-    switch (propertyId)
+    if (local->IsInt32())
     {
-    case UIA_NamePropertyId:
-    case UIA_CulturePropertyId:
-    case UIA_AriaRolePropertyId:
-    {
-        variant.vt = VT_BSTR;
-        
-        v8::String::Utf8Value utf8_value(isolate, local);
-
-        variant.bstrVal = _bstr_t(*utf8_value);
+        variant.intVal = local->Int32Value(context).ToChecked();
+        variant.vt = VT_INT;
     }
-    break;
-    case UIA_ProcessIdPropertyId:
-        variant.vt = VT_UINT;
-        variant.lVal = local.As<v8::Int32>()->Value();
-        break;
+    else if (local->IsString())
+    {
+        auto value = *v8::String::Utf8Value(isolate, local);
+
+        variant.bstrVal = _com_util::ConvertStringToBSTR(value);
+        variant.vt = VT_BSTR;
+    }
+    else if (local->IsBoolean())
+    {
+        variant.boolVal = local->ToBoolean(isolate)->Value();
+        variant.vt = VT_BOOL;
     }
 
     return variant;

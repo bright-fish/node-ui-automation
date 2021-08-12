@@ -9,21 +9,12 @@ using v8::Object;
 
 Nan::Persistent<v8::Function> IUIAutomationElementWrapper::constructor;
 
-IUIAutomationElementWrapper::IUIAutomationElementWrapper(IUIAutomationElement *pAutomationElement)
-{
-    m_pAutomationElement = pAutomationElement;
-}
-
-IUIAutomationElementWrapper::~IUIAutomationElementWrapper()
-{
-}
-
 void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info)
 {
     auto isolate = info.GetIsolate();
 
-    auto pAutomationElementWrapperRaw = info.Holder()->GetInternalField(0).As<v8::External>()->Value();
-    auto pAutomationElementWrapper = static_cast<IUIAutomationElementWrapper *>(pAutomationElementWrapperRaw);
+    auto pAutomationElementRaw = info.Holder()->GetInternalField(0).As<v8::External>()->Value();
+    auto pAutomationElement = static_cast<IUIAutomationElement*>(pAutomationElementRaw);
 
     Nan::Utf8String utf8PropertyName(property);
     std::string sPropertyName(*utf8PropertyName);
@@ -32,7 +23,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BSTR name = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentName(&name);
+        pAutomationElement->get_CurrentName(&name);
 
         info.GetReturnValue()
             .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(name)).ToLocalChecked());
@@ -43,7 +34,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BSTR acceloratorKey = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentAcceleratorKey(&acceloratorKey);
+        pAutomationElement->get_CurrentAcceleratorKey(&acceloratorKey);
 
         info.GetReturnValue()
             .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(acceloratorKey)).ToLocalChecked());
@@ -54,7 +45,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BSTR accessKey = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentAccessKey(&accessKey);
+        pAutomationElement->get_CurrentAccessKey(&accessKey);
 
         info.GetReturnValue()
             .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(accessKey)).ToLocalChecked());
@@ -65,7 +56,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BSTR ariaProperties = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentAriaProperties(&ariaProperties);
+        pAutomationElement->get_CurrentAriaProperties(&ariaProperties);
 
         info.GetReturnValue()
             .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(ariaProperties)).ToLocalChecked());
@@ -76,7 +67,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BSTR ariaRole = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentAriaRole(&ariaRole);
+        pAutomationElement->get_CurrentAriaRole(&ariaRole);
 
         info.GetReturnValue()
             .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(ariaRole)).ToLocalChecked());
@@ -87,7 +78,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BSTR automationId = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentAutomationId(&automationId);
+        pAutomationElement->get_CurrentAutomationId(&automationId);
 
         info.GetReturnValue()
             .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(automationId)).ToLocalChecked());
@@ -98,7 +89,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         RECT boundingRectangle;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentBoundingRectangle(&boundingRectangle);
+        pAutomationElement->get_CurrentBoundingRectangle(&boundingRectangle);
 
         auto boundingRectangleWrapper = RectWrapper::NewInstance(isolate, &boundingRectangle);
 
@@ -111,7 +102,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BSTR className = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentClassName(&className);
+        pAutomationElement->get_CurrentClassName(&className);
 
         info.GetReturnValue()
             .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(className)).ToLocalChecked());
@@ -121,7 +112,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     else if (sPropertyName == "currentControllerFor")
     {
         IUIAutomationElementArray *controllerFor;
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentControllerFor(&controllerFor);
+        pAutomationElement->get_CurrentControllerFor(&controllerFor);
 
         auto controllerForWrapper = IUIAutomationElementArrayWrapper::NewInstance(isolate, controllerFor);
 
@@ -134,7 +125,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         CONTROLTYPEID controlTypeId = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentControlType(&controlTypeId);
+        pAutomationElement->get_CurrentControlType(&controlTypeId);
 
         info.GetReturnValue().Set(v8::Int32::New(isolate, controlTypeId));
 
@@ -144,7 +135,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         int culture;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentCulture(&culture);
+        pAutomationElement->get_CurrentCulture(&culture);
 
         info.GetReturnValue()
             .Set(v8::Int32::New(isolate, culture));
@@ -155,7 +146,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         IUIAutomationElementArray *describedBy;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentDescribedBy(&describedBy);
+        pAutomationElement->get_CurrentDescribedBy(&describedBy);
 
         auto describedByWrapper = IUIAutomationElementArrayWrapper::NewInstance(isolate, describedBy);
 
@@ -168,7 +159,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         IUIAutomationElementArray *flowsTo;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentFlowsTo(&flowsTo);
+        pAutomationElement->get_CurrentFlowsTo(&flowsTo);
 
         auto flowsToWrapper = IUIAutomationElementArrayWrapper::NewInstance(isolate, flowsTo);
 
@@ -181,7 +172,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BSTR frameworkId = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentFrameworkId(&frameworkId);
+        pAutomationElement->get_CurrentFrameworkId(&frameworkId);
 
         info.GetReturnValue()
             .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(frameworkId)).ToLocalChecked());
@@ -191,7 +182,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     else if (sPropertyName == "currentHasKeyboardFocus")
     {
         BOOL hasKeyboardFocus = NULL;
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentHasKeyboardFocus(&hasKeyboardFocus);
+        pAutomationElement->get_CurrentHasKeyboardFocus(&hasKeyboardFocus);
 
         info.GetReturnValue()
             .Set(v8::Boolean::New(isolate, hasKeyboardFocus));
@@ -202,7 +193,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BSTR helpText = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentHelpText(&helpText);
+        pAutomationElement->get_CurrentHelpText(&helpText);
 
         info.GetReturnValue()
             .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(helpText)).ToLocalChecked());
@@ -213,7 +204,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BOOL isContentElement = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentIsContentElement(&isContentElement);
+        pAutomationElement->get_CurrentIsContentElement(&isContentElement);
 
         info.GetReturnValue()
             .Set(v8::Boolean::New(isolate, isContentElement));
@@ -224,7 +215,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BOOL isControlElement = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentIsControlElement(&isControlElement);
+        pAutomationElement->get_CurrentIsControlElement(&isControlElement);
 
         info.GetReturnValue()
             .Set(v8::Boolean::New(isolate, isControlElement));
@@ -235,7 +226,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BOOL isDataValidForForm = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentIsDataValidForForm(&isDataValidForForm);
+        pAutomationElement->get_CurrentIsDataValidForForm(&isDataValidForForm);
 
         info.GetReturnValue()
             .Set(v8::Boolean::New(isolate, isDataValidForForm));
@@ -246,7 +237,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BOOL isEnabled = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentIsEnabled(&isEnabled);
+        pAutomationElement->get_CurrentIsEnabled(&isEnabled);
 
         info.GetReturnValue()
             .Set(v8::Boolean::New(isolate, isEnabled));
@@ -257,7 +248,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BOOL isKeyboardFocusable = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentIsKeyboardFocusable(&isKeyboardFocusable);
+        pAutomationElement->get_CurrentIsKeyboardFocusable(&isKeyboardFocusable);
 
         info.GetReturnValue()
             .Set(v8::Boolean::New(isolate, isKeyboardFocusable));
@@ -268,7 +259,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BOOL isOffscreen = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentIsOffscreen(&isOffscreen);
+        pAutomationElement->get_CurrentIsOffscreen(&isOffscreen);
 
         info.GetReturnValue()
             .Set(v8::Boolean::New(isolate, isOffscreen));
@@ -279,7 +270,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BOOL isPassword = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentIsPassword(&isPassword);
+        pAutomationElement->get_CurrentIsPassword(&isPassword);
 
         info.GetReturnValue()
             .Set(v8::Boolean::New(isolate, isPassword));
@@ -290,7 +281,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BOOL isRequiredForForm = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentIsRequiredForForm(&isRequiredForForm);
+        pAutomationElement->get_CurrentIsRequiredForForm(&isRequiredForForm);
 
         info.GetReturnValue()
             .Set(v8::Boolean::New(isolate, isRequiredForForm));
@@ -301,7 +292,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BSTR itemStatus = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentItemStatus(&itemStatus);
+        pAutomationElement->get_CurrentItemStatus(&itemStatus);
 
         info.GetReturnValue()
             .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(itemStatus)).ToLocalChecked());
@@ -312,7 +303,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BSTR itemType = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentItemType(&itemType);
+        pAutomationElement->get_CurrentItemType(&itemType);
 
         info.GetReturnValue()
             .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(itemType)).ToLocalChecked());
@@ -323,7 +314,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         IUIAutomationElement *element;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentLabeledBy(&element);
+        pAutomationElement->get_CurrentLabeledBy(&element);
 
         auto elementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, element);
 
@@ -336,7 +327,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BSTR localizedControlType = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentLocalizedControlType(&localizedControlType);
+        pAutomationElement->get_CurrentLocalizedControlType(&localizedControlType);
 
         info.GetReturnValue()
             .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(localizedControlType)).ToLocalChecked());
@@ -347,7 +338,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         UIA_HWND nativeWindowHandle;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentNativeWindowHandle(&nativeWindowHandle);
+        pAutomationElement->get_CurrentNativeWindowHandle(&nativeWindowHandle);
 
         info.GetReturnValue().Set(v8::External::New(isolate, nativeWindowHandle));
 
@@ -357,7 +348,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         OrientationType orientationType;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentOrientation(&orientationType);
+        pAutomationElement->get_CurrentOrientation(&orientationType);
 
         info.GetReturnValue().Set(v8::Int32::New(isolate, orientationType));
 
@@ -367,7 +358,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         int processId;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentProcessId(&processId);
+        pAutomationElement->get_CurrentProcessId(&processId);
 
         info.GetReturnValue().Set(v8::Int32::New(isolate, processId));
 
@@ -377,7 +368,7 @@ void IUIAutomationElementWrapper::GetCurrentProperty(v8::Local<v8::String> prope
     {
         BSTR providerDescription = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CurrentProviderDescription(&providerDescription);
+        pAutomationElement->get_CurrentProviderDescription(&providerDescription);
 
         info.GetReturnValue()
             .Set(v8::String::NewFromUtf8(isolate, _com_util::ConvertBSTRToString(providerDescription)).ToLocalChecked());
@@ -394,8 +385,8 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
 {
     auto isolate = info.GetIsolate();
 
-    auto pAutomationElementWrapperRaw = info.Holder()->GetInternalField(0).As<v8::External>()->Value();
-    auto pAutomationElementWrapper = static_cast<IUIAutomationElementWrapper *>(pAutomationElementWrapperRaw);
+    auto pAutomationElementRaw = info.Holder()->GetInternalField(0).As<v8::External>()->Value();
+    auto pAutomationElement = static_cast<IUIAutomationElement *>(pAutomationElementRaw);
 
     Nan::Utf8String utf8PropertyName(property);
     std::string sPropertyName(*utf8PropertyName);
@@ -404,7 +395,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BSTR name = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CachedName(&name);
+        pAutomationElement->get_CachedName(&name);
 
         if (!name)
         {
@@ -422,7 +413,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BSTR acceloratorKey = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CachedAcceleratorKey(&acceloratorKey);
+        pAutomationElement->get_CachedAcceleratorKey(&acceloratorKey);
 
         if (!acceloratorKey)
         {
@@ -440,7 +431,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BSTR accessKey = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CachedAccessKey(&accessKey);
+        pAutomationElement->get_CachedAccessKey(&accessKey);
 
         if (!accessKey)
         {
@@ -458,7 +449,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BSTR ariaProperties = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CachedAriaProperties(&ariaProperties);
+        pAutomationElement->get_CachedAriaProperties(&ariaProperties);
 
         if (!ariaProperties)
         {
@@ -476,7 +467,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BSTR ariaRole = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CachedAriaRole(&ariaRole);
+        pAutomationElement->get_CachedAriaRole(&ariaRole);
 
         if (!ariaRole)
         {
@@ -495,7 +486,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BSTR automationId = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CachedAutomationId(&automationId);
+        pAutomationElement->get_CachedAutomationId(&automationId);
 
         if (!automationId)
         {
@@ -513,7 +504,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         RECT boundingRectangle;
 
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedBoundingRectangle(&boundingRectangle);
+        auto hResult = pAutomationElement->get_CachedBoundingRectangle(&boundingRectangle);
 
         if (FAILED(hResult))
         {
@@ -534,7 +525,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BSTR className = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CachedClassName(&className);
+        pAutomationElement->get_CachedClassName(&className);
 
         if (!className)
         {
@@ -551,7 +542,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     else if (sPropertyName == "cachedControllerFor")
     {
         IUIAutomationElementArray *controllerFor;
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedControllerFor(&controllerFor);
+        auto hResult = pAutomationElement->get_CachedControllerFor(&controllerFor);
 
         if (FAILED(hResult))
         {
@@ -571,7 +562,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         CONTROLTYPEID controlTypeId = NULL;
 
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedControlType(&controlTypeId);
+        auto hResult = pAutomationElement->get_CachedControlType(&controlTypeId);
 
         if (FAILED(hResult))
         {
@@ -588,7 +579,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         int culture;
 
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedCulture(&culture);
+        auto hResult = pAutomationElement->get_CachedCulture(&culture);
 
         if (FAILED(hResult))
         {
@@ -606,7 +597,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         IUIAutomationElementArray *describedBy;
 
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedDescribedBy(&describedBy);
+        auto hResult = pAutomationElement->get_CachedDescribedBy(&describedBy);
 
         if (FAILED(hResult))
         {
@@ -626,7 +617,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         IUIAutomationElementArray *flowsTo;
 
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedFlowsTo(&flowsTo);
+        auto hResult = pAutomationElement->get_CachedFlowsTo(&flowsTo);
 
         if (FAILED(hResult))
         {
@@ -646,7 +637,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BSTR frameworkId = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CachedFrameworkId(&frameworkId);
+        pAutomationElement->get_CachedFrameworkId(&frameworkId);
 
         if (!frameworkId)
         {
@@ -663,7 +654,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     else if (sPropertyName == "cachedHasKeyboardFocus")
     {
         BOOL hasKeyboardFocus = NULL;
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedHasKeyboardFocus(&hasKeyboardFocus);
+        auto hResult = pAutomationElement->get_CachedHasKeyboardFocus(&hasKeyboardFocus);
 
         if (FAILED(hResult))
         {
@@ -681,7 +672,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BSTR helpText = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CachedHelpText(&helpText);
+        pAutomationElement->get_CachedHelpText(&helpText);
 
         if (!helpText)
         {
@@ -699,7 +690,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BOOL isContentElement = NULL;
 
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedIsContentElement(&isContentElement);
+        auto hResult = pAutomationElement->get_CachedIsContentElement(&isContentElement);
 
         if (FAILED(hResult))
         {
@@ -717,7 +708,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BOOL isControlElement = NULL;
 
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedIsControlElement(&isControlElement);
+        auto hResult = pAutomationElement->get_CachedIsControlElement(&isControlElement);
 
         if (FAILED(hResult))
         {
@@ -735,7 +726,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BOOL isDataValidForForm = NULL;
 
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedIsDataValidForForm(&isDataValidForForm);
+        auto hResult = pAutomationElement->get_CachedIsDataValidForForm(&isDataValidForForm);
 
         if (FAILED(hResult))
         {
@@ -753,7 +744,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BOOL isEnabled = NULL;
 
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedIsEnabled(&isEnabled);
+        auto hResult = pAutomationElement->get_CachedIsEnabled(&isEnabled);
 
         if (FAILED(hResult))
         {
@@ -771,7 +762,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BOOL isKeyboardFocusable = NULL;
 
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedIsKeyboardFocusable(&isKeyboardFocusable);
+        auto hResult = pAutomationElement->get_CachedIsKeyboardFocusable(&isKeyboardFocusable);
 
         if (FAILED(hResult))
         {
@@ -789,7 +780,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BOOL isOffscreen = NULL;
 
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedIsOffscreen(&isOffscreen);
+        auto hResult = pAutomationElement->get_CachedIsOffscreen(&isOffscreen);
 
         if (FAILED(hResult))
         {
@@ -807,7 +798,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BOOL isPassword = NULL;
 
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedIsPassword(&isPassword);
+        auto hResult = pAutomationElement->get_CachedIsPassword(&isPassword);
 
         if (FAILED(hResult))
         {
@@ -825,7 +816,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BOOL isRequiredForForm = NULL;
 
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedIsRequiredForForm(&isRequiredForForm);
+        auto hResult = pAutomationElement->get_CachedIsRequiredForForm(&isRequiredForForm);
 
         if (FAILED(hResult))
         {
@@ -843,7 +834,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BSTR itemStatus = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CachedItemStatus(&itemStatus);
+        pAutomationElement->get_CachedItemStatus(&itemStatus);
 
         if (!itemStatus)
         {
@@ -861,7 +852,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BSTR itemType = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CachedItemType(&itemType);
+        pAutomationElement->get_CachedItemType(&itemType);
 
         if (!itemType)
         {
@@ -879,7 +870,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         IUIAutomationElement *element;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CachedLabeledBy(&element);
+        pAutomationElement->get_CachedLabeledBy(&element);
 
         auto elementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, element);
 
@@ -892,7 +883,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BSTR localizedControlType = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CachedLocalizedControlType(&localizedControlType);
+        pAutomationElement->get_CachedLocalizedControlType(&localizedControlType);
 
         if (!localizedControlType)
         {
@@ -910,7 +901,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         UIA_HWND nativeWindowHandle;
 
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedNativeWindowHandle(&nativeWindowHandle);
+        auto hResult = pAutomationElement->get_CachedNativeWindowHandle(&nativeWindowHandle);
 
         if (FAILED(hResult))
         {
@@ -927,7 +918,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         OrientationType orientationType;
 
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedOrientation(&orientationType);
+        auto hResult = pAutomationElement->get_CachedOrientation(&orientationType);
 
         if (FAILED(hResult))
         {
@@ -944,7 +935,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         int processId;
 
-        auto hResult = pAutomationElementWrapper->m_pAutomationElement->get_CachedProcessId(&processId);
+        auto hResult = pAutomationElement->get_CachedProcessId(&processId);
 
         if (FAILED(hResult))
         {
@@ -961,7 +952,7 @@ void IUIAutomationElementWrapper::GetCachedProperty(v8::Local<v8::String> proper
     {
         BSTR providerDescription = NULL;
 
-        pAutomationElementWrapper->m_pAutomationElement->get_CachedProviderDescription(&providerDescription);
+        pAutomationElement->get_CachedProviderDescription(&providerDescription);
 
         if (!providerDescription)
         {
@@ -1076,9 +1067,7 @@ Local<v8::Value> IUIAutomationElementWrapper::NewInstance(v8::Isolate *isolate, 
 
     auto instance = constructorFunction->NewInstance(context).ToLocalChecked();
 
-    auto pElementWrapper = new IUIAutomationElementWrapper(pElement);
-
-    instance->SetInternalField(0, v8::External::New(isolate, pElementWrapper));
+    instance->SetInternalField(0, v8::External::New(isolate, pElement));
 
     return instance;
 }
@@ -1089,8 +1078,8 @@ void IUIAutomationElementWrapper::FindFirst(const Nan::FunctionCallbackInfo<v8::
 
     auto context = isolate->GetCurrentContext();
 
-    auto pAutomationElementWrapperRaw = info.This()->GetInternalField(0).As<v8::External>()->Value();
-    auto pAutomationElementWrapper = static_cast<IUIAutomationElementWrapper *>(pAutomationElementWrapperRaw);
+    auto pAutomationElementRaw = info.This()->GetInternalField(0).As<v8::External>()->Value();
+    auto pAutomationElement = static_cast<IUIAutomationElement *>(pAutomationElementRaw);
 
     auto treeScopeRaw = info[0].As<v8::Int32>()->Value();
     auto treeScope = static_cast<TreeScope>(treeScopeRaw);
@@ -1099,7 +1088,7 @@ void IUIAutomationElementWrapper::FindFirst(const Nan::FunctionCallbackInfo<v8::
     auto pConditionWrapper = static_cast<IUIAutomationCondition *>(pConditionWrapperRaw);
 
     IUIAutomationElement *pFoundElement = NULL;
-    HRESULT hr = pAutomationElementWrapper->m_pAutomationElement->FindFirst(treeScope, pConditionWrapper, &pFoundElement);
+    HRESULT hr = pAutomationElement->FindFirst(treeScope, pConditionWrapper, &pFoundElement);
 
     auto foundElement = IUIAutomationElementWrapper::NewInstance(isolate, pFoundElement);
 
