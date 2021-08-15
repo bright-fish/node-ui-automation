@@ -10,7 +10,8 @@
             "TreeScopeWrapper.cc",
             "IUIAutomationConditionWrapper.cc",
             "RectWrapper.cc",
-            "IUIAutomationElementArrayWrapper.cc"
+            "IUIAutomationElementArrayWrapper.cc",
+            "IUIAutomationTreeWalkerWrapper.cc"
       ],
       "include_dirs" : [ "<!(node -e \"require('nan')\")" ],
       "libraries" : [

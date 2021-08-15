@@ -28,25 +28,93 @@ IUIAutomationWrapper::~IUIAutomationWrapper()
     CoUninitialize();
 }
 
+void IUIAutomationWrapper::GetProperty(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info)
+{
+    auto isolate = info.GetIsolate();
+
+    IUIAutomationWrapper *pAutomationWrapper = Nan::ObjectWrap::Unwrap<IUIAutomationWrapper>(info.This());
+
+    Nan::Utf8String utf8PropertyName(property);
+    std::string sPropertyName(*utf8PropertyName);
+
+    if (sPropertyName == "rawViewWalker")
+    {
+        IUIAutomationTreeWalker *pTreeWalker;
+
+        auto hResult = pAutomationWrapper->m_pAutomation->get_RawViewWalker(&pTreeWalker);
+
+        auto pTreeWalkerWrapper = IUIAutomationTreeWalkerWrapper::NewInstance(isolate, pTreeWalker);
+
+        info.GetReturnValue()
+            .Set(pTreeWalkerWrapper);
+
+        return;
+    }
+    else if (sPropertyName == "contentViewWalker")
+    {
+        IUIAutomationTreeWalker *pTreeWalker;
+
+        auto hResult = pAutomationWrapper->m_pAutomation->get_ContentViewWalker(&pTreeWalker);
+
+        auto pTreeWalkerWrapper = IUIAutomationTreeWalkerWrapper::NewInstance(isolate, pTreeWalker);
+
+        info.GetReturnValue()
+            .Set(pTreeWalkerWrapper);
+
+        return;
+    }
+    else if (sPropertyName == "controlViewWalker")
+    {
+        IUIAutomationTreeWalker *pTreeWalker;
+
+        auto hResult = pAutomationWrapper->m_pAutomation->get_ControlViewWalker(&pTreeWalker);
+
+        auto pTreeWalkerWrapper = IUIAutomationTreeWalkerWrapper::NewInstance(isolate, pTreeWalker);
+
+        info.GetReturnValue()
+            .Set(pTreeWalkerWrapper);
+
+        return;
+    }
+    else
+    {
+        throw std::exception("Not Implemented. ");
+    }
+}
+
 NAN_MODULE_INIT(IUIAutomationWrapper::Init)
 {
-    v8::Local<v8::FunctionTemplate> tpl = Nan::New<v8::FunctionTemplate>(New);
-    tpl->SetClassName(Nan::New("IUIAutomation").ToLocalChecked());
-    tpl->InstanceTemplate()->SetInternalFieldCount(1);
+    auto isolate = target->GetIsolate();
 
-    Nan::SetPrototypeMethod(tpl, "getRootElement", GetRootElement);
-    Nan::SetPrototypeMethod(tpl, "createPropertyCondition", CreatePropertyCondition);
+    v8::Local<v8::FunctionTemplate> functionTemplate = Nan::New<v8::FunctionTemplate>(New);
+    functionTemplate->SetClassName(Nan::New("IUIAutomation").ToLocalChecked());
 
-    constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
-    Nan::Set(target, Nan::New("IUIAutomation").ToLocalChecked(), Nan::GetFunction(tpl).ToLocalChecked());
+    auto instanceTemplate = functionTemplate->InstanceTemplate();
+
+    instanceTemplate->SetInternalFieldCount(1);
+
+    Nan::SetPrototypeMethod(functionTemplate, "getRootElement", GetRootElement);
+    Nan::SetPrototypeMethod(functionTemplate, "createPropertyCondition", CreatePropertyCondition);
+
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "rawViewWalker").ToLocalChecked(), GetProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "contentViewWalker").ToLocalChecked(), GetProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "controlViewWalker").ToLocalChecked(), GetProperty);
+
+    constructor.Reset(Nan::GetFunction(functionTemplate).ToLocalChecked());
+
+    Nan::Set(target, Nan::New("IUIAutomation").ToLocalChecked(), Nan::GetFunction(functionTemplate).ToLocalChecked());
 }
 
 NAN_METHOD(IUIAutomationWrapper::New)
 {
     if (info.IsConstructCall())
     {
-        IUIAutomationWrapper *obj = new IUIAutomationWrapper();
-        obj->Wrap(info.This());
+        IUIAutomationWrapper *automationWrapper = new IUIAutomationWrapper();
+
+        IUIAutomationTreeWalker *treeWalker;
+        automationWrapper->m_pAutomation->get_ContentViewWalker(&treeWalker);
+
+        automationWrapper->Wrap(info.This());
         info.GetReturnValue().Set(info.This());
     }
     else

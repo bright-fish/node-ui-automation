@@ -12,6 +12,7 @@ void InitAll(Local<Object> exports)
     TreeScopeWrapper::Init(exports);
     IUIAutomationConditionWrapper::Init(exports);
     IUIAutomationElementArrayWrapper::Init(exports);
+    IUIAutomationTreeWalkerWrapper::Init(exports);
     RectWrapper::Init(exports);
 }
 

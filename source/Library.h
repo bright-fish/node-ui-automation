@@ -7,3 +7,4 @@
 #include "IUIAutomationConditionWrapper.h"
 #include "RectWrapper.h"
 #include "IUIAutomationElementArrayWrapper.h"
+#include "IUIAutomationTreeWalkerWrapper.h"
