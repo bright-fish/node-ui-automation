@@ -3,9 +3,9 @@
     {
       "target_name": "Automation",
       "sources": [ 
+            "binding.cc",
             "IUIAutomationElementWrapper.cc" ,
             "IUIAutomationWrapper.cc", 
-            "binding.cc",
             "UIA_PropertyIdsWrapper.cc",
             "TreeScopeWrapper.cc",
             "IUIAutomationConditionWrapper.cc",

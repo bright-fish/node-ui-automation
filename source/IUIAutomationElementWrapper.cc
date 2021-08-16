@@ -1068,7 +1068,7 @@ Local<v8::Value> IUIAutomationElementWrapper::NewInstance(v8::Isolate *isolate, 
     auto instance = constructorFunction->NewInstance(context).ToLocalChecked();
 
     instance->SetInternalField(0, v8::External::New(isolate, pElement));
-
+    
     return instance;
 }
 
@@ -1089,7 +1089,7 @@ void IUIAutomationElementWrapper::FindFirst(const Nan::FunctionCallbackInfo<v8::
 
     IUIAutomationElement *pFoundElement = NULL;
     HRESULT hr = pAutomationElement->FindFirst(treeScope, pConditionWrapper, &pFoundElement);
-
+   
     auto foundElement = IUIAutomationElementWrapper::NewInstance(isolate, pFoundElement);
 
     info.GetReturnValue().Set(foundElement);

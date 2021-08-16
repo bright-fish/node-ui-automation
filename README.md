@@ -12,7 +12,9 @@ For the early versions I want to stick to main stream behavior.
 https://docs.microsoft.com/en-us/windows/win32/winauto/uiauto-howto-topics-for-uiautomation-clients
 
 
-## todo: 
+## todo:
+
+* Create wrapper for CachedRequest.  
 
 * Implement functions in IUIAutomationElementWrapper.  
     * pAutomationElementWrapper->m_pAutomationElement->FindAll();

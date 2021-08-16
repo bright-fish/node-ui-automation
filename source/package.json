@@ -8,7 +8,7 @@
     "build": "node-gyp build",
     "clean": "node-gyp clean",
     "rebuild": "node-gyp rebuild --debug",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,9 @@
   "homepage": "https://github.com/bright-fish/node-microsoft-ui-automation#readme",
   "dependencies": {
     "nan": "^2.14.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "jest": "^27.0.6"
   }
 }
