@@ -95,6 +95,7 @@ NAN_MODULE_INIT(IUIAutomationWrapper::Init)
 
     Nan::SetPrototypeMethod(functionTemplate, "getRootElement", GetRootElement);
     Nan::SetPrototypeMethod(functionTemplate, "createPropertyCondition", CreatePropertyCondition);
+    Nan::SetPrototypeMethod(functionTemplate, "createCacheRequest", CreateCacheRequest);
 
     instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "rawViewWalker").ToLocalChecked(), GetProperty);
     instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "contentViewWalker").ToLocalChecked(), GetProperty);
@@ -158,6 +159,7 @@ NAN_METHOD(IUIAutomationWrapper::CreatePropertyCondition)
     IUIAutomationCondition *pCondition = NULL;
 
     HRESULT hr = pAutomationWrapper->m_pAutomation->CreatePropertyCondition(propertyId, variant, &pCondition);
+
     if (FAILED(hr))
     {
     }
@@ -165,6 +167,25 @@ NAN_METHOD(IUIAutomationWrapper::CreatePropertyCondition)
     auto condition = IUIAutomationConditionWrapper::NewInstance(info, pCondition);
 
     info.GetReturnValue().Set(condition);
+}
+
+NAN_METHOD(IUIAutomationWrapper::CreateCacheRequest)
+{
+    auto isolate = info.GetIsolate();
+
+    IUIAutomationWrapper *pAutomationWrapper = Nan::ObjectWrap::Unwrap<IUIAutomationWrapper>(info.This());
+
+    IUIAutomationCacheRequest *pCacheRequest = NULL;
+
+    HRESULT hr = pAutomationWrapper->m_pAutomation->CreateCacheRequest(&pCacheRequest);
+
+    if (FAILED(hr))
+    {
+    }
+
+    auto cacheRequestWrapper = IUIAutomationCacheRequestWrapper::NewInstance(isolate, pCacheRequest);
+
+    info.GetReturnValue().Set(cacheRequestWrapper);
 }
 
 VARIANT IUIAutomationWrapper::ToVariant(v8::Isolate *isolate, v8::Local<v8::Value> local)

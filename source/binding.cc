@@ -14,6 +14,7 @@ void InitAll(Local<Object> exports)
     IUIAutomationElementArrayWrapper::Init(exports);
     IUIAutomationTreeWalkerWrapper::Init(exports);
     RectWrapper::Init(exports);
+    IUIAutomationCacheRequestWrapper::Init(exports);
 }
 
 NODE_MODULE(NODE_GYP_MODULE_NAME, InitAll)

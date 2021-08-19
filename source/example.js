@@ -6,9 +6,11 @@ const desktopElement = automation.getRootElement();
 
 const propertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
 
-const component = desktopElement.findFirst(TreeScope.TreeScope_Subtree, propertyCondition);
+const winverElement = desktopElement.findFirst(TreeScope.TreeScope_Subtree, propertyCondition);
 
-// const controlViewWalker = automation.get_ControlViewWalker();
+const controlViewWalker = automation.controlViewWalker;
 
-console.log(component.cachedName);
-console.log(component.currentProcessId);
+const firstChildElement = controlViewWalker.getFirstChildElement(winverElement);
+
+console.log(winverElement.cachedName);
+console.log(winverElement.currentProcessId);

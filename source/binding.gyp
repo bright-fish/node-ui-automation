@@ -11,7 +11,8 @@
             "IUIAutomationConditionWrapper.cc",
             "RectWrapper.cc",
             "IUIAutomationElementArrayWrapper.cc",
-            "IUIAutomationTreeWalkerWrapper.cc"
+            "IUIAutomationTreeWalkerWrapper.cc",
+            "IUIAutomationCacheRequestWrapper.cc"
       ],
       "include_dirs" : [ "<!(node -e \"require('nan')\")" ],
       "libraries" : [

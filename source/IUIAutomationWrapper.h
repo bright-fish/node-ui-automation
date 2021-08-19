@@ -16,6 +16,7 @@ private:
   static NAN_METHOD(New);
   static NAN_METHOD(GetRootElement);
   static NAN_METHOD(CreatePropertyCondition);
+  static NAN_METHOD(CreateCacheRequest);
   static Nan::Persistent<v8::Function> constructor;
   static void GetProperty(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info);
 

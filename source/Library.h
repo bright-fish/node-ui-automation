@@ -8,3 +8,4 @@
 #include "RectWrapper.h"
 #include "IUIAutomationElementArrayWrapper.h"
 #include "IUIAutomationTreeWalkerWrapper.h"
+#include "IUIAutomationCacheRequestWrapper.h"
