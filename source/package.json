@@ -1,6 +1,7 @@
 {
   "name": "microsoft-ui-automation",
   "version": "1.0.0",
+  "typings": "index.d.ts",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -21,6 +22,7 @@
   },
   "homepage": "https://github.com/bright-fish/node-microsoft-ui-automation#readme",
   "dependencies": {
+    "bindings": "^1.5.0",
     "nan": "^2.14.2"
   },
   "devDependencies": {
