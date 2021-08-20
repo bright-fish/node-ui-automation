@@ -1,18 +1,12 @@
-const { IUIAutomation, UIA_NamePropertyId, TreeScope } = require("./index");
+const { IUIAutomation, UIA_NamePropertyId, TreeScope, PropertyIDs } = require('./index');
 
 const automation = new IUIAutomation();
 
 const desktopElement = automation.getRootElement();
 
-const propertyCondition = automation.createPropertyCondition(
-  UIA_NamePropertyId,
-  "About Windows"
-);
+const propertyCondition = automation.createPropertyCondition(PropertyIDs.Name, 'About Windows');
 
-const winverElement = desktopElement.findFirst(
-  TreeScope.Subtree,
-  propertyCondition
-);
+const winverElement = desktopElement.findFirst(TreeScope.Subtree, propertyCondition);
 
 const controlViewWalker = automation.controlViewWalker;
 
