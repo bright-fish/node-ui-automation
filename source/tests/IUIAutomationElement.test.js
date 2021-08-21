@@ -1,5 +1,4 @@
-const { IUIAutomation, TreeScope } = require('../build/Debug/automation');
-
+const { IUIAutomation, TreeScope, UIA_NamePropertyId } = require('../build/Debug/automation');
 
 describe('IUIAutomationElement', () => {
     let automation = null;
@@ -20,9 +19,18 @@ describe('IUIAutomationElement', () => {
     });
 
     test.todo('buildUpdatedCache');
+    
     test.todo('findAll');
     test.todo('findAllBuildCache');
-    test.todo('findFirst');
+
+    test('findFirst', () => { 
+        const propertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
+
+        winverElement = desktopElement.findFirst(TreeScope.TreeScope_Subtree, propertyCondition);
+
+        expect(winverElement).not.toBeNull();
+    });
+
     test.todo('findFirstBuildCache');
     test.todo('getCachedChildren');
     test.todo('getCachedParent');

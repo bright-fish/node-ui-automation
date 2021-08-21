@@ -4,15 +4,18 @@
       "target_name": "Automation",
       "sources": [ 
             "binding.cc",
-            "IUIAutomationElementWrapper.cc" ,
-            "IUIAutomationWrapper.cc", 
+            "UIA_EventIdsWrapper.cc",
             "UIA_PropertyIdsWrapper.cc",
             "TreeScopeWrapper.cc",
-            "IUIAutomationConditionWrapper.cc",
             "RectWrapper.cc",
+            "IUnknownWrapper.cc",
+            "IUIAutomationElementWrapper.cc" ,
+            "IUIAutomationWrapper.cc", 
+            "IUIAutomationConditionWrapper.cc",
             "IUIAutomationElementArrayWrapper.cc",
             "IUIAutomationTreeWalkerWrapper.cc",
-            "IUIAutomationCacheRequestWrapper.cc"
+            "IUIAutomationCacheRequestWrapper.cc", 
+            "IUIAutomationProxyFactoryMappingWrapper.cc",
       ],
       "include_dirs" : [ "<!(node -e \"require('nan')\")" ],
       "libraries" : [

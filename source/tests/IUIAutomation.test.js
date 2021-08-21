@@ -3,7 +3,7 @@ const { IUIAutomation, UIA_NamePropertyId } = require('../build/Debug/automation
 describe('IUIAutomation', () => {
     let automation = null;
 
-    test('new IUIAutomation()', () => {
+    test('constructor', () => {
         automation = new IUIAutomation();
     });
 
@@ -16,7 +16,9 @@ describe('IUIAutomation', () => {
     });
 
     describe('contentViewCondition', () => {
-        test.todo('returns');
+        test('returns', () => {
+            expect(automation.contentViewCondition).not.toBeNull();
+        });
     });
 
     describe('contentViewWalker', () => {
@@ -26,7 +28,9 @@ describe('IUIAutomation', () => {
     });
 
     describe('controlViewCondition', () => {
-        test.todo('returns');
+        test('returns', () => {
+            expect(automation.controlViewCondition).not.toBeNull();
+        });
     });
 
     describe('controlViewWalker', () => {
@@ -36,13 +40,17 @@ describe('IUIAutomation', () => {
     });
 
     describe('proxyFactoryMapping', () => {
-        test.todo('returns');
+        test('returns', () => {
+            expect(automation.proxyFactoryMapping).not.toBeNull();
+        });
     });
 
     describe('rawViewCondition', () => {
-        test.todo('returns');
+        test('returns', () => {
+            expect(automation.rawViewCondition).not.toBeNull();
+        });
     });
-
+    
     describe('rawViewWalker', () => {
         test('returns', () => {
             expect(automation.rawViewWalker).not.toBeNull();
@@ -50,11 +58,15 @@ describe('IUIAutomation', () => {
     });
 
     describe('reservedMixedAttributeValue', () => {
-        test.todo('returns');
+        test('returns', () => { 
+            expect(automation.reservedMixedAttributeValue).not.toBeNull();
+        });
     });
 
     describe('reservedNotSupportedValue', () => {
-        test.todo('returns');
+        test('returns', () => { 
+            expect(automation.reservedNotSupportedValue).not.toBeNull();
+        });
     });
 
     describe('addAutomationEventHandler', () => {
@@ -102,7 +114,11 @@ describe('IUIAutomation', () => {
     });
 
     describe('createCacheRequest', () => {
-        test.todo('returns');
+        test('returns', () => {
+            const cacheRequest = automation.createCacheRequest();
+
+            expect(cacheRequest).not.toBeNull();
+        });
     });
 
     describe('createFalseCondition', () => {

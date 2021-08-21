@@ -50,6 +50,19 @@ void IUIAutomationWrapper::GetProperty(v8::Local<v8::String> property, const v8:
 
         return;
     }
+    else if (sPropertyName == "rawViewCondition")
+    {
+        IUIAutomationCondition *pRawViewCondition;
+
+        auto hResult = pAutomationWrapper->m_pAutomation->get_RawViewCondition(&pRawViewCondition);
+
+        auto pRawViewConditionWrapper = IUIAutomationConditionWrapper::NewInstance(isolate, pRawViewCondition);
+
+        info.GetReturnValue()
+            .Set(pRawViewConditionWrapper);
+
+        return;
+    }
     else if (sPropertyName == "contentViewWalker")
     {
         IUIAutomationTreeWalker *pTreeWalker;
@@ -63,6 +76,19 @@ void IUIAutomationWrapper::GetProperty(v8::Local<v8::String> property, const v8:
 
         return;
     }
+    else if (sPropertyName == "contentViewCondition")
+    {
+        IUIAutomationCondition *pContentViewCondition;
+
+        auto hResult = pAutomationWrapper->m_pAutomation->get_ContentViewCondition(&pContentViewCondition);
+
+        auto pContentViewConditionWrapper = IUIAutomationConditionWrapper::NewInstance(isolate, pContentViewCondition);
+
+        info.GetReturnValue()
+            .Set(pContentViewConditionWrapper);
+
+        return;
+    }
     else if (sPropertyName == "controlViewWalker")
     {
         IUIAutomationTreeWalker *pTreeWalker;
@@ -73,6 +99,58 @@ void IUIAutomationWrapper::GetProperty(v8::Local<v8::String> property, const v8:
 
         info.GetReturnValue()
             .Set(pTreeWalkerWrapper);
+
+        return;
+    }
+    else if (sPropertyName == "controlViewCondition")
+    {
+        IUIAutomationCondition *pControlViewCondition;
+
+        auto hResult = pAutomationWrapper->m_pAutomation->get_ControlViewCondition(&pControlViewCondition);
+
+        auto pControlViewConditionWrapper = IUIAutomationConditionWrapper::NewInstance(isolate, pControlViewCondition);
+
+        info.GetReturnValue()
+            .Set(pControlViewConditionWrapper);
+
+        return;
+    }
+    else if (sPropertyName == "proxyFactoryMapping")
+    {
+        IUIAutomationProxyFactoryMapping *pProxyFactoryMapping;
+
+        auto hResult = pAutomationWrapper->m_pAutomation->get_ProxyFactoryMapping(&pProxyFactoryMapping);
+
+        auto pProxyFactoryMappingWrapper = IUIAutomationProxyFactoryMappingWrapper::NewInstance(isolate, pProxyFactoryMapping);
+
+        info.GetReturnValue()
+            .Set(pProxyFactoryMappingWrapper);
+
+        return;
+    }
+    else if (sPropertyName == "reservedMixedAttributeValue")
+    {
+        IUnknown *pReservedMixedAttributeValue;
+
+        auto hResult = pAutomationWrapper->m_pAutomation->get_ReservedMixedAttributeValue(&pReservedMixedAttributeValue);
+
+        auto pReservedMixedAttributeValueWrapper = IUnknownWrapper::NewInstance(isolate, pReservedMixedAttributeValue);
+
+        info.GetReturnValue()
+            .Set(pReservedMixedAttributeValueWrapper);
+
+        return;
+    }
+    else if (sPropertyName == "reservedNotSupportedValue")
+    {
+        IUnknown *pReservedNotSupportedValue;
+
+        auto hResult = pAutomationWrapper->m_pAutomation->get_ReservedNotSupportedValue(&pReservedNotSupportedValue);
+
+        auto pReservedNotSupportedValueWrapper = IUnknownWrapper::NewInstance(isolate, pReservedNotSupportedValue);
+
+        info.GetReturnValue()
+            .Set(pReservedNotSupportedValueWrapper);
 
         return;
     }
@@ -97,9 +175,15 @@ NAN_MODULE_INIT(IUIAutomationWrapper::Init)
     Nan::SetPrototypeMethod(functionTemplate, "createPropertyCondition", CreatePropertyCondition);
     Nan::SetPrototypeMethod(functionTemplate, "createCacheRequest", CreateCacheRequest);
 
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "rawViewCondition").ToLocalChecked(), GetProperty);
     instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "rawViewWalker").ToLocalChecked(), GetProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "contentViewCondition").ToLocalChecked(), GetProperty);
     instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "contentViewWalker").ToLocalChecked(), GetProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "controlViewCondition").ToLocalChecked(), GetProperty);
     instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "controlViewWalker").ToLocalChecked(), GetProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "proxyFactoryMapping").ToLocalChecked(), GetProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "reservedMixedAttributeValue").ToLocalChecked(), GetProperty);
+    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "reservedNotSupportedValue").ToLocalChecked(), GetProperty);
 
     constructor.Reset(Nan::GetFunction(functionTemplate).ToLocalChecked());
 
@@ -164,7 +248,7 @@ NAN_METHOD(IUIAutomationWrapper::CreatePropertyCondition)
     {
     }
 
-    auto condition = IUIAutomationConditionWrapper::NewInstance(info, pCondition);
+    auto condition = IUIAutomationConditionWrapper::NewInstance(isolate, pCondition);
 
     info.GetReturnValue().Set(condition);
 }
@@ -187,6 +271,25 @@ NAN_METHOD(IUIAutomationWrapper::CreateCacheRequest)
 
     info.GetReturnValue().Set(cacheRequestWrapper);
 }
+
+// NAN_METHOD(IUIAutomationWrapper::AddAutomationEventHandler)
+// {
+//     auto isolate = info.GetIsolate();
+
+//     IUIAutomationWrapper *pAutomationWrapper = Nan::ObjectWrap::Unwrap<IUIAutomationWrapper>(info.This());
+
+//     IUIAutomationCacheRequest *pCacheRequest = NULL;
+
+//     HRESULT hr = pAutomationWrapper->m_pAutomation->AddAutomationEventHandler(&pCacheRequest);
+
+//     if (FAILED(hr))
+//     {
+//     }
+
+//     auto cacheRequestWrapper = IUIAutomationCacheRequestWrapper::NewInstance(isolate, pCacheRequest);
+
+//     info.GetReturnValue().Set(cacheRequestWrapper);
+// }
 
 VARIANT IUIAutomationWrapper::ToVariant(v8::Isolate *isolate, v8::Local<v8::Value> local)
 {
