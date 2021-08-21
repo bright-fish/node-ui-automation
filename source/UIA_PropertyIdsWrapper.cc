@@ -6,6 +6,7 @@ using v8::Object;
 
 NAN_MODULE_INIT(UIA_PropertyIdsWrapper::Init)
 {
+    auto isolate = target->GetIsolate();
     Local<Object> propertyIds = Object::New(isolate);
     
     Nan::Set(propertyIds, Nan::New("UIA_NamePropertyId").ToLocalChecked(), Nan::New(UIA_NamePropertyId));
@@ -16,7 +17,6 @@ NAN_MODULE_INIT(UIA_PropertyIdsWrapper::Init)
     Nan::Set(propertyIds, Nan::New("UIA_ProcessIdPropertyId").ToLocalChecked(), Nan::New(UIA_ProcessIdPropertyId));
     Nan::Set(propertyIds, Nan::New("UIA_ControlTypePropertyId").ToLocalChecked(), Nan::New(UIA_ControlTypePropertyId));
     Nan::Set(propertyIds, Nan::New("UIA_LocalizedControlTypePropertyId").ToLocalChecked(), Nan::New(UIA_LocalizedControlTypePropertyId));
-    Nan::Set(propertyIds, Nan::New("UIA_NamePropertyId").ToLocalChecked(), Nan::New(UIA_NamePropertyId));
     Nan::Set(propertyIds, Nan::New("UIA_AcceleratorKeyPropertyId").ToLocalChecked(), Nan::New(UIA_AcceleratorKeyPropertyId));
     Nan::Set(propertyIds, Nan::New("UIA_AccessKeyPropertyId").ToLocalChecked(), Nan::New(UIA_AccessKeyPropertyId));
     Nan::Set(propertyIds, Nan::New("UIA_HasKeyboardFocusPropertyId").ToLocalChecked(), Nan::New(UIA_HasKeyboardFocusPropertyId));
@@ -31,7 +31,6 @@ NAN_MODULE_INIT(UIA_PropertyIdsWrapper::Init)
     Nan::Set(propertyIds, Nan::New("UIA_IsContentElementPropertyId").ToLocalChecked(), Nan::New(UIA_IsContentElementPropertyId));
     Nan::Set(propertyIds, Nan::New("UIA_LabeledByPropertyId").ToLocalChecked(), Nan::New(UIA_LabeledByPropertyId));
     Nan::Set(propertyIds, Nan::New("UIA_IsPasswordPropertyId").ToLocalChecked(), Nan::New(UIA_IsPasswordPropertyId));
-    Nan::Set(propertyIds, Nan::New("UIA_NativeWindowHandlePropertyId").ToLocalChecked(), Nan::New(UIA_NativeWindowHandlePropertyId));
     Nan::Set(propertyIds, Nan::New("UIA_ItemTypePropertyId").ToLocalChecked(), Nan::New(UIA_ItemTypePropertyId));
     Nan::Set(propertyIds, Nan::New("UIA_IsOffscreenPropertyId").ToLocalChecked(), Nan::New(UIA_IsOffscreenPropertyId));
     Nan::Set(propertyIds, Nan::New("UIA_OrientationPropertyId").ToLocalChecked(), Nan::New(UIA_OrientationPropertyId));
