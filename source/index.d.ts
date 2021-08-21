@@ -81,6 +81,31 @@ export declare interface PropertyCondition {}
 
 export declare interface IUIAutomationTreeWalker {
   getFirstChildElement(element: IUIAutomationElement): IUIAutomationElement;
+  getFirstChildElementBuildCache(
+    element: IUIAutomationElement
+  ): IUIAutomationElement;
+  getLastChildElement(element: IUIAutomationElement): IUIAutomationElement;
+  getLastChildElementBuildCache(
+    element: IUIAutomationElement
+  ): IUIAutomationElement;
+  getNextSiblingElement(element: IUIAutomationElement): IUIAutomationElement;
+  getNextSiblingElementBuildCache(
+    element: IUIAutomationElement
+  ): IUIAutomationElement;
+  getParentElement(element: IUIAutomationElement): IUIAutomationElement;
+  getParentElementBuildCache(
+    element: IUIAutomationElement
+  ): IUIAutomationElement;
+  getPreviousSiblingElement(
+    element: IUIAutomationElement
+  ): IUIAutomationElement;
+  getPreviousSiblingElementBuildCache(
+    element: IUIAutomationElement
+  ): IUIAutomationElement;
+  normalizeElement(element: IUIAutomationElement): IUIAutomationElement;
+  normalizeElementBuildCache(
+    element: IUIAutomationElement
+  ): IUIAutomationElement;
 }
 
 export declare class IUIAutomation {
