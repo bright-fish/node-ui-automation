@@ -4,7 +4,13 @@
   "typings": "index.d.ts",
   "description": "",
   "main": "index.js",
+  "files": [
+    "build",
+    "index.js",
+    "index.d.ts"
+  ],
   "scripts": {
+    "prepack": "npm run build",
     "configure": "node-gyp configure",
     "build": "node-gyp build",
     "clean": "node-gyp clean",
