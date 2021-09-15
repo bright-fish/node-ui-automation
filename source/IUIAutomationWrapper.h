@@ -11,7 +11,7 @@ public:
   static NAN_METHOD(GetRootElement);
   static NAN_METHOD(CreatePropertyCondition);
   static NAN_METHOD(CreateCacheRequest);
-  // static NAN_METHOD(ProxyFactoryMapping);
+  static NAN_METHOD(AddAutomationEventHandler);
 
   static void GetProperty(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info);
 

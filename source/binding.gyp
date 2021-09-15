@@ -16,6 +16,7 @@
             "IUIAutomationTreeWalkerWrapper.cc",
             "IUIAutomationCacheRequestWrapper.cc", 
             "IUIAutomationProxyFactoryMappingWrapper.cc",
+            "IUIAutomationEventHandlerWrapper.cc"
       ],
       "include_dirs" : [ "<!(node -e \"require('nan')\")" ],
       "libraries" : [

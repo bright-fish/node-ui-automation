@@ -272,24 +272,41 @@ NAN_METHOD(IUIAutomationWrapper::CreateCacheRequest)
     info.GetReturnValue().Set(cacheRequestWrapper);
 }
 
-// NAN_METHOD(IUIAutomationWrapper::AddAutomationEventHandler)
-// {
-//     auto isolate = info.GetIsolate();
+NAN_METHOD(IUIAutomationWrapper::AddAutomationEventHandler)
+{
+    auto isolate = info.GetIsolate();
 
-//     IUIAutomationWrapper *pAutomationWrapper = Nan::ObjectWrap::Unwrap<IUIAutomationWrapper>(info.This());
+    IUIAutomationWrapper *pAutomationWrapper = Nan::ObjectWrap::Unwrap<IUIAutomationWrapper>(info.This());
 
-//     IUIAutomationCacheRequest *pCacheRequest = NULL;
+    auto eventIdRaw = info[0].As<v8::Int32>()->Value();
+    auto eventId = static_cast<EVENTID>(eventIdRaw);
 
-//     HRESULT hr = pAutomationWrapper->m_pAutomation->AddAutomationEventHandler(&pCacheRequest);
+    auto pElementRaw = info[1].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
+    auto pElement = static_cast<IUIAutomationElement *>(pElementRaw);
 
-//     if (FAILED(hr))
-//     {
-//     }
+    auto treeScopeRaw = info[2].As<v8::Int32>()->Value();
+    auto treeScope = static_cast<TreeScope>(treeScopeRaw);
 
-//     auto cacheRequestWrapper = IUIAutomationCacheRequestWrapper::NewInstance(isolate, pCacheRequest);
+    auto pCacheRequestRaw = info[3].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
+    auto pCacheRequest = static_cast<IUIAutomationCacheRequest *>(pCacheRequestRaw);
 
-//     info.GetReturnValue().Set(cacheRequestWrapper);
-// }
+    auto pEventHandlerRaw = info[4].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
+    auto pEventHandler = static_cast<IUIAutomationEventHandler *>(pEventHandlerRaw);
+
+    // todo: For this class to be functional we will have to create a class that takes in a callback that can be executed when the event handler is triggered.  
+    // the pattern could remain the same, you get the class in node, inherit from it.  Then put the functions there. 
+    // Then the functions in node are called from the c++ code. 
+
+    HRESULT hr = pAutomationWrapper->m_pAutomation->AddAutomationEventHandler(eventId, pElement, treeScope, pCacheRequest, pEventHandler);
+
+    if (FAILED(hr))
+    {
+    }
+
+    auto cacheRequestWrapper = IUIAutomationCacheRequestWrapper::NewInstance(isolate, pCacheRequest);
+
+    info.GetReturnValue().Set(cacheRequestWrapper);
+}
 
 VARIANT IUIAutomationWrapper::ToVariant(v8::Isolate *isolate, v8::Local<v8::Value> local)
 {
