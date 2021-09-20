@@ -1,36 +1,30 @@
 #include "IUIAutomationEventHandlerWrapper.h"
 
-using v8::Local;
-using v8::Object;
-using v8::Value;
+using Napi::Object;
+using Napi::Value;
 
-Nan::Persistent<v8::Function> IUIAutomationEventHandlerWrapper::constructor;
-
-NAN_MODULE_INIT(IUIAutomationEventHandlerWrapper::Init)
+Napi::Object IUIAutomationEventHandlerWrapper::Init(Napi::Env env, Napi::Object exports)
 {
-    v8::Local<v8::FunctionTemplate> functionTemplate = Nan::New<v8::FunctionTemplate>();
-    functionTemplate->SetClassName(Nan::New("IUIAutomationEventHandler").ToLocalChecked());
-    functionTemplate->InstanceTemplate()->SetInternalFieldCount(1);
+    // todo: Make this class instantiate and require a function as input.
+    // store the function.
+    // call the function from HandleAutomationEvent below.
 
-    constructor.Reset(Nan::GetFunction(functionTemplate).ToLocalChecked());
-}
+    // Napi::Function function = DefineClass(env, "IUIAutomationEventHandler", {});
 
-NAN_METHOD(IUIAutomationEventHandlerWrapper::New)
-{
-    if (info.IsConstructCall())
-    {
-        IUIAutomationEventHandlerWrapper *eventHandlerWrapper = new IUIAutomationEventHandlerWrapper();
+    // Napi::FunctionReference *constructor = new Napi::FunctionReference();
 
-        info.GetReturnValue().Set(info.This());
-    }
-    else
-    {
-        v8::Local<v8::Function> cons = Nan::New(constructor);
-        info.GetReturnValue().Set(Nan::NewInstance(cons).ToLocalChecked());
-    }
+    // *constructor = Napi::Persistent(function);
+
+    // env.SetInstanceData<Napi::FunctionReference>(constructor);
+
+    return exports;
 }
 
 IUIAutomationEventHandlerWrapper::IUIAutomationEventHandlerWrapper() : _refCount(1)
+{
+}
+
+IUIAutomationEventHandlerWrapper::~IUIAutomationEventHandlerWrapper()
 {
 }
 
@@ -42,11 +36,13 @@ ULONG STDMETHODCALLTYPE IUIAutomationEventHandlerWrapper::AddRef()
 ULONG STDMETHODCALLTYPE IUIAutomationEventHandlerWrapper::Release()
 {
     ULONG output = InterlockedDecrement(&_refCount);
+
     if (output == 0)
     {
         delete this;
         return 0;
     }
+
     return output;
 }
 
@@ -69,10 +65,9 @@ HRESULT STDMETHODCALLTYPE IUIAutomationEventHandlerWrapper::QueryInterface(REFII
 
 HRESULT STDMETHODCALLTYPE IUIAutomationEventHandlerWrapper::HandleAutomationEvent(IUIAutomationElement *pSender, EVENTID eventID)
 {
-    // todo: get the callback from javascript.  
-    // then call the callback.  
-    // what about the case where you dont want to return S_OK?  
-    
+    // todo: get the callback from javascript.
+    // then call the callback.
+    // what about the case where you dont want to return S_OK?
 
     return S_OK;
 }

@@ -1,84 +1,52 @@
 #include "RectWrapper.h"
 
-Nan::Persistent<v8::Function> RectWrapper::constructor;
-
-NAN_MODULE_INIT(RectWrapper::Init)
+Napi::Object RectWrapper::Init(Napi::Env env, Napi::Object exports)
 {
-    auto isolate = target->GetIsolate();
+    auto classDefinition = {
+        InstanceAccessor<&RectWrapper::GetBottom>("bottom"),
+        InstanceAccessor<&RectWrapper::GetTop>("top"),
+        InstanceAccessor<&RectWrapper::GetLeft>("left"),
+        InstanceAccessor<&RectWrapper::GetRight>("right"),
+    };
 
-    v8::Local<v8::FunctionTemplate> functionTemplate = Nan::New<v8::FunctionTemplate>();
-    functionTemplate->SetClassName(Nan::New("RECT").ToLocalChecked());
+    Napi::Function function = DefineClass(env, "RECT", classDefinition);
 
-    auto instanceTemplate = functionTemplate->InstanceTemplate();
+    Napi::FunctionReference *constructor = new Napi::FunctionReference();
 
-    instanceTemplate->SetInternalFieldCount(1);
+    *constructor = Napi::Persistent(function);
 
-    constructor.Reset(Nan::GetFunction(functionTemplate).ToLocalChecked());
+    env.SetInstanceData<Napi::FunctionReference>(constructor);
+
+    return exports;
 }
 
-void RectWrapper::GetProperty(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info)
+RectWrapper::RectWrapper(const Napi::CallbackInfo &info, RECT *pRECT) : RectWrapper(info)
 {
-    auto isolate = info.GetIsolate();
-
-    auto rectRaw = info.Holder()->GetInternalField(0).As<v8::External>()->Value();
-    auto rect = static_cast<RECT *>(rectRaw);
-
-    Nan::Utf8String utf8PropertyName(property);
-    std::string sPropertyName(*utf8PropertyName);
-
-    if (sPropertyName == "bottom")
-    {
-        info.GetReturnValue()
-            .Set(v8::Int32::New(isolate, (int)rect->bottom));
-
-        return;
-    }
-    else if (sPropertyName == "left")
-    {
-        info.GetReturnValue()
-            .Set(v8::Int32::New(isolate, (int)rect->left));
-
-        return;
-    }
-    else if (sPropertyName == "right")
-    {
-        info.GetReturnValue()
-            .Set(v8::Int32::New(isolate, (int)rect->right));
-
-        return;
-    }
-    else if (sPropertyName == "top")
-    {
-        info.GetReturnValue()
-            .Set(v8::Int32::New(isolate, (int)rect->top));
-
-        return;
-    }
-    else
-    {
-        throw std::exception("Not Implemented. ");
-    }
+    m_pRECT = *pRECT;
 }
 
-v8::Local<v8::Value> RectWrapper::NewInstance(v8::Isolate *isolate, RECT *boundingRectangle)
+RectWrapper::RectWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<RectWrapper>(info)
 {
-    if (!boundingRectangle)
-    {
-        return v8::Null(isolate);
-    }
-    
-    auto context = isolate->GetCurrentContext();
-
-    v8::Local<v8::Function> constructorFunction = v8::Local<v8::Function>::New(isolate, constructor);
-
-    auto instance = constructorFunction->NewInstance(context).ToLocalChecked();
-
-    instance->Set(context, v8::String::NewFromUtf8(isolate, "bottom").ToLocalChecked(), v8::Int32::New(isolate, boundingRectangle->bottom));
-    instance->Set(context, v8::String::NewFromUtf8(isolate, "left").ToLocalChecked(), v8::Int32::New(isolate, boundingRectangle->left));
-    instance->Set(context, v8::String::NewFromUtf8(isolate, "right").ToLocalChecked(), v8::Int32::New(isolate, boundingRectangle->right));
-    instance->Set(context, v8::String::NewFromUtf8(isolate, "top").ToLocalChecked(), v8::Int32::New(isolate, boundingRectangle->top));
-
-    instance->SetInternalField(0, v8::External::New(isolate, boundingRectangle));
-
-    return instance;
 }
+
+
+Napi::Value RectWrapper::GetBottom(const Napi::CallbackInfo &info)
+{
+    return Napi::Number::New(info.Env(), m_pRECT.bottom);
+}
+
+Napi::Value RectWrapper::GetLeft(const Napi::CallbackInfo &info)
+{
+    return Napi::Number::New(info.Env(), m_pRECT.left);
+}
+
+Napi::Value RectWrapper::GetRight(const Napi::CallbackInfo &info)
+{
+    return Napi::Number::New(info.Env(), m_pRECT.right);
+}
+
+Napi::Value RectWrapper::GetTop(const Napi::CallbackInfo &info)
+{
+    return Napi::Number::New(info.Env(), m_pRECT.top);
+}
+

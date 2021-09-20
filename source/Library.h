@@ -10,5 +10,6 @@
 #include "IUIAutomationTreeWalkerWrapper.h"
 #include "IUIAutomationCacheRequestWrapper.h"
 #include "IUIAutomationProxyFactoryMappingWrapper.h"
+#include "IUIAutomationEventHandlerWrapper.h"
 #include "IUnknownWrapper.h"
 #include "UIA_EventIdsWrapper.h"

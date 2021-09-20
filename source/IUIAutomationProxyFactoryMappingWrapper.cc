@@ -1,29 +1,26 @@
 #include "IUIAutomationProxyFactoryMappingWrapper.h"
 
-using v8::Local;
-using v8::Object;
-using v8::Value;
+using Napi::Object;
+using Napi::Value;
 
-Nan::Persistent<v8::Function> IUIAutomationProxyFactoryMappingWrapper::constructor;
-
-NAN_MODULE_INIT(IUIAutomationProxyFactoryMappingWrapper::Init)
+Napi::Object IUIAutomationProxyFactoryMappingWrapper::Init(Napi::Env env, Napi::Object exports)
 {
-    v8::Local<v8::FunctionTemplate> functionTemplate = Nan::New<v8::FunctionTemplate>();
-    functionTemplate->SetClassName(Nan::New("IUIAutomationProxyFactoryMapping").ToLocalChecked());
-    functionTemplate->InstanceTemplate()->SetInternalFieldCount(1);
+    Napi::Function function = DefineClass(env, "IUIAutomationProxyFactoryMapping", {});
 
-    constructor.Reset(Nan::GetFunction(functionTemplate).ToLocalChecked());
+    Napi::FunctionReference *constructor = new Napi::FunctionReference();
+
+    *constructor = Napi::Persistent(function);
+
+    env.SetInstanceData<Napi::FunctionReference>(constructor);
+
+    return exports;
 }
 
-Local<Object> IUIAutomationProxyFactoryMappingWrapper::NewInstance(v8::Isolate *isolate, IUIAutomationProxyFactoryMapping *pProxyFactoryMapping)
+IUIAutomationProxyFactoryMappingWrapper::IUIAutomationProxyFactoryMappingWrapper(const Napi::CallbackInfo &info, IUIAutomationProxyFactoryMapping *pProxyFactoryMapping) : IUIAutomationProxyFactoryMappingWrapper(info)
 {
-    auto context = isolate->GetCurrentContext();
+    m_pProxyFactoryMapping = pProxyFactoryMapping;
+}
 
-    auto constructorFunction = Local<v8::Function>::New(isolate, constructor);
-
-    auto instance = constructorFunction->NewInstance(context).ToLocalChecked();
-
-    instance->SetInternalField(0, v8::External::New(isolate, pProxyFactoryMapping));
-
-    return instance;
+IUIAutomationProxyFactoryMappingWrapper::IUIAutomationProxyFactoryMappingWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUIAutomationProxyFactoryMappingWrapper>(info)
+{
 }

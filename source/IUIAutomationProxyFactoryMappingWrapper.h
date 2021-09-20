@@ -2,12 +2,13 @@
 
 #include "Shared.h"
 
-class IUIAutomationProxyFactoryMappingWrapper
+class IUIAutomationProxyFactoryMappingWrapper : public Napi::ObjectWrap<IUIAutomationProxyFactoryMappingWrapper>
 {
 public:
-  static NAN_MODULE_INIT(Init);
-  static v8::Local<v8::Object> NewInstance(v8::Isolate *isolate, IUIAutomationProxyFactoryMapping *pProxyFactoryMapping);
+  static Napi::Object Init(Napi::Env env, Napi::Object exports);
 
-private:
-  static Nan::Persistent<v8::Function> constructor;
+  IUIAutomationProxyFactoryMapping *m_pProxyFactoryMapping;
+
+  IUIAutomationProxyFactoryMappingWrapper(const Napi::CallbackInfo &info);
+  IUIAutomationProxyFactoryMappingWrapper(const Napi::CallbackInfo &info, IUIAutomationProxyFactoryMapping *pProxyFactoryMapping);
 };

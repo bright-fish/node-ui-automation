@@ -2,12 +2,13 @@
 
 #include "Shared.h"
 
-class IUIAutomationCacheRequestWrapper
+class IUIAutomationCacheRequestWrapper : public Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>
 {
 public:
-  static NAN_MODULE_INIT(Init);
-  static v8::Local<v8::Value> NewInstance(v8::Isolate *isolate, IUIAutomationCacheRequest *pCacheRequest);
+  static Napi::Object Init(Napi::Env env, Napi::Object exports);
 
-private:
-  static Nan::Persistent<v8::Function> constructor;
+  IUIAutomationCacheRequest *m_pCacheRequest;
+
+  IUIAutomationCacheRequestWrapper(const Napi::CallbackInfo &info);
+  IUIAutomationCacheRequestWrapper(const Napi::CallbackInfo &info, IUIAutomationCacheRequest *pCacheRequest);
 };

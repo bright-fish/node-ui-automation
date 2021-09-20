@@ -1,313 +1,199 @@
 #include "IUIAutomationTreeWalkerWrapper.h"
 #include "IUIAutomationElementWrapper.h"
+#include "IUIAutomationCacheRequestWrapper.h"
 
-using v8::Local;
-using v8::Object;
+using Napi::Object;
 
-Nan::Persistent<v8::Function> IUIAutomationTreeWalkerWrapper::constructor;
+Napi::FunctionReference IUIAutomationTreeWalkerWrapper::constructor;
 
-NAN_MODULE_INIT(IUIAutomationTreeWalkerWrapper::Init)
+IUIAutomationTreeWalkerWrapper::IUIAutomationTreeWalkerWrapper(const Napi::CallbackInfo &info, IUIAutomationTreeWalker *pTreeWalker) : IUIAutomationTreeWalkerWrapper(info)
 {
-    auto isolate = target->GetIsolate();
-
-    v8::Local<v8::FunctionTemplate> functionTemplate = Nan::New<v8::FunctionTemplate>();
-
-    functionTemplate->SetClassName(Nan::New("IUIAutomationTreeWalker").ToLocalChecked());
-
-    auto instanceTemplate = functionTemplate->InstanceTemplate();
-
-    instanceTemplate->SetInternalFieldCount(1);
-
-    Nan::SetPrototypeMethod(functionTemplate, "getFirstChildElement", GetFirstChildElement);
-    Nan::SetPrototypeMethod(functionTemplate, "getFirstChildElementBuildCache", GetFirstChildElementBuildCache);
-    Nan::SetPrototypeMethod(functionTemplate, "getLastChildElement", GetLastChildElement);
-    Nan::SetPrototypeMethod(functionTemplate, "getLastChildElementBuildCache", GetLastChildElementBuildCache);
-    Nan::SetPrototypeMethod(functionTemplate, "getNextSiblingElement", GetNextSiblingElement);
-    Nan::SetPrototypeMethod(functionTemplate, "getNextSiblingElementBuildCache", GetNextSiblingElementBuildCache);
-    Nan::SetPrototypeMethod(functionTemplate, "getParentElement", GetParentElement);
-    Nan::SetPrototypeMethod(functionTemplate, "getParentElementBuildCache", GetParentElementBuildCache);
-    Nan::SetPrototypeMethod(functionTemplate, "getPreviousSiblingElement", GetPreviousSiblingElement);
-    Nan::SetPrototypeMethod(functionTemplate, "getPreviousSiblingElementBuildCache", GetPreviousSiblingElementBuildCache);
-    Nan::SetPrototypeMethod(functionTemplate, "normalizeElement", NormalizeElement);
-    Nan::SetPrototypeMethod(functionTemplate, "normalizeElementBuildCache", NormalizeElementBuildCache);
-
-    constructor.Reset(Nan::GetFunction(functionTemplate).ToLocalChecked());
-
-    // Nan::Set(target, Nan::New("IUIAutomationTreeWalker").ToLocalChecked(), Nan::GetFunction(functionTemplate).ToLocalChecked());
+    m_pTreeWalker = pTreeWalker;
 }
 
-Local<v8::Value> IUIAutomationTreeWalkerWrapper::NewInstance(v8::Isolate *isolate, IUIAutomationTreeWalker *pTreeWalker)
+IUIAutomationTreeWalkerWrapper::IUIAutomationTreeWalkerWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUIAutomationTreeWalkerWrapper>(info)
 {
-    if (!pTreeWalker)
+}
+
+Napi::Object IUIAutomationTreeWalkerWrapper::Init(Napi::Env env, Napi::Object exports)
+{
+    auto classDefinition = {
+        InstanceMethod<&IUIAutomationTreeWalkerWrapper::GetFirstChildElement>("getFirstChildElement"),
+        InstanceMethod<&IUIAutomationTreeWalkerWrapper::GetFirstChildElementBuildCache>("getFirstChildElementBuildCache"),
+        InstanceMethod<&IUIAutomationTreeWalkerWrapper::GetLastChildElement>("getLastChildElement"),
+        InstanceMethod<&IUIAutomationTreeWalkerWrapper::GetLastChildElementBuildCache>("getLastChildElementBuildCache"),
+        InstanceMethod<&IUIAutomationTreeWalkerWrapper::GetNextSiblingElement>("getNextSiblingElement"),
+        InstanceMethod<&IUIAutomationTreeWalkerWrapper::GetNextSiblingElementBuildCache>("getNextSiblingElementBuildCache"),
+        InstanceMethod<&IUIAutomationTreeWalkerWrapper::GetParentElement>("getParentElement"),
+        InstanceMethod<&IUIAutomationTreeWalkerWrapper::GetParentElementBuildCache>("getParentElementBuildCache"),
+        InstanceMethod<&IUIAutomationTreeWalkerWrapper::GetPreviousSiblingElement>("getPreviousSiblingElement"),
+        InstanceMethod<&IUIAutomationTreeWalkerWrapper::GetPreviousSiblingElementBuildCache>("getPreviousSiblingElementBuildCache"),
+        InstanceMethod<&IUIAutomationTreeWalkerWrapper::NormalizeElement>("normalizeElement"),
+        InstanceMethod<&IUIAutomationTreeWalkerWrapper::NormalizeElementBuildCache>("normalizeElementBuildCache"),
+    };
+
+    Napi::Function function = DefineClass(env, "IUIAutomationTreeWalker", classDefinition);
+
+    Napi::FunctionReference *constructor = new Napi::FunctionReference();
+
+    *constructor = Napi::Persistent(function);
+
+    env.SetInstanceData<Napi::FunctionReference>(constructor);
+
+    return exports;
+}
+
+Napi::Value IUIAutomationTreeWalkerWrapper::GetFirstChildElement(const Napi::CallbackInfo &info)
+{
+    auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
+
+    IUIAutomationElement *pFirstChildElement = NULL;
+    HRESULT hResult = m_pTreeWalker->GetFirstChildElement(pElementWrapper->m_pElement, &pFirstChildElement);
+
+    if (FAILED(hResult))
     {
-        return v8::Null(isolate);
+        return info.Env().Null();
     }
 
-    auto context = isolate->GetCurrentContext();
+    auto firstChildElementWrapper = new IUIAutomationElementWrapper(info, pFirstChildElement);
 
-    Local<v8::Function> constructorFunction = Local<v8::Function>::New(isolate, constructor);
-
-    auto instance = constructorFunction->NewInstance(context).ToLocalChecked();
-
-    instance->SetInternalField(0, v8::External::New(isolate, pTreeWalker));
-
-    return instance;
+    return firstChildElementWrapper->Value();
 }
 
-NAN_METHOD(IUIAutomationTreeWalkerWrapper::GetFirstChildElement)
+Napi::Value IUIAutomationTreeWalkerWrapper::GetFirstChildElementBuildCache(const Napi::CallbackInfo &info)
 {
-    auto isolate = info.GetIsolate();
-
-    auto context = isolate->GetCurrentContext();
-
-    auto pTreeWalkerRaw = info.This()->GetInternalField(0).As<v8::External>()->Value();
-    auto pTreeWalker = static_cast<IUIAutomationTreeWalker *>(pTreeWalkerRaw);
-
-    auto pElementRaw = info[0].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pElement = static_cast<IUIAutomationElement *>(pElementRaw);
+    auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
+    auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[1].ToObject());
 
     IUIAutomationElement *pFirstChildElement = NULL;
-    HRESULT hResult = pTreeWalker->GetFirstChildElement(pElement, &pFirstChildElement);
+    HRESULT hResult = m_pTreeWalker->GetFirstChildElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &pFirstChildElement);
 
-    auto firstChildElementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, pFirstChildElement);
+    auto firstChildElementWrapper = new IUIAutomationElementWrapper(info, pFirstChildElement);
 
-    info.GetReturnValue().Set(firstChildElementWrapper);
+    return firstChildElementWrapper->Value();
 }
 
-NAN_METHOD(IUIAutomationTreeWalkerWrapper::GetFirstChildElementBuildCache)
+Napi::Value IUIAutomationTreeWalkerWrapper::GetLastChildElement(const Napi::CallbackInfo &info)
 {
-    auto isolate = info.GetIsolate();
-
-    auto context = isolate->GetCurrentContext();
-
-    auto pTreeWalkerRaw = info.This()->GetInternalField(0).As<v8::External>()->Value();
-    auto pTreeWalker = static_cast<IUIAutomationTreeWalker *>(pTreeWalkerRaw);
-
-    auto pElementRaw = info[0].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pElement = static_cast<IUIAutomationElement *>(pElementRaw);
-
-    auto pCacheRequestRaw = info[1].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pCacheRequest = static_cast<IUIAutomationCacheRequest *>(pCacheRequestRaw);
-
-    IUIAutomationElement *pFirstChildElement = NULL;
-    HRESULT hResult = pTreeWalker->GetFirstChildElementBuildCache(pElement, pCacheRequest, &pFirstChildElement);
-
-    auto firstChildElementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, pFirstChildElement);
-
-    info.GetReturnValue().Set(firstChildElementWrapper);
-}
-
-NAN_METHOD(IUIAutomationTreeWalkerWrapper::GetLastChildElement)
-{
-    auto isolate = info.GetIsolate();
-
-    auto context = isolate->GetCurrentContext();
-
-    auto pTreeWalkerRaw = info.This()->GetInternalField(0).As<v8::External>()->Value();
-    auto pTreeWalker = static_cast<IUIAutomationTreeWalker *>(pTreeWalkerRaw);
-
-    auto pElementRaw = info[0].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pElement = static_cast<IUIAutomationElement *>(pElementRaw);
+    auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
 
     IUIAutomationElement *pLastChildElement = NULL;
-    HRESULT hResult = pTreeWalker->GetLastChildElement(pElement, &pLastChildElement);
+    HRESULT hResult = m_pTreeWalker->GetLastChildElement(pElementWrapper->m_pElement, &pLastChildElement);
 
-    auto lastChildElementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, pLastChildElement);
+    auto lastChildElementWrapper = new IUIAutomationElementWrapper(info, pLastChildElement);
 
-    info.GetReturnValue().Set(lastChildElementWrapper);
+    return lastChildElementWrapper->Value();
 }
 
-NAN_METHOD(IUIAutomationTreeWalkerWrapper::GetLastChildElementBuildCache)
+Napi::Value IUIAutomationTreeWalkerWrapper::GetLastChildElementBuildCache(const Napi::CallbackInfo &info)
 {
-    auto isolate = info.GetIsolate();
-
-    auto context = isolate->GetCurrentContext();
-
-    auto pTreeWalkerRaw = info.This()->GetInternalField(0).As<v8::External>()->Value();
-    auto pTreeWalker = static_cast<IUIAutomationTreeWalker *>(pTreeWalkerRaw);
-
-    auto pElementRaw = info[0].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pElement = static_cast<IUIAutomationElement *>(pElementRaw);
-
-    auto pCacheRequestRaw = info[1].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pCacheRequest = static_cast<IUIAutomationCacheRequest *>(pCacheRequestRaw);
+    auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
+    auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[1].ToObject());
 
     IUIAutomationElement *pLastChildElement = NULL;
-    HRESULT hResult = pTreeWalker->GetLastChildElementBuildCache(pElement, pCacheRequest, &pLastChildElement);
+    HRESULT hResult = m_pTreeWalker->GetLastChildElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &pLastChildElement);
 
-    auto lastChildElementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, pLastChildElement);
+    auto lastChildElementWrapper = new IUIAutomationElementWrapper(info, pLastChildElement);
 
-    info.GetReturnValue().Set(lastChildElementWrapper);
+    return lastChildElementWrapper->Value();
 }
 
-NAN_METHOD(IUIAutomationTreeWalkerWrapper::GetNextSiblingElement)
+Napi::Value IUIAutomationTreeWalkerWrapper::GetNextSiblingElement(const Napi::CallbackInfo &info)
 {
-    auto isolate = info.GetIsolate();
-
-    auto context = isolate->GetCurrentContext();
-
-    auto pTreeWalkerRaw = info.This()->GetInternalField(0).As<v8::External>()->Value();
-    auto pTreeWalker = static_cast<IUIAutomationTreeWalker *>(pTreeWalkerRaw);
-
-    auto pElementRaw = info[0].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pElement = static_cast<IUIAutomationElement *>(pElementRaw);
+    auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
 
     IUIAutomationElement *pNextSiblingElement = NULL;
-    HRESULT hResult = pTreeWalker->GetNextSiblingElement(pElement, &pNextSiblingElement);
+    HRESULT hResult = m_pTreeWalker->GetNextSiblingElement(pElementWrapper->m_pElement, &pNextSiblingElement);
 
-    auto nextSiblingElementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, pNextSiblingElement);
+    auto nextSiblingElementWrapper = new IUIAutomationElementWrapper(info, pNextSiblingElement);
 
-    info.GetReturnValue().Set(nextSiblingElementWrapper);
+    return nextSiblingElementWrapper->Value();
 }
 
-NAN_METHOD(IUIAutomationTreeWalkerWrapper::GetNextSiblingElementBuildCache)
+Napi::Value IUIAutomationTreeWalkerWrapper::GetNextSiblingElementBuildCache(const Napi::CallbackInfo &info)
 {
-    auto isolate = info.GetIsolate();
-
-    auto context = isolate->GetCurrentContext();
-
-    auto pTreeWalkerRaw = info.This()->GetInternalField(0).As<v8::External>()->Value();
-    auto pTreeWalker = static_cast<IUIAutomationTreeWalker *>(pTreeWalkerRaw);
-
-    auto pElementRaw = info[0].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pElement = static_cast<IUIAutomationElement *>(pElementRaw);
-
-    auto pCacheRequestRaw = info[1].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pCacheRequest = static_cast<IUIAutomationCacheRequest *>(pCacheRequestRaw);
+    auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
+    auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[1].ToObject());
 
     IUIAutomationElement *pNextSiblingElement = NULL;
-    HRESULT hResult = pTreeWalker->GetNextSiblingElementBuildCache(pElement, pCacheRequest, &pNextSiblingElement);
+    HRESULT hResult = m_pTreeWalker->GetNextSiblingElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &pNextSiblingElement);
 
-    auto nextSiblingElementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, pNextSiblingElement);
+    auto nextSiblingElementWrapper = new IUIAutomationElementWrapper(info, pNextSiblingElement);
 
-    info.GetReturnValue().Set(nextSiblingElementWrapper);
+    return nextSiblingElementWrapper->Value();
 }
 
-NAN_METHOD(IUIAutomationTreeWalkerWrapper::GetParentElement)
+Napi::Value IUIAutomationTreeWalkerWrapper::GetParentElement(const Napi::CallbackInfo &info)
 {
-    auto isolate = info.GetIsolate();
-
-    auto context = isolate->GetCurrentContext();
-
-    auto pTreeWalkerRaw = info.This()->GetInternalField(0).As<v8::External>()->Value();
-    auto pTreeWalker = static_cast<IUIAutomationTreeWalker *>(pTreeWalkerRaw);
-
-    auto pElementRaw = info[0].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pElement = static_cast<IUIAutomationElement *>(pElementRaw);
+    auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
 
     IUIAutomationElement *pParentElement = NULL;
-    HRESULT hResult = pTreeWalker->GetParentElement(pElement, &pParentElement);
+    HRESULT hResult = m_pTreeWalker->GetParentElement(pElementWrapper->m_pElement, &pParentElement);
 
-    auto parentElementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, pParentElement);
+    auto parentElementWrapper = new IUIAutomationElementWrapper(info, pParentElement);
 
-    info.GetReturnValue().Set(parentElementWrapper);
+    return parentElementWrapper->Value();
 }
 
-NAN_METHOD(IUIAutomationTreeWalkerWrapper::GetParentElementBuildCache)
+Napi::Value IUIAutomationTreeWalkerWrapper::GetParentElementBuildCache(const Napi::CallbackInfo &info)
 {
-    auto isolate = info.GetIsolate();
-
-    auto context = isolate->GetCurrentContext();
-
-    auto pTreeWalkerRaw = info.This()->GetInternalField(0).As<v8::External>()->Value();
-    auto pTreeWalker = static_cast<IUIAutomationTreeWalker *>(pTreeWalkerRaw);
-
-    auto pElementRaw = info[0].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pElement = static_cast<IUIAutomationElement *>(pElementRaw);
-
-    auto pCacheRequestRaw = info[1].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pCacheRequest = static_cast<IUIAutomationCacheRequest *>(pCacheRequestRaw);
+    auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
+    auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[1].ToObject());
 
     IUIAutomationElement *parentElement = NULL;
-    HRESULT hResult = pTreeWalker->GetParentElementBuildCache(pElement, pCacheRequest, &parentElement);
+    HRESULT hResult = m_pTreeWalker->GetParentElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &parentElement);
 
-    auto parentElementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, parentElement);
+    auto parentElementWrapper = new IUIAutomationElementWrapper(info, parentElement);
 
-    info.GetReturnValue().Set(parentElementWrapper);
+    return parentElementWrapper->Value();
 }
 
-NAN_METHOD(IUIAutomationTreeWalkerWrapper::GetPreviousSiblingElement)
+Napi::Value IUIAutomationTreeWalkerWrapper::GetPreviousSiblingElement(const Napi::CallbackInfo &info)
 {
-    auto isolate = info.GetIsolate();
-
-    auto context = isolate->GetCurrentContext();
-
-    auto pTreeWalkerRaw = info.This()->GetInternalField(0).As<v8::External>()->Value();
-    auto pTreeWalker = static_cast<IUIAutomationTreeWalker *>(pTreeWalkerRaw);
-
-    auto pElementRaw = info[0].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pElement = static_cast<IUIAutomationElement *>(pElementRaw);
+    auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
 
     IUIAutomationElement *pPreviousSiblingElement = NULL;
-    HRESULT hResult = pTreeWalker->GetPreviousSiblingElement(pElement, &pPreviousSiblingElement);
+    HRESULT hResult = m_pTreeWalker->GetPreviousSiblingElement(pElementWrapper->m_pElement, &pPreviousSiblingElement);
 
-    auto previousSiblingElementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, pPreviousSiblingElement);
+    auto previousSiblingElementWrapper = new IUIAutomationElementWrapper(info, pPreviousSiblingElement);
 
-    info.GetReturnValue().Set(previousSiblingElementWrapper);
+    return previousSiblingElementWrapper->Value();
 }
 
-NAN_METHOD(IUIAutomationTreeWalkerWrapper::GetPreviousSiblingElementBuildCache)
+Napi::Value IUIAutomationTreeWalkerWrapper::GetPreviousSiblingElementBuildCache(const Napi::CallbackInfo &info)
 {
-    auto isolate = info.GetIsolate();
-
-    auto context = isolate->GetCurrentContext();
-
-    auto pTreeWalkerRaw = info.This()->GetInternalField(0).As<v8::External>()->Value();
-    auto pTreeWalker = static_cast<IUIAutomationTreeWalker *>(pTreeWalkerRaw);
-
-    auto pElementRaw = info[0].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pElement = static_cast<IUIAutomationElement *>(pElementRaw);
-
-    auto pCacheRequestRaw = info[1].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pCacheRequest = static_cast<IUIAutomationCacheRequest *>(pCacheRequestRaw);
+    auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
+    auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[1].ToObject());
 
     IUIAutomationElement *previousSiblingElement = NULL;
-    HRESULT hResult = pTreeWalker->GetPreviousSiblingElementBuildCache(pElement, pCacheRequest, &previousSiblingElement);
+    HRESULT hResult = m_pTreeWalker->GetPreviousSiblingElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &previousSiblingElement);
 
-    auto previousSiblingElementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, previousSiblingElement);
+    auto previousSiblingElementWrapper = new IUIAutomationElementWrapper(info, previousSiblingElement);
 
-    info.GetReturnValue().Set(previousSiblingElementWrapper);
+    return previousSiblingElementWrapper->Value();
 }
 
-NAN_METHOD(IUIAutomationTreeWalkerWrapper::NormalizeElement)
+Napi::Value IUIAutomationTreeWalkerWrapper::NormalizeElement(const Napi::CallbackInfo &info)
 {
-    auto isolate = info.GetIsolate();
-
-    auto context = isolate->GetCurrentContext();
-
-    auto pTreeWalkerRaw = info.This()->GetInternalField(0).As<v8::External>()->Value();
-    auto pTreeWalker = static_cast<IUIAutomationTreeWalker *>(pTreeWalkerRaw);
-
-    auto pElementRaw = info[0].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pElement = static_cast<IUIAutomationElement *>(pElementRaw);
+    auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
 
     IUIAutomationElement *pNormalizedElemment = NULL;
-    HRESULT hResult = pTreeWalker->NormalizeElement(pElement, &pNormalizedElemment);
+    HRESULT hResult = m_pTreeWalker->NormalizeElement(pElementWrapper->m_pElement, &pNormalizedElemment);
 
-    auto normalizedElementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, pNormalizedElemment);
+    auto normalizedElementWrapper = new IUIAutomationElementWrapper(info, pNormalizedElemment);
 
-    info.GetReturnValue().Set(normalizedElementWrapper);
+    return normalizedElementWrapper->Value();
 }
 
-NAN_METHOD(IUIAutomationTreeWalkerWrapper::NormalizeElementBuildCache)
+Napi::Value IUIAutomationTreeWalkerWrapper::NormalizeElementBuildCache(const Napi::CallbackInfo &info)
 {
-    auto isolate = info.GetIsolate();
-
-    auto context = isolate->GetCurrentContext();
-
-    auto pTreeWalkerRaw = info.This()->GetInternalField(0).As<v8::External>()->Value();
-    auto pTreeWalker = static_cast<IUIAutomationTreeWalker *>(pTreeWalkerRaw);
-
-    auto pElementRaw = info[0].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pElement = static_cast<IUIAutomationElement *>(pElementRaw);
-
-    auto pCacheRequestRaw = info[1].As<v8::Object>()->GetInternalField(0).As<v8::External>()->Value();
-    auto pCacheRequest = static_cast<IUIAutomationCacheRequest *>(pCacheRequestRaw);
+    auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
+    auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[1].ToObject());
 
     IUIAutomationElement *pNormalizedElement = NULL;
-    HRESULT hResult = pTreeWalker->GetPreviousSiblingElementBuildCache(pElement, pCacheRequest, &pNormalizedElement);
+    HRESULT hResult = m_pTreeWalker->GetPreviousSiblingElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &pNormalizedElement);
 
-    auto normalizedElementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, pNormalizedElement);
+    auto normalizedElementWrapper = new IUIAutomationElementWrapper(info, pNormalizedElement);
 
-    info.GetReturnValue().Set(normalizedElementWrapper);
+    return normalizedElementWrapper->Value();
 }

@@ -1,69 +1,51 @@
 #include "Library.h"
 
-Nan::Persistent<v8::Function> IUIAutomationElementArrayWrapper::constructor;
-
-NAN_MODULE_INIT(IUIAutomationElementArrayWrapper::Init)
+Napi::Object IUIAutomationElementArrayWrapper::Init(Napi::Env env, Napi::Object exports)
 {
-    auto isolate = target->GetIsolate();
+    auto classDefinition = {
+        InstanceMethod("getElement", &GetElement),
+    };
 
-    v8::Local<v8::FunctionTemplate> functionTemplate = Nan::New<v8::FunctionTemplate>();
+    Napi::Function function = DefineClass(env, "IUIAutomationElementArray", classDefinition);
 
-    functionTemplate->SetClassName(Nan::New("IUIAutomationElementArray").ToLocalChecked());
+    Napi::FunctionReference *constructor = new Napi::FunctionReference();
 
-    auto instanceTemplate = functionTemplate->InstanceTemplate();
+    *constructor = Napi::Persistent(function);
 
-    instanceTemplate->SetInternalFieldCount(1);
+    env.SetInstanceData<Napi::FunctionReference>(constructor);
 
-    Nan::SetPrototypeMethod(functionTemplate, "getElement", GetElement);
-
-    constructor.Reset(Nan::GetFunction(functionTemplate).ToLocalChecked());
+    return exports;
 }
+
+IUIAutomationElementArrayWrapper::IUIAutomationElementArrayWrapper(const Napi::CallbackInfo &info, IUIAutomationElementArray *pElementArray) : IUIAutomationElementArrayWrapper(info)
+{
+    m_pElementArray = pElementArray;
+}
+IUIAutomationElementArrayWrapper::IUIAutomationElementArrayWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUIAutomationElementArrayWrapper>(info)
+{
+}
+
 
 // todo: indexer
 // todo: iterator?
-// todo:
-v8::Local<v8::Value> IUIAutomationElementArrayWrapper::NewInstance(v8::Isolate *isolate, IUIAutomationElementArray *elementArray)
+Napi::Value IUIAutomationElementArrayWrapper::GetElement(const Napi::CallbackInfo &info)
 {
-    if (!elementArray)
+    auto number = info[0].ToNumber();
+
+    if (number.IsUndefined())
     {
-        return v8::Null(isolate);
+        return number.Env().Null();
     }
-
-    auto context = isolate->GetCurrentContext();
-
-    auto constructorFunction = v8::Local<v8::Function>::New(isolate, constructor);
-
-    auto instance = constructorFunction->NewInstance(context).ToLocalChecked();
-
-    instance->SetInternalField(0, v8::External::New(isolate, elementArray));
-
-    return instance;
-}
-
-NAN_METHOD(IUIAutomationElementArrayWrapper::GetElement)
-{
-    auto isolate = info.GetIsolate();
-    auto context = isolate->GetCurrentContext();
-
-    auto indexMaybe = info[0]->Int32Value(context);
-
-    if (indexMaybe.IsNothing())
-    {
-        return info.GetReturnValue().SetNull();
-    }
-
-    auto index = indexMaybe.ToChecked();
-
-    auto pAutomationElementArrayWrapperRaw = info.This()->GetInternalField(0).As<v8::External>()->Value();
-    auto pAutomationElementArrayWrapper = static_cast<IUIAutomationElementArray *>(pAutomationElementArrayWrapperRaw);
 
     IUIAutomationElement *pElement = NULL;
-    auto hResult = pAutomationElementArrayWrapper->GetElement(index, &pElement);
+    auto hResult = m_pElementArray->GetElement(number.Int32Value(), &pElement);
 
     if (FAILED(hResult))
     {
-        return info.GetReturnValue().SetNull();
+        return info.Env().Null();
     }
 
-    info.GetReturnValue().Set(IUIAutomationElementWrapper::NewInstance(isolate, pElement));
+    auto pElementWrapper = new IUIAutomationElementWrapper(info, pElement);
+
+    return pElementWrapper->Value();
 }

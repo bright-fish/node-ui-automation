@@ -7,13 +7,10 @@ class IUIAutomationEventHandlerWrapper : public IUIAutomationEventHandler
 
 private:
   LONG _refCount;
-  static Nan::Persistent<v8::Function> constructor;
-  Nan::Persistent<v8::Function> callback;
-
+  Napi::FunctionReference callback;
 
 public:
-  static NAN_MODULE_INIT(Init);
-  static NAN_METHOD(New);
+  static Napi::Object Init(Napi::Env env, Napi::Object exports);
 
   IUIAutomationEventHandlerWrapper();
   ~IUIAutomationEventHandlerWrapper();

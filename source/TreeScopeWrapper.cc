@@ -1,22 +1,20 @@
 #include "Library.h"
 
-using v8::Isolate;
-using v8::Local;
-using v8::Object;
+using Napi::Object;
 
-NAN_MODULE_INIT(TreeScopeWrapper::Init)
+Napi::Object TreeScopeWrapper::Init(Napi::Env env, Napi::Object exports)
 {
-    auto isolate = target->GetIsolate();
+    Napi::Object treeScope = Napi::Object::New(env);
 
-    Local<Object> treeScope = Object::New(isolate);
+    treeScope.Set("TreeScope_None", Napi::Number::New(env, TreeScope_None));
+    treeScope.Set("TreeScope_Element", Napi::Number::New(env, TreeScope_Element));
+    treeScope.Set("TreeScope_Children", Napi::Number::New(env, TreeScope_Children));
+    treeScope.Set("TreeScope_Descendants", Napi::Number::New(env, TreeScope_Descendants));
+    treeScope.Set("TreeScope_Parent", Napi::Number::New(env, TreeScope_Parent));
+    treeScope.Set("TreeScope_Ancestors", Napi::Number::New(env, TreeScope_Ancestors));
+    treeScope.Set("TreeScope_Subtree", Napi::Number::New(env, TreeScope_Subtree));
 
-    Nan::Set(treeScope, Nan::New("TreeScope_None").ToLocalChecked(), Nan::New(TreeScope_None));
-    Nan::Set(treeScope, Nan::New("TreeScope_Element").ToLocalChecked(), Nan::New(TreeScope_Element));
-    Nan::Set(treeScope, Nan::New("TreeScope_Children").ToLocalChecked(), Nan::New(TreeScope_Children));
-    Nan::Set(treeScope, Nan::New("TreeScope_Descendants").ToLocalChecked(), Nan::New(TreeScope_Descendants));
-    Nan::Set(treeScope, Nan::New("TreeScope_Parent").ToLocalChecked(), Nan::New(TreeScope_Parent));
-    Nan::Set(treeScope, Nan::New("TreeScope_Ancestors").ToLocalChecked(), Nan::New(TreeScope_Ancestors));
-    Nan::Set(treeScope, Nan::New("TreeScope_Subtree").ToLocalChecked(), Nan::New(TreeScope_Subtree));
+    exports.Set("TreeScope", treeScope);
 
-    Nan::Set(target, Nan::New("TreeScope").ToLocalChecked(), treeScope);
+    return exports;
 }

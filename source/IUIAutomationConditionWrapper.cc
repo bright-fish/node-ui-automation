@@ -1,29 +1,24 @@
+
 #include "Library.h"
 
-using v8::Local;
-using v8::Object;
-using v8::Value;
-
-Nan::Persistent<v8::Function> IUIAutomationConditionWrapper::constructor;
-
-NAN_MODULE_INIT(IUIAutomationConditionWrapper::Init)
+Napi::Object IUIAutomationConditionWrapper::Init(Napi::Env env, Napi::Object exports)
 {
-    v8::Local<v8::FunctionTemplate> functionTemplate = Nan::New<v8::FunctionTemplate>();
-    functionTemplate->SetClassName(Nan::New("IUIAutomationCondition").ToLocalChecked());
-    functionTemplate->InstanceTemplate()->SetInternalFieldCount(1);
+    Napi::Function function = DefineClass(env, "IUIAutomationCondition", {});
 
-    constructor.Reset(Nan::GetFunction(functionTemplate).ToLocalChecked());
+    Napi::FunctionReference *constructor = new Napi::FunctionReference();
+
+    *constructor = Napi::Persistent(function);
+
+    env.SetInstanceData<Napi::FunctionReference>(constructor);
+
+    return exports;
 }
 
-Local<Object> IUIAutomationConditionWrapper::NewInstance(v8::Isolate *isolate, IUIAutomationCondition *pCondition)
+IUIAutomationConditionWrapper::IUIAutomationConditionWrapper(const Napi::CallbackInfo &info, IUIAutomationCondition *pCondition) : IUIAutomationConditionWrapper(info)
 {
-    auto context = isolate->GetCurrentContext();
+    m_pCondition = pCondition;
+}
 
-    auto constructorFunction = Local<v8::Function>::New(isolate, constructor);
-
-    auto instance = constructorFunction->NewInstance(context).ToLocalChecked();
-
-    instance->SetInternalField(0, v8::External::New(isolate, pCondition));
-
-    return instance;
+IUIAutomationConditionWrapper::IUIAutomationConditionWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUIAutomationConditionWrapper>(info)
+{
 }

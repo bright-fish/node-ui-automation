@@ -1,25 +1,24 @@
 #include "Shared.h"
 #include "Library.h"
 
-using v8::Local;
-using v8::Object;
-
-void InitAll(Local<Object> exports)
+Napi::Object InitAll(Napi::Env env, Napi::Object exports)
 {
-    UIA_PropertyIdsWrapper::Init(exports);
-    UIA_EventIdsWrapper::Init(exports);
-    TreeScopeWrapper::Init(exports);
-    RectWrapper::Init(exports);
+    UIA_PropertyIdsWrapper::Init(env, exports);
+    UIA_EventIdsWrapper::Init(env, exports);
+    TreeScopeWrapper::Init(env, exports);
+    RectWrapper::Init(env, exports);
 
-    IUnknownWrapper::Init(exports);
+    IUnknownWrapper::Init(env, exports);
 
-    IUIAutomationWrapper::Init(exports);
-    IUIAutomationElementWrapper::Init(exports);
-    IUIAutomationConditionWrapper::Init(exports);
-    IUIAutomationElementArrayWrapper::Init(exports);
-    IUIAutomationTreeWalkerWrapper::Init(exports);
-    IUIAutomationCacheRequestWrapper::Init(exports);
-    IUIAutomationProxyFactoryMappingWrapper::Init(exports);
+    IUIAutomationWrapper::Init(env, exports);
+    IUIAutomationElementWrapper::Init(env, exports);
+    IUIAutomationConditionWrapper::Init(env, exports);
+    IUIAutomationElementArrayWrapper::Init(env, exports);
+    IUIAutomationTreeWalkerWrapper::Init(env, exports);
+    IUIAutomationCacheRequestWrapper::Init(env, exports);
+    IUIAutomationProxyFactoryMappingWrapper::Init(env, exports);
+
+    return exports;
 }
 
-NODE_MODULE(NODE_GYP_MODULE_NAME, InitAll)
+NODE_API_MODULE(NODE_GYP_MODULE_NAME, InitAll)
