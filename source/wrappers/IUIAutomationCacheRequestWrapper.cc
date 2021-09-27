@@ -1,4 +1,5 @@
-#include "Library.h"
+#include "Wrappers.h"
+#include "../AutomationAddon.h"
 
 Napi::FunctionReference *IUIAutomationCacheRequestWrapper::Initialize(Napi::Env env)
 {

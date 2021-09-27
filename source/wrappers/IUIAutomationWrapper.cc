@@ -1,4 +1,6 @@
-#include "Library.h"
+#include "Wrappers.h"
+#include "../AutomationAddon.h"
+
 Napi::FunctionReference *IUIAutomationWrapper::Initialize(Napi::Env env)
 {
     auto classDefinition = {

@@ -1,7 +1,5 @@
 #include "UIA_EventIdsWrapper.h"
 
-using Napi::Object;
-
 Napi::Object UIA_EventIdsWrapper::Export(Napi::Env env, Napi::Object exports)
 {
     exports.Set("UIA_ToolTipOpenedEventId", Napi::Number::New(env, UIA_ToolTipOpenedEventId));

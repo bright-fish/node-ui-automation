@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Shared.h"
+#include "../Shared.h"
 
 class UIA_PropertyIdsWrapper
 {

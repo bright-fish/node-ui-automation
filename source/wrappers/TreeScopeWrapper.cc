@@ -1,6 +1,4 @@
-#include "Library.h"
-
-using Napi::Object;
+#include "TreeScopeWrapper.h"
 
 Napi::Object TreeScopeWrapper::New(Napi::Env env)
 {

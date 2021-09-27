@@ -1,7 +1,5 @@
-#include "Library.h"
-
-using Napi::Object;
-using Napi::Value;
+#include "Wrappers.h"
+#include "../AutomationAddon.h"
 
 Napi::FunctionReference *IUIAutomationProxyFactoryMappingWrapper::Initialize(Napi::Env env)
 {

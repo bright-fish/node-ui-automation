@@ -1,5 +1,5 @@
-#include "RectWrapper.h"
-#include "AutomationAddon.h"
+#include "Wrappers.h"
+#include "../AutomationAddon.h"
 
 Napi::FunctionReference *RectWrapper::Initialize(Napi::Env env)
 {

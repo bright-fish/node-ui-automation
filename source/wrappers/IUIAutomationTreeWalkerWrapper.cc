@@ -1,7 +1,5 @@
-#include "IUIAutomationTreeWalkerWrapper.h"
-#include "IUIAutomationElementWrapper.h"
-#include "IUIAutomationCacheRequestWrapper.h"
-#include "AutomationAddon.h"
+#include "Wrappers.h"
+#include "../AutomationAddon.h"
 
 Napi::FunctionReference *IUIAutomationTreeWalkerWrapper::Initialize(Napi::Env env)
 {

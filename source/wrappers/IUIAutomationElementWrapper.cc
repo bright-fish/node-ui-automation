@@ -1,8 +1,5 @@
-#include "IUIAutomationElementWrapper.h"
-
-#include "Library.h"
-#include <comutil.h>
-#include <stdio.h>
+#include "Wrappers.h"
+#include "../AutomationAddon.h"
 
 Napi::FunctionReference *IUIAutomationElementWrapper::Initialize(Napi::Env env)
 {
