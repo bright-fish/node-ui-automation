@@ -5,5 +5,5 @@
 class TreeScopeWrapper
 {
 public:
-  static Napi::Object Init(Napi::Env env, Napi::Object exports);
+  static Napi::Object New(Napi::Env env);
 };

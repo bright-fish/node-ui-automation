@@ -5,12 +5,12 @@
 class IUIAutomationElementWrapper : public Napi::ObjectWrap<IUIAutomationElementWrapper>
 {
 public:
-  static Napi::Object Init(Napi::Env env, Napi::Object exports);
+  static Napi::FunctionReference *Initialize(Napi::Env env);
+  static Napi::Object New(Napi::Env env, IUIAutomationElement *pElement);
 
   IUIAutomationElement *m_pElement;
 
   IUIAutomationElementWrapper(const Napi::CallbackInfo &info);
-  IUIAutomationElementWrapper(const Napi::CallbackInfo &info, IUIAutomationElement *pElement);
 
   Napi::Value GetCurrentName(const Napi::CallbackInfo &info);
   Napi::Value GetCurrentAcceleratorKey(const Napi::CallbackInfo &info);
@@ -77,7 +77,6 @@ public:
   Napi::Value GetCachedOrientation(const Napi::CallbackInfo &info);
   Napi::Value GetCachedProcessId(const Napi::CallbackInfo &info);
   Napi::Value GetCachedProviderDescription(const Napi::CallbackInfo &info);
-
 
   Napi::Value FindFirst(const Napi::CallbackInfo &info);
 };

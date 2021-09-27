@@ -5,11 +5,11 @@
 class IUnknownWrapper : public Napi::ObjectWrap<IUnknownWrapper>
 {
 public:
-  static Napi::Object Init(Napi::Env env, Napi::Object exports);
-  
-  IUnknown* m_pIUnknown;
-  IUnknownWrapper(const Napi::CallbackInfo &info);
-  IUnknownWrapper(const Napi::CallbackInfo &info, IUnknown * pIUnknown);
+  static Napi::FunctionReference *Initialize(Napi::Env env);
+  static Napi::Object New(Napi::Env env, IUnknown *pUnknown);
 
-private:
+  IUnknown *m_pIUnknown;
+
+  IUnknownWrapper(const Napi::CallbackInfo &info);
+  // ~IUnknownWrapper();
 };

@@ -2,7 +2,7 @@
 
 using Napi::Object;
 
-Napi::Object UIA_EventIdsWrapper::Init(Napi::Env env, Napi::Object exports)
+Napi::Object UIA_EventIdsWrapper::Export(Napi::Env env, Napi::Object exports)
 {
     exports.Set("UIA_ToolTipOpenedEventId", Napi::Number::New(env, UIA_ToolTipOpenedEventId));
     exports.Set("UIA_ToolTipClosedEventId", Napi::Number::New(env, UIA_ToolTipClosedEventId));

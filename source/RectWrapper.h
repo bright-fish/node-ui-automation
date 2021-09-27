@@ -5,12 +5,12 @@
 class RectWrapper : public Napi::ObjectWrap<RectWrapper>
 {
 public:
-  static Napi::Object Init(Napi::Env env, Napi::Object exports);
+  static Napi::FunctionReference *Initialize(Napi::Env env);
+  static Napi::Object New(Napi::Env env, RECT *rect);
 
   RECT m_pRECT;
 
   RectWrapper(const Napi::CallbackInfo &info);
-  RectWrapper(const Napi::CallbackInfo &info, RECT *pRECT);
 
   Napi::Value RectWrapper::GetBottom(const Napi::CallbackInfo &info);
   Napi::Value RectWrapper::GetLeft(const Napi::CallbackInfo &info);

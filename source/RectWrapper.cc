@@ -1,6 +1,7 @@
 #include "RectWrapper.h"
+#include "AutomationAddon.h"
 
-Napi::Object RectWrapper::Init(Napi::Env env, Napi::Object exports)
+Napi::FunctionReference *RectWrapper::Initialize(Napi::Env env)
 {
     auto classDefinition = {
         InstanceAccessor<&RectWrapper::GetBottom>("bottom"),
@@ -11,24 +12,29 @@ Napi::Object RectWrapper::Init(Napi::Env env, Napi::Object exports)
 
     Napi::Function function = DefineClass(env, "RECT", classDefinition);
 
-    Napi::FunctionReference *constructor = new Napi::FunctionReference();
+    Napi::FunctionReference *functionReference = new Napi::FunctionReference();
 
-    *constructor = Napi::Persistent(function);
+    *functionReference = Napi::Persistent(function);
 
-    env.SetInstanceData<Napi::FunctionReference>(constructor);
-
-    return exports;
+    return functionReference;
 }
 
-RectWrapper::RectWrapper(const Napi::CallbackInfo &info, RECT *pRECT) : RectWrapper(info)
+Napi::Object RectWrapper::New(Napi::Env env, RECT *pRECT)
 {
-    m_pRECT = *pRECT;
+    auto automationAddon = env.GetInstanceData<AutomationAddon>();
+
+    return automationAddon->IUIAutomationElementWrapperConstructor->New({Napi::External<RECT>::New(env, pRECT)});
 }
 
 RectWrapper::RectWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<RectWrapper>(info)
 {
-}
+    if (info.Length() != 1)
+    {
+        throw Napi::TypeError::New(info.Env(), "RECT constructor is missing parameters.");
+    }
 
+    m_pRECT = *info[0].As<Napi::External<RECT>>().Data();
+}
 
 Napi::Value RectWrapper::GetBottom(const Napi::CallbackInfo &info)
 {
@@ -49,4 +55,3 @@ Napi::Value RectWrapper::GetTop(const Napi::CallbackInfo &info)
 {
     return Napi::Number::New(info.Env(), m_pRECT.top);
 }
-

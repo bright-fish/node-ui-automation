@@ -5,10 +5,11 @@
 class IUIAutomationCacheRequestWrapper : public Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>
 {
 public:
-  static Napi::Object Init(Napi::Env env, Napi::Object exports);
+  static Napi::FunctionReference *Initialize(Napi::Env env);
+  static Napi::Object New(Napi::Env env, IUIAutomationCacheRequest *pCacheRequest);
 
   IUIAutomationCacheRequest *m_pCacheRequest;
 
   IUIAutomationCacheRequestWrapper(const Napi::CallbackInfo &info);
-  IUIAutomationCacheRequestWrapper(const Napi::CallbackInfo &info, IUIAutomationCacheRequest *pCacheRequest);
+  // ~IUIAutomationCacheRequestWrapper();
 };

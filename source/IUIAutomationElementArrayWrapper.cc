@@ -1,6 +1,6 @@
 #include "Library.h"
 
-Napi::Object IUIAutomationElementArrayWrapper::Init(Napi::Env env, Napi::Object exports)
+Napi::FunctionReference *IUIAutomationElementArrayWrapper::Initialize(Napi::Env env)
 {
     auto classDefinition = {
         InstanceMethod("getElement", &GetElement),
@@ -8,23 +8,29 @@ Napi::Object IUIAutomationElementArrayWrapper::Init(Napi::Env env, Napi::Object 
 
     Napi::Function function = DefineClass(env, "IUIAutomationElementArray", classDefinition);
 
-    Napi::FunctionReference *constructor = new Napi::FunctionReference();
+    Napi::FunctionReference *functionReference = new Napi::FunctionReference();
 
-    *constructor = Napi::Persistent(function);
+    *functionReference = Napi::Persistent(function);
 
-    env.SetInstanceData<Napi::FunctionReference>(constructor);
-
-    return exports;
+    return functionReference;
 }
 
-IUIAutomationElementArrayWrapper::IUIAutomationElementArrayWrapper(const Napi::CallbackInfo &info, IUIAutomationElementArray *pElementArray) : IUIAutomationElementArrayWrapper(info)
+Napi::Object IUIAutomationElementArrayWrapper::New(Napi::Env env, IUIAutomationElementArray *pElementArray)
 {
-    m_pElementArray = pElementArray;
+    auto automationAddon = env.GetInstanceData<AutomationAddon>();
+
+    return automationAddon->IUIAutomationElementArrayWrapperConstructor->New({Napi::External<IUIAutomationElementArray>::New(env, pElementArray)});
 }
+
 IUIAutomationElementArrayWrapper::IUIAutomationElementArrayWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUIAutomationElementArrayWrapper>(info)
 {
-}
+    if (info.Length() != 1)
+    {
+        throw Napi::TypeError::New(info.Env(), "IUIAutomationElementArray constructor missing parameters.");
+    }
 
+    m_pElementArray = info[0].As<Napi::External<IUIAutomationElementArray>>().Data();
+}
 
 // todo: indexer
 // todo: iterator?
@@ -45,7 +51,7 @@ Napi::Value IUIAutomationElementArrayWrapper::GetElement(const Napi::CallbackInf
         return info.Env().Null();
     }
 
-    auto pElementWrapper = new IUIAutomationElementWrapper(info, pElement);
+    auto pElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pElement);
 
-    return pElementWrapper->Value();
+    return pElementWrapper;
 }

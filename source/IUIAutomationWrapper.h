@@ -5,7 +5,8 @@
 class IUIAutomationWrapper : public Napi::ObjectWrap<IUIAutomationWrapper>
 {
 public:
-  static Napi::Object Init(Napi::Env env, Napi::Object exports);
+  static Napi::FunctionReference *Initialize(Napi::Env env);
+  static Napi::Object New(Napi::Env env);
 
   IUIAutomationWrapper(const Napi::CallbackInfo &info);
   ~IUIAutomationWrapper();

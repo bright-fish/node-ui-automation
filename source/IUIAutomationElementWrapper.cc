@@ -4,13 +4,102 @@
 #include <comutil.h>
 #include <stdio.h>
 
-IUIAutomationElementWrapper::IUIAutomationElementWrapper(const Napi::CallbackInfo &info, IUIAutomationElement *pElement) : IUIAutomationElementWrapper(info)
+Napi::FunctionReference *IUIAutomationElementWrapper::Initialize(Napi::Env env)
 {
-    m_pElement = pElement;
+    auto classDefinition = {
+        InstanceMethod<&IUIAutomationElementWrapper::FindFirst>("findFirst"),
+
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentName>("currentName"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentAcceleratorKey>("currentAcceleratorKey"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentAccessKey>("currentAccessKey"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentAriaProperties>("currentAriaProperties"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentAriaRole>("currentAriaRole"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentAutomationId>("currentAutomationId"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentBoundingRectangle>("currentBoundingRectangle"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentClassName>("currentClassName"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentControllerFor>("currentControllerFor"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentControlType>("currentControlType"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentCulture>("currentCulture"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentDescribedBy>("currentDescribedBy"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentFlowsTo>("currentFlowsTo"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentFrameworkId>("currentFrameworkId"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentHasKeyboardFocus>("currentHasKeyboardFocus"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentHelpText>("currentHelpText"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentIsContentElement>("currentIsContentElement"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentIsControlElement>("currentIsControlElement"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentIsDataValidForForm>("currentIsDataValidForForm"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentIsEnabled>("currentIsEnabled"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentIsKeyboardFocusable>("currentIsKeyboardFocusable"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentIsOffscreen>("currentIsOffscreen"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentIsPassword>("currentIsPassword"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentIsRequiredForForm>("currentIsRequiredForForm"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentItemStatus>("currentItemStatus"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentItemType>("currentItemType"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentLabeledBy>("currentLabeledBy"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentLocalizedControlType>("currentLocalizedControlType"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentNativeWindowHandle>("currentNativeWindowHandle"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentOrientation>("currentOrientation"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentProcessId>("currentProcessId"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentProviderDescription>("currentProviderDescription"),
+
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedName>("cachedName"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedAcceleratorKey>("cachedAcceleratorKey"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedAccessKey>("cachedAccessKey"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedAriaProperties>("cachedAriaProperties"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedAriaRole>("cachedAriaRole"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedAutomationId>("cachedAutomationId"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedBoundingRectangle>("cachedBoundingRectangle"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedClassName>("cachedClassName"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedControllerFor>("cachedControllerFor"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedControlType>("cachedControlType"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedCulture>("cachedCulture"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedDescribedBy>("cachedDescribedBy"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedFlowsTo>("cachedFlowsTo"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedFrameworkId>("cachedFrameworkId"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedHasKeyboardFocus>("cachedHasKeyboardFocus"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedHelpText>("cachedHelpText"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedIsContentElement>("cachedIsContentElement"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedIsControlElement>("cachedIsControlElement"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedIsDataValidForForm>("cachedIsDataValidForForm"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedIsEnabled>("cachedIsEnabled"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedIsKeyboardFocusable>("cachedIsKeyboardFocusable"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedIsOffscreen>("cachedIsOffscreen"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedIsPassword>("cachedIsPassword"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedIsRequiredForForm>("cachedIsRequiredForForm"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedItemStatus>("cachedItemStatus"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedItemType>("cachedItemType"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedLabeledBy>("cachedLabeledBy"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedLocalizedControlType>("cachedLocalizedControlType"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedNativeWindowHandle>("cachedNativeWindowHandle"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedOrientation>("cachedOrientation"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedProcessId>("cachedProcessId"),
+        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedProviderDescription>("cachedProviderDescription"),
+    };
+
+    Napi::Function function = DefineClass(env, "IUIAutomationElement", classDefinition);
+
+    Napi::FunctionReference *functionReference = new Napi::FunctionReference();
+
+    *functionReference = Napi::Persistent(function);
+
+    return functionReference;
+}
+
+Napi::Object IUIAutomationElementWrapper::New(Napi::Env env, IUIAutomationElement *pElement)
+{
+    auto automationAddon = env.GetInstanceData<AutomationAddon>();
+
+    return automationAddon->IUIAutomationElementWrapperConstructor->New({Napi::External<IUIAutomationElement>::New(env, pElement)});
 }
 
 IUIAutomationElementWrapper::IUIAutomationElementWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUIAutomationElementWrapper>(info)
 {
+    if (info.Length() != 1)
+    {
+        throw Napi::TypeError::New(info.Env(), "IUIAutomationElement constructor is missing parameters.");
+    }
+
+    m_pElement = info[0].As<Napi::External<IUIAutomationElement>>().Data();
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentName(const Napi::CallbackInfo &info)
@@ -73,9 +162,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentBoundingRectangle(const Napi:
 
     m_pElement->get_CurrentBoundingRectangle(&boundingRectangle);
 
-    auto boundingRectangleWrapper = new RectWrapper(info, &boundingRectangle);
+    auto boundingRectangleWrapper = RectWrapper::New(info.Env(), &boundingRectangle);
 
-    return boundingRectangleWrapper->Value();
+    return boundingRectangleWrapper;
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentClassName(const Napi::CallbackInfo &info)
@@ -92,9 +181,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentControllerFor(const Napi::Cal
     IUIAutomationElementArray *controllerFor;
     m_pElement->get_CurrentControllerFor(&controllerFor);
 
-    auto controllerForWrapper = new IUIAutomationElementArrayWrapper(info, controllerFor);
+    auto controllerForWrapper = IUIAutomationElementArrayWrapper::New(info.Env(), controllerFor);
 
-    return controllerForWrapper->Value();
+    return controllerForWrapper;
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentControlType(const Napi::CallbackInfo &info)
@@ -121,9 +210,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentDescribedBy(const Napi::Callb
 
     m_pElement->get_CurrentDescribedBy(&describedBy);
 
-    auto describedByWrapper = new IUIAutomationElementArrayWrapper(info, describedBy);
+    auto describedByWrapper = IUIAutomationElementArrayWrapper::New(info.Env(), describedBy);
 
-    return describedByWrapper->Value();
+    return describedByWrapper;
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentFlowsTo(const Napi::CallbackInfo &info)
@@ -132,9 +221,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentFlowsTo(const Napi::CallbackI
 
     m_pElement->get_CurrentFlowsTo(&flowsTo);
 
-    auto flowsToWrapper = new IUIAutomationElementArrayWrapper(info, flowsTo);
+    auto flowsToWrapper = IUIAutomationElementArrayWrapper::New(info.Env(), flowsTo);
 
-    return flowsToWrapper->Value();
+    return flowsToWrapper;
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentFrameworkId(const Napi::CallbackInfo &info)
@@ -259,9 +348,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentLabeledBy(const Napi::Callbac
 
     m_pElement->get_CurrentLabeledBy(&element);
 
-    auto elementWrapper = new IUIAutomationElementWrapper(info, element);
+    auto elementWrapper = IUIAutomationElementWrapper::New(info.Env(), element);
 
-    return elementWrapper->Value();
+    return elementWrapper;
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentLocalizedControlType(const Napi::CallbackInfo &info)
@@ -280,7 +369,7 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentNativeWindowHandle(const Napi
     m_pElement->get_CurrentNativeWindowHandle(&nativeWindowHandle);
 
     throw E_NOTIMPL;
-    // return Napi::External::New(info.Env(), nativeWindowHandle);
+    // return Napi::External<UIA_HWND>::New(info.Env(), nativeWindowHandle);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentOrientation(const Napi::CallbackInfo &info)
@@ -406,9 +495,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedBoundingRectangle(const Napi::
             .Null();
     }
 
-    auto boundingRectangleWrapper = new RectWrapper(info, &boundingRectangle);
+    auto boundingRectangleWrapper = RectWrapper::New(info.Env(), &boundingRectangle);
 
-    return boundingRectangleWrapper->Value();
+    return boundingRectangleWrapper;
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCachedClassName(const Napi::CallbackInfo &info)
@@ -437,9 +526,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedControllerFor(const Napi::Call
             .Null();
     }
 
-    auto controllerForWrapper = new IUIAutomationElementArrayWrapper(info, controllerFor);
+    auto controllerForWrapper = IUIAutomationElementArrayWrapper::New(info.Env(), controllerFor);
 
-    return controllerForWrapper->Value();
+    return controllerForWrapper;
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCachedControlType(const Napi::CallbackInfo &info)
@@ -484,9 +573,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedDescribedBy(const Napi::Callba
             .Null();
     }
 
-    auto describedByWrapper = new IUIAutomationElementArrayWrapper(info, describedBy);
+    auto describedByWrapper = IUIAutomationElementArrayWrapper::New(info.Env(), describedBy);
 
-    return describedByWrapper->Value();
+    return describedByWrapper;
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCachedFlowsTo(const Napi::CallbackInfo &info)
@@ -501,9 +590,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedFlowsTo(const Napi::CallbackIn
             .Null();
     }
 
-    auto flowsToWrapper = new IUIAutomationElementArrayWrapper(info, flowsTo);
+    auto flowsToWrapper = IUIAutomationElementArrayWrapper::New(info.Env(), flowsTo);
 
-    return flowsToWrapper->Value();
+    return flowsToWrapper;
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCachedFrameworkId(const Napi::CallbackInfo &info)
@@ -699,9 +788,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedLabeledBy(const Napi::Callback
 
     m_pElement->get_CachedLabeledBy(&element);
 
-    auto elementWrapper = new IUIAutomationElementWrapper(info, element);
+    auto elementWrapper = IUIAutomationElementWrapper::New(info.Env(), element);
 
-    return elementWrapper->Value();
+    return elementWrapper;
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCachedLocalizedControlType(const Napi::CallbackInfo &info)
@@ -731,7 +820,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedNativeWindowHandle(const Napi:
     }
     throw E_NOTIMPL;
 
-    // return Napi::External::New(info.Env(), nativeWindowHandle);
+    // todo:  return Napi::External::New(info.Env(), nativeWindowHandle);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCachedOrientation(const Napi::CallbackInfo &info)
@@ -779,89 +868,6 @@ Napi::Value IUIAutomationElementWrapper::GetCachedProviderDescription(const Napi
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(providerDescription));
 }
 
-Napi::Object IUIAutomationElementWrapper::Init(Napi::Env env, Napi::Object exports)
-{
-    auto classDefinition = {
-        InstanceMethod<&IUIAutomationElementWrapper::FindFirst>("findFirst"),
-
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentName>("currentName"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentAcceleratorKey>("currentAcceleratorKey"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentAccessKey>("currentAccessKey"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentAriaProperties>("currentAriaProperties"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentAriaRole>("currentAriaRole"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentAutomationId>("currentAutomationId"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentBoundingRectangle>("currentBoundingRectangle"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentClassName>("currentClassName"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentControllerFor>("currentControllerFor"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentControlType>("currentControlType"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentCulture>("currentCulture"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentDescribedBy>("currentDescribedBy"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentFlowsTo>("currentFlowsTo"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentFrameworkId>("currentFrameworkId"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentHasKeyboardFocus>("currentHasKeyboardFocus"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentHelpText>("currentHelpText"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentIsContentElement>("currentIsContentElement"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentIsControlElement>("currentIsControlElement"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentIsDataValidForForm>("currentIsDataValidForForm"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentIsEnabled>("currentIsEnabled"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentIsKeyboardFocusable>("currentIsKeyboardFocusable"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentIsOffscreen>("currentIsOffscreen"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentIsPassword>("currentIsPassword"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentIsRequiredForForm>("currentIsRequiredForForm"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentItemStatus>("currentItemStatus"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentItemType>("currentItemType"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentLabeledBy>("currentLabeledBy"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentLocalizedControlType>("currentLocalizedControlType"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentNativeWindowHandle>("currentNativeWindowHandle"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentOrientation>("currentOrientation"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentProcessId>("currentProcessId"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentProviderDescription>("currentProviderDescription"),
-
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedName>("cachedName"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedAcceleratorKey>("cachedAcceleratorKey"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedAccessKey>("cachedAccessKey"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedAriaProperties>("cachedAriaProperties"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedAriaRole>("cachedAriaRole"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedAutomationId>("cachedAutomationId"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedBoundingRectangle>("cachedBoundingRectangle"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedClassName>("cachedClassName"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedControllerFor>("cachedControllerFor"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedControlType>("cachedControlType"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedCulture>("cachedCulture"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedDescribedBy>("cachedDescribedBy"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedFlowsTo>("cachedFlowsTo"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedFrameworkId>("cachedFrameworkId"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedHasKeyboardFocus>("cachedHasKeyboardFocus"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedHelpText>("cachedHelpText"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedIsContentElement>("cachedIsContentElement"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedIsControlElement>("cachedIsControlElement"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedIsDataValidForForm>("cachedIsDataValidForForm"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedIsEnabled>("cachedIsEnabled"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedIsKeyboardFocusable>("cachedIsKeyboardFocusable"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedIsOffscreen>("cachedIsOffscreen"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedIsPassword>("cachedIsPassword"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedIsRequiredForForm>("cachedIsRequiredForForm"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedItemStatus>("cachedItemStatus"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedItemType>("cachedItemType"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedLabeledBy>("cachedLabeledBy"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedLocalizedControlType>("cachedLocalizedControlType"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedNativeWindowHandle>("cachedNativeWindowHandle"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedOrientation>("cachedOrientation"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedProcessId>("cachedProcessId"),
-        InstanceAccessor<&IUIAutomationElementWrapper::GetCachedProviderDescription>("cachedProviderDescription"),
-    };
-
-    Napi::Function function = DefineClass(env, "IUIAutomationElement", classDefinition);
-
-    Napi::FunctionReference *constructor = new Napi::FunctionReference();
-
-    *constructor = Napi::Persistent(function);
-
-    env.SetInstanceData<Napi::FunctionReference>(constructor);
-
-    return exports;
-}
-
 Napi::Value IUIAutomationElementWrapper::FindFirst(const Napi::CallbackInfo &info)
 {
     auto treeScope = static_cast<TreeScope>(info[0].ToNumber().Int32Value());
@@ -871,7 +877,7 @@ Napi::Value IUIAutomationElementWrapper::FindFirst(const Napi::CallbackInfo &inf
     IUIAutomationElement *pFoundElement = NULL;
     HRESULT hr = m_pElement->FindFirst(treeScope, pConditionWrapper->m_pCondition, &pFoundElement);
 
-    auto foundElementWrapper = new IUIAutomationElementWrapper(info, pFoundElement);
+    auto foundElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pFoundElement);
 
-    return foundElementWrapper->Value();
+    return foundElementWrapper;
 }

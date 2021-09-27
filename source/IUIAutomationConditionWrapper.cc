@@ -1,24 +1,29 @@
-
 #include "Library.h"
 
-Napi::Object IUIAutomationConditionWrapper::Init(Napi::Env env, Napi::Object exports)
+Napi::FunctionReference *IUIAutomationConditionWrapper::Initialize(Napi::Env env)
 {
     Napi::Function function = DefineClass(env, "IUIAutomationCondition", {});
 
-    Napi::FunctionReference *constructor = new Napi::FunctionReference();
+    auto functionReference = new Napi::FunctionReference();
 
-    *constructor = Napi::Persistent(function);
+    *functionReference = Napi::Persistent(function);
 
-    env.SetInstanceData<Napi::FunctionReference>(constructor);
-
-    return exports;
+    return functionReference;
 }
 
-IUIAutomationConditionWrapper::IUIAutomationConditionWrapper(const Napi::CallbackInfo &info, IUIAutomationCondition *pCondition) : IUIAutomationConditionWrapper(info)
+Napi::Object IUIAutomationConditionWrapper::New(Napi::Env env, IUIAutomationCondition *pCondition)
 {
-    m_pCondition = pCondition;
+    auto automationAddon = env.GetInstanceData<AutomationAddon>();
+
+    return automationAddon->IUIAutomationConditionWrapperConstructor->New({Napi::External<IUIAutomationCondition>::New(env, pCondition)});
 }
 
 IUIAutomationConditionWrapper::IUIAutomationConditionWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUIAutomationConditionWrapper>(info)
 {
+    if (info.Length() != 1)
+    {
+        throw Napi::TypeError::New(info.Env(), "IUIAutomationCondition constructor missing parameter.");
+    }
+
+    m_pCondition = info[0].As<Napi::External<IUIAutomationCondition>>().Data();
 }

@@ -1,8 +1,6 @@
-#include "Library.h"
+#include "UIA_PropertyIdsWrapper.h"
 
-using Napi::Object;
-
-Napi::Object UIA_PropertyIdsWrapper::Init(Napi::Env env, Napi::Object exports)
+Napi::Object UIA_PropertyIdsWrapper::Export(Napi::Env env, Napi::Object exports)
 {
     exports.Set("UIA_NamePropertyId", Napi::Number::New(env, UIA_NamePropertyId));
     exports.Set("UIA_NativeWindowHandlePropertyId", Napi::Number::New(env, UIA_NativeWindowHandlePropertyId));

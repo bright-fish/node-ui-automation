@@ -2,7 +2,7 @@
 
 using Napi::Object;
 
-Napi::Object TreeScopeWrapper::Init(Napi::Env env, Napi::Object exports)
+Napi::Object TreeScopeWrapper::New(Napi::Env env)
 {
     Napi::Object treeScope = Napi::Object::New(env);
 
@@ -14,7 +14,5 @@ Napi::Object TreeScopeWrapper::Init(Napi::Env env, Napi::Object exports)
     treeScope.Set("TreeScope_Ancestors", Napi::Number::New(env, TreeScope_Ancestors));
     treeScope.Set("TreeScope_Subtree", Napi::Number::New(env, TreeScope_Subtree));
 
-    exports.Set("TreeScope", treeScope);
-
-    return exports;
+    return treeScope;
 }

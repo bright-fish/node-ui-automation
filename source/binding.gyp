@@ -12,7 +12,7 @@
         "VCCLCompilerTool": { "ExceptionHandling": 1 },
       },
       "sources": [ 
-            "binding.cc",
+            "AutomationAddon.cc",
             "UIA_EventIdsWrapper.cc",
             "UIA_PropertyIdsWrapper.cc",
             "TreeScopeWrapper.cc",

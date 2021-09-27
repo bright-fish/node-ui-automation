@@ -1,26 +1,29 @@
 #include "Library.h"
 
-using Napi::Object;
-using Napi::Value;
-
-IUnknownWrapper::IUnknownWrapper(const Napi::CallbackInfo &info, IUnknown *pIUnknown) : IUnknownWrapper(info)
+Napi::FunctionReference *IUnknownWrapper::Initialize(Napi::Env env)
 {
-    m_pIUnknown = pIUnknown;
+    Napi::Function function = DefineClass(env, "IUnknown", {});
+
+    Napi::FunctionReference *functionReference = new Napi::FunctionReference();
+
+    *functionReference = Napi::Persistent(function);
+
+    return functionReference;
+}
+
+Napi::Object IUnknownWrapper::New(Napi::Env env, IUnknown *pUnknown)
+{
+    auto automationAddon = env.GetInstanceData<AutomationAddon>();
+
+    return automationAddon->IUnknownWrapperConstructor->New({Napi::External<IUnknown>::New(env, pUnknown)});
 }
 
 IUnknownWrapper::IUnknownWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUnknownWrapper>(info)
 {
-}
+    if (info.Length() != 1)
+    {
+        throw Napi::TypeError::New(info.Env(), "IUnknownWrapper constructor is missing parameters.");
+    }
 
-Napi::Object IUnknownWrapper::Init(Napi::Env env, Napi::Object exports)
-{
-    Napi::Function function = DefineClass(env, "IUnknown", {});
-
-    Napi::FunctionReference *constructor = new Napi::FunctionReference();
-
-    *constructor = Napi::Persistent(function);
-
-    env.SetInstanceData<Napi::FunctionReference>(constructor);
-
-    return exports;
+    m_pIUnknown = info[0].As<Napi::External<IUnknown>>().Data();
 }

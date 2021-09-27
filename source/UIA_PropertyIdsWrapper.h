@@ -5,5 +5,5 @@
 class UIA_PropertyIdsWrapper
 {
 public:
-  static Napi::Object Init(Napi::Env env, Napi::Object exports);
+  static Napi::Object Export(Napi::Env env, Napi::Object exports);
 };

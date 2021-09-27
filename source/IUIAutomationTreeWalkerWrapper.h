@@ -5,14 +5,13 @@
 class IUIAutomationTreeWalkerWrapper : public Napi::ObjectWrap<IUIAutomationTreeWalkerWrapper>
 {
 public:
-  static Napi::Object Init(Napi::Env env, Napi::Object exports);
+  static Napi::FunctionReference *Initialize(Napi::Env env);
+  static Napi::Object New(Napi::Env env, IUIAutomationTreeWalker *pTreeWalker);
 
   IUIAutomationTreeWalker *m_pTreeWalker;
 
   IUIAutomationTreeWalkerWrapper(const Napi::CallbackInfo &info);
-  IUIAutomationTreeWalkerWrapper(const Napi::CallbackInfo &info, IUIAutomationTreeWalker *pTreeWalker);
-
-  void GetProperty(Napi::String property, const Napi::CallbackInfo &info);
+  ~IUIAutomationTreeWalkerWrapper();
 
   Napi::Value GetFirstChildElement(const Napi::CallbackInfo &info);
   Napi::Value GetFirstChildElementBuildCache(const Napi::CallbackInfo &info);
@@ -26,7 +25,4 @@ public:
   Napi::Value GetPreviousSiblingElementBuildCache(const Napi::CallbackInfo &info);
   Napi::Value NormalizeElement(const Napi::CallbackInfo &info);
   Napi::Value NormalizeElementBuildCache(const Napi::CallbackInfo &info);
-
-private:
-  static Napi::FunctionReference constructor;
 };

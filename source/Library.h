@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AutomationAddon.h"
 #include "IUIAutomationWrapper.h"
 #include "IUIAutomationElementWrapper.h"
 #include "UIA_PropertyIdsWrapper.h"

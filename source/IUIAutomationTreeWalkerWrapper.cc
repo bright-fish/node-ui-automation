@@ -1,21 +1,9 @@
 #include "IUIAutomationTreeWalkerWrapper.h"
 #include "IUIAutomationElementWrapper.h"
 #include "IUIAutomationCacheRequestWrapper.h"
+#include "AutomationAddon.h"
 
-using Napi::Object;
-
-Napi::FunctionReference IUIAutomationTreeWalkerWrapper::constructor;
-
-IUIAutomationTreeWalkerWrapper::IUIAutomationTreeWalkerWrapper(const Napi::CallbackInfo &info, IUIAutomationTreeWalker *pTreeWalker) : IUIAutomationTreeWalkerWrapper(info)
-{
-    m_pTreeWalker = pTreeWalker;
-}
-
-IUIAutomationTreeWalkerWrapper::IUIAutomationTreeWalkerWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUIAutomationTreeWalkerWrapper>(info)
-{
-}
-
-Napi::Object IUIAutomationTreeWalkerWrapper::Init(Napi::Env env, Napi::Object exports)
+Napi::FunctionReference *IUIAutomationTreeWalkerWrapper::Initialize(Napi::Env env)
 {
     auto classDefinition = {
         InstanceMethod<&IUIAutomationTreeWalkerWrapper::GetFirstChildElement>("getFirstChildElement"),
@@ -32,15 +20,32 @@ Napi::Object IUIAutomationTreeWalkerWrapper::Init(Napi::Env env, Napi::Object ex
         InstanceMethod<&IUIAutomationTreeWalkerWrapper::NormalizeElementBuildCache>("normalizeElementBuildCache"),
     };
 
-    Napi::Function function = DefineClass(env, "IUIAutomationTreeWalker", classDefinition);
+    auto prototype = DefineClass(env, "IUIAutomationTreeWalker", classDefinition);
 
     Napi::FunctionReference *constructor = new Napi::FunctionReference();
 
-    *constructor = Napi::Persistent(function);
+    *constructor = Napi::Persistent(prototype);
 
-    env.SetInstanceData<Napi::FunctionReference>(constructor);
+    return constructor;
+}
 
-    return exports;
+Napi::Object IUIAutomationTreeWalkerWrapper::New(Napi::Env env, IUIAutomationTreeWalker *pTreeWalker)
+{
+    auto pAutomationAddon = env.GetInstanceData<AutomationAddon>();
+
+    return pAutomationAddon->IUIAutomationTreeWalkerWrapperConstructor->New({Napi::External<IUIAutomationTreeWalker>::New(env, pTreeWalker)});
+}
+
+IUIAutomationTreeWalkerWrapper::IUIAutomationTreeWalkerWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUIAutomationTreeWalkerWrapper>(info)
+{
+    auto external = info[0].As<Napi::External<IUIAutomationTreeWalker>>();
+
+    m_pTreeWalker = external.Data();
+}
+
+IUIAutomationTreeWalkerWrapper::~IUIAutomationTreeWalkerWrapper()
+{
+    m_pTreeWalker->Release();
 }
 
 Napi::Value IUIAutomationTreeWalkerWrapper::GetFirstChildElement(const Napi::CallbackInfo &info)
@@ -55,9 +60,9 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetFirstChildElement(const Napi::Cal
         return info.Env().Null();
     }
 
-    auto firstChildElementWrapper = new IUIAutomationElementWrapper(info, pFirstChildElement);
+    auto firstChildElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pFirstChildElement);
 
-    return firstChildElementWrapper->Value();
+    return firstChildElementWrapper;
 }
 
 Napi::Value IUIAutomationTreeWalkerWrapper::GetFirstChildElementBuildCache(const Napi::CallbackInfo &info)
@@ -68,9 +73,9 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetFirstChildElementBuildCache(const
     IUIAutomationElement *pFirstChildElement = NULL;
     HRESULT hResult = m_pTreeWalker->GetFirstChildElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &pFirstChildElement);
 
-    auto firstChildElementWrapper = new IUIAutomationElementWrapper(info, pFirstChildElement);
+    auto firstChildElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pFirstChildElement);
 
-    return firstChildElementWrapper->Value();
+    return firstChildElementWrapper;
 }
 
 Napi::Value IUIAutomationTreeWalkerWrapper::GetLastChildElement(const Napi::CallbackInfo &info)
@@ -80,9 +85,9 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetLastChildElement(const Napi::Call
     IUIAutomationElement *pLastChildElement = NULL;
     HRESULT hResult = m_pTreeWalker->GetLastChildElement(pElementWrapper->m_pElement, &pLastChildElement);
 
-    auto lastChildElementWrapper = new IUIAutomationElementWrapper(info, pLastChildElement);
+    auto lastChildElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pLastChildElement);
 
-    return lastChildElementWrapper->Value();
+    return lastChildElementWrapper;
 }
 
 Napi::Value IUIAutomationTreeWalkerWrapper::GetLastChildElementBuildCache(const Napi::CallbackInfo &info)
@@ -93,9 +98,9 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetLastChildElementBuildCache(const 
     IUIAutomationElement *pLastChildElement = NULL;
     HRESULT hResult = m_pTreeWalker->GetLastChildElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &pLastChildElement);
 
-    auto lastChildElementWrapper = new IUIAutomationElementWrapper(info, pLastChildElement);
+    auto lastChildElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pLastChildElement);
 
-    return lastChildElementWrapper->Value();
+    return lastChildElementWrapper;
 }
 
 Napi::Value IUIAutomationTreeWalkerWrapper::GetNextSiblingElement(const Napi::CallbackInfo &info)
@@ -105,9 +110,9 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetNextSiblingElement(const Napi::Ca
     IUIAutomationElement *pNextSiblingElement = NULL;
     HRESULT hResult = m_pTreeWalker->GetNextSiblingElement(pElementWrapper->m_pElement, &pNextSiblingElement);
 
-    auto nextSiblingElementWrapper = new IUIAutomationElementWrapper(info, pNextSiblingElement);
+    auto nextSiblingElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pNextSiblingElement);
 
-    return nextSiblingElementWrapper->Value();
+    return nextSiblingElementWrapper;
 }
 
 Napi::Value IUIAutomationTreeWalkerWrapper::GetNextSiblingElementBuildCache(const Napi::CallbackInfo &info)
@@ -118,9 +123,9 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetNextSiblingElementBuildCache(cons
     IUIAutomationElement *pNextSiblingElement = NULL;
     HRESULT hResult = m_pTreeWalker->GetNextSiblingElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &pNextSiblingElement);
 
-    auto nextSiblingElementWrapper = new IUIAutomationElementWrapper(info, pNextSiblingElement);
+    auto nextSiblingElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pNextSiblingElement);
 
-    return nextSiblingElementWrapper->Value();
+    return nextSiblingElementWrapper;
 }
 
 Napi::Value IUIAutomationTreeWalkerWrapper::GetParentElement(const Napi::CallbackInfo &info)
@@ -130,9 +135,9 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetParentElement(const Napi::Callbac
     IUIAutomationElement *pParentElement = NULL;
     HRESULT hResult = m_pTreeWalker->GetParentElement(pElementWrapper->m_pElement, &pParentElement);
 
-    auto parentElementWrapper = new IUIAutomationElementWrapper(info, pParentElement);
+    auto parentElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pParentElement);
 
-    return parentElementWrapper->Value();
+    return parentElementWrapper;
 }
 
 Napi::Value IUIAutomationTreeWalkerWrapper::GetParentElementBuildCache(const Napi::CallbackInfo &info)
@@ -143,9 +148,9 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetParentElementBuildCache(const Nap
     IUIAutomationElement *parentElement = NULL;
     HRESULT hResult = m_pTreeWalker->GetParentElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &parentElement);
 
-    auto parentElementWrapper = new IUIAutomationElementWrapper(info, parentElement);
+    auto parentElementWrapper = IUIAutomationElementWrapper::New(info.Env(), parentElement);
 
-    return parentElementWrapper->Value();
+    return parentElementWrapper;
 }
 
 Napi::Value IUIAutomationTreeWalkerWrapper::GetPreviousSiblingElement(const Napi::CallbackInfo &info)
@@ -155,9 +160,9 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetPreviousSiblingElement(const Napi
     IUIAutomationElement *pPreviousSiblingElement = NULL;
     HRESULT hResult = m_pTreeWalker->GetPreviousSiblingElement(pElementWrapper->m_pElement, &pPreviousSiblingElement);
 
-    auto previousSiblingElementWrapper = new IUIAutomationElementWrapper(info, pPreviousSiblingElement);
+    auto previousSiblingElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pPreviousSiblingElement);
 
-    return previousSiblingElementWrapper->Value();
+    return previousSiblingElementWrapper;
 }
 
 Napi::Value IUIAutomationTreeWalkerWrapper::GetPreviousSiblingElementBuildCache(const Napi::CallbackInfo &info)
@@ -168,9 +173,9 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetPreviousSiblingElementBuildCache(
     IUIAutomationElement *previousSiblingElement = NULL;
     HRESULT hResult = m_pTreeWalker->GetPreviousSiblingElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &previousSiblingElement);
 
-    auto previousSiblingElementWrapper = new IUIAutomationElementWrapper(info, previousSiblingElement);
+    auto previousSiblingElementWrapper = IUIAutomationElementWrapper::New(info.Env(), previousSiblingElement);
 
-    return previousSiblingElementWrapper->Value();
+    return previousSiblingElementWrapper;
 }
 
 Napi::Value IUIAutomationTreeWalkerWrapper::NormalizeElement(const Napi::CallbackInfo &info)
@@ -180,9 +185,9 @@ Napi::Value IUIAutomationTreeWalkerWrapper::NormalizeElement(const Napi::Callbac
     IUIAutomationElement *pNormalizedElemment = NULL;
     HRESULT hResult = m_pTreeWalker->NormalizeElement(pElementWrapper->m_pElement, &pNormalizedElemment);
 
-    auto normalizedElementWrapper = new IUIAutomationElementWrapper(info, pNormalizedElemment);
+    auto normalizedElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pNormalizedElemment);
 
-    return normalizedElementWrapper->Value();
+    return normalizedElementWrapper;
 }
 
 Napi::Value IUIAutomationTreeWalkerWrapper::NormalizeElementBuildCache(const Napi::CallbackInfo &info)
@@ -193,7 +198,7 @@ Napi::Value IUIAutomationTreeWalkerWrapper::NormalizeElementBuildCache(const Nap
     IUIAutomationElement *pNormalizedElement = NULL;
     HRESULT hResult = m_pTreeWalker->GetPreviousSiblingElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &pNormalizedElement);
 
-    auto normalizedElementWrapper = new IUIAutomationElementWrapper(info, pNormalizedElement);
+    auto normalizedElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pNormalizedElement);
 
-    return normalizedElementWrapper->Value();
+    return normalizedElementWrapper;
 }

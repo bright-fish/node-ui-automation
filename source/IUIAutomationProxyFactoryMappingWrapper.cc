@@ -1,26 +1,32 @@
-#include "IUIAutomationProxyFactoryMappingWrapper.h"
+#include "Library.h"
 
 using Napi::Object;
 using Napi::Value;
 
-Napi::Object IUIAutomationProxyFactoryMappingWrapper::Init(Napi::Env env, Napi::Object exports)
+Napi::FunctionReference *IUIAutomationProxyFactoryMappingWrapper::Initialize(Napi::Env env)
 {
     Napi::Function function = DefineClass(env, "IUIAutomationProxyFactoryMapping", {});
 
-    Napi::FunctionReference *constructor = new Napi::FunctionReference();
+    Napi::FunctionReference *functionReference = new Napi::FunctionReference();
 
-    *constructor = Napi::Persistent(function);
+    *functionReference = Napi::Persistent(function);
 
-    env.SetInstanceData<Napi::FunctionReference>(constructor);
-
-    return exports;
+    return functionReference;
 }
 
-IUIAutomationProxyFactoryMappingWrapper::IUIAutomationProxyFactoryMappingWrapper(const Napi::CallbackInfo &info, IUIAutomationProxyFactoryMapping *pProxyFactoryMapping) : IUIAutomationProxyFactoryMappingWrapper(info)
+Napi::Object IUIAutomationProxyFactoryMappingWrapper::New(Napi::Env env, IUIAutomationProxyFactoryMapping *pProxyFactoryMapping)
 {
-    m_pProxyFactoryMapping = pProxyFactoryMapping;
+    auto automationAddon = env.GetInstanceData<AutomationAddon>();
+
+    return automationAddon->IUIAutomationProxyFactoryMappingWrapperConstructor->New({Napi::External<IUIAutomationProxyFactoryMapping>::New(env, pProxyFactoryMapping)});
 }
 
 IUIAutomationProxyFactoryMappingWrapper::IUIAutomationProxyFactoryMappingWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUIAutomationProxyFactoryMappingWrapper>(info)
 {
+    if (info.Length() != 1)
+    {
+        throw Napi::TypeError::New(info.Env(), "IUIAutomationProxyFactoryMapping constructor is missing parameters.");
+    }
+
+    m_pProxyFactoryMapping = info[0].As<Napi::External<IUIAutomationProxyFactoryMapping>>().Data();
 }

@@ -1,4 +1,4 @@
-const { IUIAutomation, IUIAutomationEventHandler, UIA_NamePropertyId } = require('../build/Debug/automation');
+const { IUIAutomation,  UIA_NamePropertyId } = require('../build/Debug/Automation');
 
 describe('IUIAutomation', () => {
     let automation = null;
@@ -68,33 +68,34 @@ describe('IUIAutomation', () => {
             expect(automation.reservedNotSupportedValue).not.toBeNull();
         });
     });
-    class EventHandler extends IUIAutomationEventHandler {
-        handleAutomationEvent(sender, eventId) {
 
-        }
-    }
+    // class EventHandler extends IUIAutomationEventHandler {
+    //     handleAutomationEvent(sender, eventId) {
 
-    class LambdaEventHandler extends IUIAutomationEventHandler {
-        constructor(handleAutomationEvent) {
-            this.handleAutomationEvent = handleAutomationEvent;
-        }
-    }
+    //     }
+    // }
 
-    describe('addAutomationEventHandler', () => {
-        test('returns', (done) => {
-            const eventHandler = new LambdaEventHandler(() => {
-                done();
-            });
+    // class LambdaEventHandler extends IUIAutomationEventHandler {
+    //     constructor(handleAutomationEvent) {
+    //         this.handleAutomationEvent = handleAutomationEvent;
+    //     }
+    // }
 
-            const propertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "Microsoft Software License Terms");
+    // describe('addAutomationEventHandler', () => {
+    //     test('returns', (done) => {
+    //         const eventHandler = new LambdaEventHandler(() => {
+    //             done();
+    //         });
 
-            const cacheRequest = automation.createCacheRequest();
+    //         const propertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "Microsoft Software License Terms");
 
-            const termsLink = winverElement.findFirst(TreeScope.TreeScope_Subtree, propertyCondition);
+    //         const cacheRequest = automation.createCacheRequest();
+
+    //         const termsLink = winverElement.findFirst(TreeScope.TreeScope_Subtree, propertyCondition);
             
-            automation.addAutomationEventHandler(UIA_Invoke_InvokedEventId, termsLink, TreeScope.TreeScope_Subtree, cacheRequest, eventHandler);
-        });
-    });
+    //         automation.addAutomationEventHandler(UIA_Invoke_InvokedEventId, termsLink, TreeScope.TreeScope_Subtree, cacheRequest, eventHandler);
+    //     });
+    // });
 
     describe('addFocusChangedEventHandler', () => {
         test.todo('returns');
