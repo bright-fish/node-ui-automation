@@ -7,6 +7,7 @@ Napi::FunctionReference *IUIAutomationWrapper::Initialize(Napi::Env env)
         InstanceMethod<&IUIAutomationWrapper::GetRootElement>("getRootElement"),
         InstanceMethod<&IUIAutomationWrapper::CreatePropertyCondition>("createPropertyCondition"),
         InstanceMethod<&IUIAutomationWrapper::CreateCacheRequest>("createCacheRequest"),
+        InstanceMethod<&IUIAutomationWrapper::AddAutomationEventHandler>("addAutomationEventHandler"),
 
         InstanceAccessor<&IUIAutomationWrapper::GetRawViewCondition>("rawViewCondition"),
         InstanceAccessor<&IUIAutomationWrapper::GetRawViewWalker>("rawViewWalker"),
@@ -200,11 +201,11 @@ Napi::Value IUIAutomationWrapper::CreateCacheRequest(const Napi::CallbackInfo &i
 {
     IUIAutomationCacheRequest *pCacheRequest = NULL;
 
-    HRESULT hr = m_pAutomation->CreateCacheRequest(&pCacheRequest);
+    HRESULT hResult = m_pAutomation->CreateCacheRequest(&pCacheRequest);
 
-    if (FAILED(hr))
+    if (FAILED(hResult))
     {
-        _com_raise_error(hr);
+        _com_raise_error(hResult);
     }
 
     auto cacheRequestWrapper = IUIAutomationCacheRequestWrapper::New(info.Env(), pCacheRequest);
@@ -212,29 +213,23 @@ Napi::Value IUIAutomationWrapper::CreateCacheRequest(const Napi::CallbackInfo &i
     return cacheRequestWrapper;
 }
 
-// Napi::Value IUIAutomationWrapper::AddAutomationEventHandler(const Napi::CallbackInfo &info)
-// {
-//     auto eventId = static_cast<EVENTID>(info[0].ToNumber().Int32Value());
-//     auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[1].ToObject());
-//     auto treeScope = static_cast<TreeScope>(info[2].ToNumber().Int32Value());
-//     auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[3].ToObject());
-    // auto pEventHandlerWrapper = Napi::ObjectWrap<IUIAutomationEventHandlerWrapper>::Unwrap(info[4].ToObject());
+void IUIAutomationWrapper::AddAutomationEventHandler(const Napi::CallbackInfo &info)
+{
+    auto eventId = static_cast<EVENTID>(info[0].ToNumber().Int32Value());
+    auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[1].ToObject());
+    auto treeScope = static_cast<TreeScope>(info[2].ToNumber().Int32Value());
+    auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[3].ToObject());
+    auto pEventHandlerWrapper = Napi::ObjectWrap<IUIAutomationEventHandlerWrapper>::Unwrap(info[4].ToObject());
 
-    // todo: For this class to be functional we will have to create a class that takes in a callback that can be executed when the event handler is triggered.
-    // the pattern could remain the same, you get the class in node, inherit from it.  Then put the functions there.
-    // Then the functions in node are called from the c++ code.
+    HRESULT hResult = m_pAutomation->AddAutomationEventHandler(eventId, pElementWrapper->m_pElement, treeScope, NULL, pEventHandlerWrapper->m_pEventHandler);
 
-    // HRESULT hr = m_pAutomation->AddAutomationEventHandler(eventId, pElementWrapper->m_pElement, treeScope, pCacheRequestWrapper->m_pCacheRequest, pEventHandlerWrapper);
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
 
-    // if (FAILED(hr))
-    // {
-    //     return info.Env().Null();
-    // }
-
-    // auto cacheRequestWrapper = new IUIAutomationCacheRequestWrapper(info, pCacheRequestWrapper->m_pCacheRequest);
-
-    // return cacheRequestWrapper->Value();
-// }
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+}
 
 VARIANT IUIAutomationWrapper::ToVariant(Napi::Value local)
 {

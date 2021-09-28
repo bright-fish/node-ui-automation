@@ -14,7 +14,7 @@ public:
   Napi::Value GetRootElement(const Napi::CallbackInfo &info);
   Napi::Value CreatePropertyCondition(const Napi::CallbackInfo &info);
   Napi::Value CreateCacheRequest(const Napi::CallbackInfo &info);
-  Napi::Value AddAutomationEventHandler(const Napi::CallbackInfo &info);
+  void AddAutomationEventHandler(const Napi::CallbackInfo &info);
 
   Napi::Value GetRawViewWalker(const Napi::CallbackInfo &info);
   Napi::Value GetRawViewCondition(const Napi::CallbackInfo &info);

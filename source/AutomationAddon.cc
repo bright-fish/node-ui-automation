@@ -2,7 +2,7 @@
 
 AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
 {
-    HRESULT hResult = CoInitialize(NULL);
+    HRESULT hResult = CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
     if (FAILED(hResult))
     {
@@ -17,13 +17,14 @@ AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
     IUIAutomationCacheRequestWrapperConstructor = IUIAutomationCacheRequestWrapper::Initialize(env);
     IUIAutomationElementArrayWrapperConstructor = IUIAutomationElementArrayWrapper::Initialize(env);
     IUIAutomationProxyFactoryMappingWrapperConstructor = IUIAutomationProxyFactoryMappingWrapper::Initialize(env);
+    IUIAutomationEventHandlerWrapperConstructor = IUIAutomationEventHandlerWrapper::Initialize(env);
 
     UIA_PropertyIdsWrapper::Export(env, exports);
     UIA_EventIdsWrapper::Export(env, exports);
 
     auto addonDefinition = {
         InstanceValue("IUIAutomation", IUIAutomationWrapperConstructor->Value()),
-        // InstanceValue("IUIAutomationEventHandler", IUIAutomationEventHandlerWrapperConstructor.Value()),
+        InstanceValue("IUIAutomationEventHandler", IUIAutomationEventHandlerWrapperConstructor->Value()),
         InstanceValue("TreeScope", TreeScopeWrapper::New(env)),
     };
 

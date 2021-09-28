@@ -45,9 +45,12 @@ HRESULT STDMETHODCALLTYPE GenericAutomationEventHandler::QueryInterface(REFIID r
 
 HRESULT STDMETHODCALLTYPE GenericAutomationEventHandler::HandleAutomationEvent(IUIAutomationElement *pSender, EVENTID eventID)
 {
-    // todo: get the callback from javascript.
-    // then call the callback.
-    // what about the case where you dont want to return S_OK?
+    m_fCallback(pSender, eventID);
 
     return S_OK;
+}
+
+void GenericAutomationEventHandler::SetCallback(std::function<void(IUIAutomationElement *, EVENTID)> fCallback)
+{
+    m_fCallback = fCallback;
 }

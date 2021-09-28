@@ -1,4 +1,4 @@
-const { IUIAutomation,  UIA_NamePropertyId } = require('../build/Debug/Automation');
+const { IUIAutomation, IUIAutomationEventHandler, UIA_NamePropertyId, UIA_Window_WindowOpenedEventId, UIA_Invoke_InvokedEventId, TreeScope } = require('../build/Debug/Automation');
 
 describe('IUIAutomation', () => {
     let automation = null;
@@ -69,33 +69,35 @@ describe('IUIAutomation', () => {
         });
     });
 
-    // class EventHandler extends IUIAutomationEventHandler {
-    //     handleAutomationEvent(sender, eventId) {
+    fdescribe('addAutomationEventHandler', () => {
+        test('returns', (done) => {
+            automation = new IUIAutomation();
+            // todo:  the constructor does not function according to plan.  
+            // look at the constrcutor and see why its failing.  
+            // its due to the clsid not being present for the library.  
+            const eventHandler = new IUIAutomationEventHandler((sender, eventId) => {
+                expect(sender).not.toBeNull();
 
-    //     }
-    // }
+                expect(eventId).not.toBeNull();
 
-    // class LambdaEventHandler extends IUIAutomationEventHandler {
-    //     constructor(handleAutomationEvent) {
-    //         this.handleAutomationEvent = handleAutomationEvent;
-    //     }
-    // }
+                done();
+            });
 
-    // describe('addAutomationEventHandler', () => {
-    //     test('returns', (done) => {
-    //         const eventHandler = new LambdaEventHandler(() => {
-    //             done();
-    //         });
+            const desktopElement = automation.getRootElement();
 
-    //         const propertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "Microsoft Software License Terms");
+            const winverNamePropertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
 
-    //         const cacheRequest = automation.createCacheRequest();
+            const winverElement = desktopElement.findFirst(TreeScope.TreeScope_Subtree, winverNamePropertyCondition);
 
-    //         const termsLink = winverElement.findFirst(TreeScope.TreeScope_Subtree, propertyCondition);
-            
-    //         automation.addAutomationEventHandler(UIA_Invoke_InvokedEventId, termsLink, TreeScope.TreeScope_Subtree, cacheRequest, eventHandler);
-    //     });
-    // });
+            const propertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "Microsoft Software License Terms");
+
+            const cacheRequest = automation.createCacheRequest();
+
+            const termsLink = winverElement.findFirst(TreeScope.TreeScope_Subtree, propertyCondition);
+
+            automation.addAutomationEventHandler(UIA_Window_WindowOpenedEventId, desktopElement, TreeScope.TreeScope_Subtree, cacheRequest, eventHandler);
+        }, 300000);
+    });
 
     describe('addFocusChangedEventHandler', () => {
         test.todo('returns');
