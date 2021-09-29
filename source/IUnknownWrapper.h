@@ -2,12 +2,14 @@
 
 #include "Shared.h"
 
-class IUnknownWrapper
+class IUnknownWrapper : public Napi::ObjectWrap<IUnknownWrapper>
 {
 public:
-  static NAN_MODULE_INIT(Init);
-  static v8::Local<v8::Object> NewInstance(v8::Isolate *pIsolate, IUnknown *pIUnknown);
+  static Napi::FunctionReference *Initialize(Napi::Env env);
+  static Napi::Object New(Napi::Env env, IUnknown *pUnknown);
 
-private:
-  static Nan::Persistent<v8::Function> constructor;
+  IUnknown *m_pIUnknown;
+
+  IUnknownWrapper(const Napi::CallbackInfo &info);
+  // ~IUnknownWrapper();
 };

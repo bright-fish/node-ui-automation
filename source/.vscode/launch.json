@@ -17,6 +17,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
+            "outputCapture": "std",
             "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
         },
         {

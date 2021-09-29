@@ -2,12 +2,14 @@
 
 #include "Shared.h"
 
-class IUIAutomationConditionWrapper 
+class IUIAutomationConditionWrapper : public Napi::ObjectWrap<IUIAutomationConditionWrapper>
 {
 public:
-  static NAN_MODULE_INIT(Init);
-  static v8::Local<v8::Object> NewInstance(v8::Isolate *isolate, IUIAutomationCondition *pCondition);
+  static Napi::FunctionReference *Initialize(Napi::Env env);
+  static Napi::Object New(Napi::Env env, IUIAutomationCondition *pCondition);
 
-private:
-  static Nan::Persistent<v8::Function> constructor;
+  IUIAutomationCondition *m_pCondition;
+
+  IUIAutomationConditionWrapper(const Napi::CallbackInfo &info);
+  // ~IUIAutomationConditionWrapper();
 };

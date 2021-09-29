@@ -2,14 +2,16 @@
 
 #include "Shared.h"
 
-class IUIAutomationElementArrayWrapper
+class IUIAutomationElementArrayWrapper : public Napi::ObjectWrap<IUIAutomationElementArrayWrapper>
 {
 public:
-  static NAN_MODULE_INIT(Init);
-  static v8::Local<v8::Value> NewInstance(v8::Isolate *isolate, IUIAutomationElementArray *elementArray);
-  static NAN_METHOD(GetElement);
+  static Napi::FunctionReference *Initialize(Napi::Env env);
+  static Napi::Object New(Napi::Env env, IUIAutomationElementArray * pElementArray);
 
-private:
-  static Nan::Persistent<v8::Function> constructor;
-  static IUIAutomationElementArray* m_pElementArray;
+  IUIAutomationElementArray *m_pElementArray;
+
+  IUIAutomationElementArrayWrapper(const Napi::CallbackInfo &info);
+  // ~IUIAutomationElementArrayWrapper();
+
+  Napi::Value GetElement(const Napi::CallbackInfo &info);
 };

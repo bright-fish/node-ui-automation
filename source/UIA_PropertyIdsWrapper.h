@@ -2,8 +2,8 @@
 
 #include "Shared.h"
 
-class UIA_PropertyIdsWrapper : public Nan::ObjectWrap
+class UIA_PropertyIdsWrapper
 {
 public:
-  static NAN_MODULE_INIT(Init);
+  static Napi::Object Export(Napi::Env env, Napi::Object exports);
 };

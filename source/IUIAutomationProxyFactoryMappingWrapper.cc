@@ -1,29 +1,32 @@
-#include "IUIAutomationProxyFactoryMappingWrapper.h"
+#include "Library.h"
 
-using v8::Local;
-using v8::Object;
-using v8::Value;
+using Napi::Object;
+using Napi::Value;
 
-Nan::Persistent<v8::Function> IUIAutomationProxyFactoryMappingWrapper::constructor;
-
-NAN_MODULE_INIT(IUIAutomationProxyFactoryMappingWrapper::Init)
+Napi::FunctionReference *IUIAutomationProxyFactoryMappingWrapper::Initialize(Napi::Env env)
 {
-    v8::Local<v8::FunctionTemplate> functionTemplate = Nan::New<v8::FunctionTemplate>();
-    functionTemplate->SetClassName(Nan::New("IUIAutomationProxyFactoryMapping").ToLocalChecked());
-    functionTemplate->InstanceTemplate()->SetInternalFieldCount(1);
+    Napi::Function function = DefineClass(env, "IUIAutomationProxyFactoryMapping", {});
 
-    constructor.Reset(Nan::GetFunction(functionTemplate).ToLocalChecked());
+    Napi::FunctionReference *functionReference = new Napi::FunctionReference();
+
+    *functionReference = Napi::Persistent(function);
+
+    return functionReference;
 }
 
-Local<Object> IUIAutomationProxyFactoryMappingWrapper::NewInstance(v8::Isolate *isolate, IUIAutomationProxyFactoryMapping *pProxyFactoryMapping)
+Napi::Object IUIAutomationProxyFactoryMappingWrapper::New(Napi::Env env, IUIAutomationProxyFactoryMapping *pProxyFactoryMapping)
 {
-    auto context = isolate->GetCurrentContext();
+    auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    auto constructorFunction = Local<v8::Function>::New(isolate, constructor);
+    return automationAddon->IUIAutomationProxyFactoryMappingWrapperConstructor->New({Napi::External<IUIAutomationProxyFactoryMapping>::New(env, pProxyFactoryMapping)});
+}
 
-    auto instance = constructorFunction->NewInstance(context).ToLocalChecked();
+IUIAutomationProxyFactoryMappingWrapper::IUIAutomationProxyFactoryMappingWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUIAutomationProxyFactoryMappingWrapper>(info)
+{
+    if (info.Length() != 1)
+    {
+        throw Napi::TypeError::New(info.Env(), "IUIAutomationProxyFactoryMapping constructor is missing parameters.");
+    }
 
-    instance->SetInternalField(0, v8::External::New(isolate, pProxyFactoryMapping));
-
-    return instance;
+    m_pProxyFactoryMapping = info[0].As<Napi::External<IUIAutomationProxyFactoryMapping>>().Data();
 }

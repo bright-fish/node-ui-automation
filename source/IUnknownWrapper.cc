@@ -1,31 +1,29 @@
 #include "Library.h"
 
-using v8::Local;
-using v8::Object;
-using v8::Value;
-
-Nan::Persistent<v8::Function> IUnknownWrapper::constructor;
-
-NAN_MODULE_INIT(IUnknownWrapper::Init)
+Napi::FunctionReference *IUnknownWrapper::Initialize(Napi::Env env)
 {
-    v8::Local<v8::FunctionTemplate> functionTemplate = Nan::New<v8::FunctionTemplate>();
-    functionTemplate->SetClassName(Nan::New("IUnkown").ToLocalChecked());
+    Napi::Function function = DefineClass(env, "IUnknown", {});
 
-    auto instanceTemplate = functionTemplate->InstanceTemplate();
-    instanceTemplate->SetInternalFieldCount(1);
+    Napi::FunctionReference *functionReference = new Napi::FunctionReference();
 
-    constructor.Reset(Nan::GetFunction(functionTemplate).ToLocalChecked());
+    *functionReference = Napi::Persistent(function);
+
+    return functionReference;
 }
 
-Local<Object> IUnknownWrapper::NewInstance(v8::Isolate *pIsolate, IUnknown *pIUnknown)
+Napi::Object IUnknownWrapper::New(Napi::Env env, IUnknown *pUnknown)
 {
-    auto context = pIsolate->GetCurrentContext();
+    auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    auto constructorFunction = Local<v8::Function>::New(pIsolate, constructor);
+    return automationAddon->IUnknownWrapperConstructor->New({Napi::External<IUnknown>::New(env, pUnknown)});
+}
 
-    auto instance = constructorFunction->NewInstance(context).ToLocalChecked();
+IUnknownWrapper::IUnknownWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUnknownWrapper>(info)
+{
+    if (info.Length() != 1)
+    {
+        throw Napi::TypeError::New(info.Env(), "IUnknownWrapper constructor is missing parameters.");
+    }
 
-    instance->SetInternalField(0, v8::External::New(pIsolate, pIUnknown));
-
-    return instance;
+    m_pIUnknown = info[0].As<Napi::External<IUnknown>>().Data();
 }

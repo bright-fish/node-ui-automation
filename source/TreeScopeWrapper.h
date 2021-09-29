@@ -2,8 +2,8 @@
 
 #include "Shared.h"
 
-class TreeScopeWrapper : public Nan::ObjectWrap
+class TreeScopeWrapper
 {
 public:
-  static NAN_MODULE_INIT(Init);
+  static Napi::Object New(Napi::Env env);
 };

@@ -1,36 +1,29 @@
-#include "IUIAutomationCacheRequestWrapper.h"
+#include "Library.h"
 
-Nan::Persistent<v8::Function> IUIAutomationCacheRequestWrapper::constructor;
-
-NAN_MODULE_INIT(IUIAutomationCacheRequestWrapper::Init)
+Napi::FunctionReference *IUIAutomationCacheRequestWrapper::Initialize(Napi::Env env)
 {
-    auto isolate = target->GetIsolate();
+    Napi::Function function = DefineClass(env, "IUIAutomationCacheRequest", {});
 
-    v8::Local<v8::FunctionTemplate> functionTemplate = Nan::New<v8::FunctionTemplate>();
+    Napi::FunctionReference *functionReference = new Napi::FunctionReference();
 
-    functionTemplate->SetClassName(Nan::New("IUIAutomationCacheRequest").ToLocalChecked());
+    *functionReference = Napi::Persistent(function);
 
-    auto instanceTemplate = functionTemplate->InstanceTemplate();
-
-    instanceTemplate->SetInternalFieldCount(1);
-
-    constructor.Reset(Nan::GetFunction(functionTemplate).ToLocalChecked());
+    return functionReference;
 }
 
-v8::Local<v8::Value> IUIAutomationCacheRequestWrapper::NewInstance(v8::Isolate *isolate, IUIAutomationCacheRequest *pCacheRequest)
+Napi::Object IUIAutomationCacheRequestWrapper::New(Napi::Env env, IUIAutomationCacheRequest *pCacheRequest)
 {
-    if (!pCacheRequest)
+    auto automationAddon = env.GetInstanceData<AutomationAddon>();
+
+    return automationAddon->IUIAutomationCacheRequestWrapperConstructor->New({Napi::External<IUIAutomationCacheRequest>::New(env, pCacheRequest)});
+}
+
+IUIAutomationCacheRequestWrapper::IUIAutomationCacheRequestWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>(info)
+{
+    if (info.Length() != 1)
     {
-        return v8::Null(isolate);
+        throw Napi::TypeError::New(info.Env(), "IUIAutomationCacheRequest constructor missing parameter.");
     }
 
-    auto context = isolate->GetCurrentContext();
-
-    auto constructorFunction = v8::Local<v8::Function>::New(isolate, constructor);
-
-    auto instance = constructorFunction->NewInstance(context).ToLocalChecked();
-
-    instance->SetInternalField(0, v8::External::New(isolate, pCacheRequest));
-
-    return instance;
+    m_pCacheRequest = info[0].As<Napi::External<IUIAutomationCacheRequest>>().Data();
 }

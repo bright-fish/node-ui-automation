@@ -1,25 +1,47 @@
 #include "Library.h"
-
-using v8::Local;
-using v8::Object;
-
-Nan::Persistent<v8::Function> IUIAutomationWrapper::constructor;
-
-IUIAutomationWrapper::IUIAutomationWrapper()
+Napi::FunctionReference *IUIAutomationWrapper::Initialize(Napi::Env env)
 {
-    HRESULT hr = CoInitialize(NULL);
+    auto classDefinition = {
+        InstanceMethod<&IUIAutomationWrapper::GetRootElement>("getRootElement"),
+        InstanceMethod<&IUIAutomationWrapper::CreatePropertyCondition>("createPropertyCondition"),
+        InstanceMethod<&IUIAutomationWrapper::CreateCacheRequest>("createCacheRequest"),
 
-    if (FAILED(hr))
+        InstanceAccessor<&IUIAutomationWrapper::GetRawViewCondition>("rawViewCondition"),
+        InstanceAccessor<&IUIAutomationWrapper::GetRawViewWalker>("rawViewWalker"),
+        InstanceAccessor<&IUIAutomationWrapper::GetContentViewCondition>("contentViewCondition"),
+        InstanceAccessor<&IUIAutomationWrapper::GetContentViewWalker>("contentViewWalker"),
+        InstanceAccessor<&IUIAutomationWrapper::GetControlViewCondition>("controlViewCondition"),
+        InstanceAccessor<&IUIAutomationWrapper::GetControlViewWalker>("controlViewWalker"),
+        InstanceAccessor<&IUIAutomationWrapper::GetProxyFactoryMapping>("proxyFactoryMapping"),
+        InstanceAccessor<&IUIAutomationWrapper::GetReservedMixedAttributeValue>("reservedMixedAttributeValue"),
+        InstanceAccessor<&IUIAutomationWrapper::GetReservedNotSupportedValue>("reservedNotSupportedValue"),
+    };
+
+    auto prototype = DefineClass(env, "IUIAutomation", classDefinition);
+
+    Napi::FunctionReference *constructor = new Napi::FunctionReference();
+
+    *constructor = Napi::Persistent(prototype);
+
+    return constructor;
+}
+
+IUIAutomationWrapper::IUIAutomationWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUIAutomationWrapper>(info)
+{
+    try
     {
+        // todo: Need to get parameter of CUIAutomation. Use the uuid if its present from uuids of the CUIAutomation classes/structs.
+
+        auto hResult = CoCreateInstance(__uuidof(CUIAutomation8), NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&m_pAutomation));
+
+        if (FAILED(hResult))
+        {
+            throw _com_error(hResult);
+        }
     }
-
-    hr = CoCreateInstance(__uuidof(CUIAutomation8), NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&m_pAutomation));
-
-    if (FAILED(hr))
+    catch (_com_error &error)
     {
-        // todo: Make it an error.
-        wprintf(L"Failed to create a CUIAutomation8, HR: 0x%08x\n", hr);
-        return;
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
     }
 }
 
@@ -28,290 +50,208 @@ IUIAutomationWrapper::~IUIAutomationWrapper()
     CoUninitialize();
 }
 
-void IUIAutomationWrapper::GetProperty(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info)
+Napi::Value IUIAutomationWrapper::GetRawViewWalker(const Napi::CallbackInfo &info)
 {
-    auto isolate = info.GetIsolate();
+    IUIAutomationTreeWalker *pTreeWalker;
 
-    IUIAutomationWrapper *pAutomationWrapper = Nan::ObjectWrap::Unwrap<IUIAutomationWrapper>(info.This());
+    auto hResult = m_pAutomation->get_RawViewWalker(&pTreeWalker);
 
-    Nan::Utf8String utf8PropertyName(property);
-    std::string sPropertyName(*utf8PropertyName);
-
-    if (sPropertyName == "rawViewWalker")
+    if (FAILED(hResult))
     {
-        IUIAutomationTreeWalker *pTreeWalker;
+        auto error = _com_error(hResult);
 
-        auto hResult = pAutomationWrapper->m_pAutomation->get_RawViewWalker(&pTreeWalker);
-
-        auto pTreeWalkerWrapper = IUIAutomationTreeWalkerWrapper::NewInstance(isolate, pTreeWalker);
-
-        info.GetReturnValue()
-            .Set(pTreeWalkerWrapper);
-
-        return;
+        // todo: Figure out a good way to error handle.
     }
-    else if (sPropertyName == "rawViewCondition")
-    {
-        IUIAutomationCondition *pRawViewCondition;
 
-        auto hResult = pAutomationWrapper->m_pAutomation->get_RawViewCondition(&pRawViewCondition);
-
-        auto pRawViewConditionWrapper = IUIAutomationConditionWrapper::NewInstance(isolate, pRawViewCondition);
-
-        info.GetReturnValue()
-            .Set(pRawViewConditionWrapper);
-
-        return;
-    }
-    else if (sPropertyName == "contentViewWalker")
-    {
-        IUIAutomationTreeWalker *pTreeWalker;
-
-        auto hResult = pAutomationWrapper->m_pAutomation->get_ContentViewWalker(&pTreeWalker);
-
-        auto pTreeWalkerWrapper = IUIAutomationTreeWalkerWrapper::NewInstance(isolate, pTreeWalker);
-
-        info.GetReturnValue()
-            .Set(pTreeWalkerWrapper);
-
-        return;
-    }
-    else if (sPropertyName == "contentViewCondition")
-    {
-        IUIAutomationCondition *pContentViewCondition;
-
-        auto hResult = pAutomationWrapper->m_pAutomation->get_ContentViewCondition(&pContentViewCondition);
-
-        auto pContentViewConditionWrapper = IUIAutomationConditionWrapper::NewInstance(isolate, pContentViewCondition);
-
-        info.GetReturnValue()
-            .Set(pContentViewConditionWrapper);
-
-        return;
-    }
-    else if (sPropertyName == "controlViewWalker")
-    {
-        IUIAutomationTreeWalker *pTreeWalker;
-
-        auto hResult = pAutomationWrapper->m_pAutomation->get_ControlViewWalker(&pTreeWalker);
-
-        auto pTreeWalkerWrapper = IUIAutomationTreeWalkerWrapper::NewInstance(isolate, pTreeWalker);
-
-        info.GetReturnValue()
-            .Set(pTreeWalkerWrapper);
-
-        return;
-    }
-    else if (sPropertyName == "controlViewCondition")
-    {
-        IUIAutomationCondition *pControlViewCondition;
-
-        auto hResult = pAutomationWrapper->m_pAutomation->get_ControlViewCondition(&pControlViewCondition);
-
-        auto pControlViewConditionWrapper = IUIAutomationConditionWrapper::NewInstance(isolate, pControlViewCondition);
-
-        info.GetReturnValue()
-            .Set(pControlViewConditionWrapper);
-
-        return;
-    }
-    else if (sPropertyName == "proxyFactoryMapping")
-    {
-        IUIAutomationProxyFactoryMapping *pProxyFactoryMapping;
-
-        auto hResult = pAutomationWrapper->m_pAutomation->get_ProxyFactoryMapping(&pProxyFactoryMapping);
-
-        auto pProxyFactoryMappingWrapper = IUIAutomationProxyFactoryMappingWrapper::NewInstance(isolate, pProxyFactoryMapping);
-
-        info.GetReturnValue()
-            .Set(pProxyFactoryMappingWrapper);
-
-        return;
-    }
-    else if (sPropertyName == "reservedMixedAttributeValue")
-    {
-        IUnknown *pReservedMixedAttributeValue;
-
-        auto hResult = pAutomationWrapper->m_pAutomation->get_ReservedMixedAttributeValue(&pReservedMixedAttributeValue);
-
-        auto pReservedMixedAttributeValueWrapper = IUnknownWrapper::NewInstance(isolate, pReservedMixedAttributeValue);
-
-        info.GetReturnValue()
-            .Set(pReservedMixedAttributeValueWrapper);
-
-        return;
-    }
-    else if (sPropertyName == "reservedNotSupportedValue")
-    {
-        IUnknown *pReservedNotSupportedValue;
-
-        auto hResult = pAutomationWrapper->m_pAutomation->get_ReservedNotSupportedValue(&pReservedNotSupportedValue);
-
-        auto pReservedNotSupportedValueWrapper = IUnknownWrapper::NewInstance(isolate, pReservedNotSupportedValue);
-
-        info.GetReturnValue()
-            .Set(pReservedNotSupportedValueWrapper);
-
-        return;
-    }
-    else
-    {
-        throw std::exception("Not Implemented. ");
-    }
+    return IUIAutomationTreeWalkerWrapper::New(info.Env(), pTreeWalker);
 }
 
-NAN_MODULE_INIT(IUIAutomationWrapper::Init)
+Napi::Value IUIAutomationWrapper::GetRawViewCondition(const Napi::CallbackInfo &info)
 {
-    auto isolate = target->GetIsolate();
+    IUIAutomationCondition *pRawViewCondition;
 
-    v8::Local<v8::FunctionTemplate> functionTemplate = Nan::New<v8::FunctionTemplate>(New);
-    functionTemplate->SetClassName(Nan::New("IUIAutomation").ToLocalChecked());
+    auto hResult = m_pAutomation->get_RawViewCondition(&pRawViewCondition);
 
-    auto instanceTemplate = functionTemplate->InstanceTemplate();
-
-    instanceTemplate->SetInternalFieldCount(1);
-
-    Nan::SetPrototypeMethod(functionTemplate, "getRootElement", GetRootElement);
-    Nan::SetPrototypeMethod(functionTemplate, "createPropertyCondition", CreatePropertyCondition);
-    Nan::SetPrototypeMethod(functionTemplate, "createCacheRequest", CreateCacheRequest);
-
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "rawViewCondition").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "rawViewWalker").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "contentViewCondition").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "contentViewWalker").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "controlViewCondition").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "controlViewWalker").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "proxyFactoryMapping").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "reservedMixedAttributeValue").ToLocalChecked(), GetProperty);
-    instanceTemplate->SetAccessor(v8::String::NewFromUtf8(isolate, "reservedNotSupportedValue").ToLocalChecked(), GetProperty);
-
-    constructor.Reset(Nan::GetFunction(functionTemplate).ToLocalChecked());
-
-    Nan::Set(target, Nan::New("IUIAutomation").ToLocalChecked(), Nan::GetFunction(functionTemplate).ToLocalChecked());
+    return IUIAutomationConditionWrapper::New(info.Env(), pRawViewCondition);
 }
 
-NAN_METHOD(IUIAutomationWrapper::New)
+Napi::Value IUIAutomationWrapper::GetContentViewWalker(const Napi::CallbackInfo &info)
 {
-    if (info.IsConstructCall())
-    {
-        IUIAutomationWrapper *automationWrapper = new IUIAutomationWrapper();
+    IUIAutomationTreeWalker *pTreeWalker;
 
-        IUIAutomationTreeWalker *treeWalker;
-        automationWrapper->m_pAutomation->get_ContentViewWalker(&treeWalker);
+    auto hResult = m_pAutomation->get_ContentViewWalker(&pTreeWalker);
 
-        automationWrapper->Wrap(info.This());
-        info.GetReturnValue().Set(info.This());
-    }
-    else
-    {
-        const int argc = 1;
-        v8::Local<v8::Value> argv[argc] = {};
-        v8::Local<v8::Function> cons = Nan::New(constructor);
-        info.GetReturnValue().Set(Nan::NewInstance(cons, argc, argv).ToLocalChecked());
-    }
+    return IUIAutomationTreeWalkerWrapper::New(info.Env(), pTreeWalker);
 }
 
-NAN_METHOD(IUIAutomationWrapper::GetRootElement)
+Napi::Value IUIAutomationWrapper::GetContentViewCondition(const Napi::CallbackInfo &info)
 {
-    auto isolate = info.GetIsolate();
+    IUIAutomationCondition *pContentViewCondition;
 
-    IUIAutomationWrapper *pAutomationWrapper = Nan::ObjectWrap::Unwrap<IUIAutomationWrapper>(info.This());
+    auto hResult = m_pAutomation->get_ContentViewCondition(&pContentViewCondition);
 
+    return IUIAutomationConditionWrapper::New(info.Env(), pContentViewCondition);
+}
+
+Napi::Value IUIAutomationWrapper::GetControlViewWalker(const Napi::CallbackInfo &info)
+{
+    IUIAutomationTreeWalker *pTreeWalker;
+
+    auto hResult = m_pAutomation->get_ControlViewWalker(&pTreeWalker);
+
+    return IUIAutomationTreeWalkerWrapper::New(info.Env(), pTreeWalker);
+}
+
+Napi::Value IUIAutomationWrapper::GetControlViewCondition(const Napi::CallbackInfo &info)
+{
+    IUIAutomationCondition *pControlViewCondition;
+
+    auto hResult = m_pAutomation->get_ControlViewCondition(&pControlViewCondition);
+
+    auto pControlViewConditionWrapper = IUIAutomationConditionWrapper::New(info.Env(), pControlViewCondition);
+
+    return pControlViewConditionWrapper;
+}
+
+Napi::Value IUIAutomationWrapper::GetProxyFactoryMapping(const Napi::CallbackInfo &info)
+{
+    IUIAutomationProxyFactoryMapping *pProxyFactoryMapping;
+
+    auto hResult = m_pAutomation->get_ProxyFactoryMapping(&pProxyFactoryMapping);
+
+    auto pProxyFactoryMappingWrapper = IUIAutomationProxyFactoryMappingWrapper::New(info.Env(), pProxyFactoryMapping);
+
+    return pProxyFactoryMappingWrapper;
+}
+
+Napi::Value IUIAutomationWrapper::GetReservedMixedAttributeValue(const Napi::CallbackInfo &info)
+{
+    IUnknown *pReservedMixedAttributeValue;
+
+    auto hResult = m_pAutomation->get_ReservedMixedAttributeValue(&pReservedMixedAttributeValue);
+
+    auto pReservedMixedAttributeValueWrapper = IUnknownWrapper::New(info.Env(), pReservedMixedAttributeValue);
+
+    return pReservedMixedAttributeValueWrapper;
+}
+
+Napi::Value IUIAutomationWrapper::GetReservedNotSupportedValue(const Napi::CallbackInfo &info)
+{
+    IUnknown *pReservedNotSupportedValue;
+
+    auto hResult = m_pAutomation->get_ReservedNotSupportedValue(&pReservedNotSupportedValue);
+
+    auto pReservedNotSupportedValueWrapper = IUnknownWrapper::New(info.Env(), pReservedNotSupportedValue);
+
+    return pReservedNotSupportedValueWrapper;
+}
+
+Napi::Value IUIAutomationWrapper::GetRootElement(const Napi::CallbackInfo &info)
+{
     IUIAutomationElement *pRootElement = NULL;
-    HRESULT hr = pAutomationWrapper->m_pAutomation->GetRootElement(&pRootElement);
+    HRESULT hResult = m_pAutomation->GetRootElement(&pRootElement);
 
-    if (FAILED(hr))
+    if (FAILED(hResult))
     {
+        return info.Env().Null();
     }
 
-    auto elementWrapper = IUIAutomationElementWrapper::NewInstance(isolate, pRootElement);
+    auto pElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pRootElement);
 
-    info.GetReturnValue().Set(elementWrapper);
+    return pElementWrapper;
 }
 
-NAN_METHOD(IUIAutomationWrapper::CreatePropertyCondition)
+Napi::Value IUIAutomationWrapper::CreatePropertyCondition(const Napi::CallbackInfo &info)
 {
-    auto isolate = info.GetIsolate();
-
-    auto propertyIdIndex = info[0].As<v8::Int32>()->Value();
-    auto propertyId = static_cast<PROPERTYID>(propertyIdIndex);
-
-    IUIAutomationWrapper *pAutomationWrapper = Nan::ObjectWrap::Unwrap<IUIAutomationWrapper>(info.This());
-
-    auto variant = ToVariant(isolate, info[1]);
-
-    IUIAutomationCondition *pCondition = NULL;
-
-    HRESULT hr = pAutomationWrapper->m_pAutomation->CreatePropertyCondition(propertyId, variant, &pCondition);
-
-    if (FAILED(hr))
+    try
     {
+        auto propertyIdIndex = info[0].ToNumber().Int32Value();
+        auto propertyId = static_cast<PROPERTYID>(propertyIdIndex);
+
+        auto variant = ToVariant(info[1]);
+
+        IUIAutomationCondition *pCondition = NULL;
+
+        HRESULT hResult = m_pAutomation->CreatePropertyCondition(propertyId, variant, &pCondition);
+
+        if (FAILED(hResult))
+        {
+            _com_raise_error(hResult);
+        }
+
+        auto pConditionWrapper = IUIAutomationConditionWrapper::New(info.Env(), pCondition);
+
+        return pConditionWrapper;
     }
+    catch (_com_error &error)
+    {
+        auto size = wcslen((wchar_t *)error.ErrorMessage());
 
-    auto condition = IUIAutomationConditionWrapper::NewInstance(isolate, pCondition);
+        char *cpErrorMessage = NULL;
+        wcstombs(cpErrorMessage, (wchar_t *)error.ErrorMessage(), size);
 
-    info.GetReturnValue().Set(condition);
+        throw Napi::Error::New(info.Env(), cpErrorMessage);
+    }
 }
 
-NAN_METHOD(IUIAutomationWrapper::CreateCacheRequest)
+Napi::Value IUIAutomationWrapper::CreateCacheRequest(const Napi::CallbackInfo &info)
 {
-    auto isolate = info.GetIsolate();
-
-    IUIAutomationWrapper *pAutomationWrapper = Nan::ObjectWrap::Unwrap<IUIAutomationWrapper>(info.This());
-
     IUIAutomationCacheRequest *pCacheRequest = NULL;
 
-    HRESULT hr = pAutomationWrapper->m_pAutomation->CreateCacheRequest(&pCacheRequest);
+    HRESULT hr = m_pAutomation->CreateCacheRequest(&pCacheRequest);
 
     if (FAILED(hr))
     {
+        _com_raise_error(hr);
     }
 
-    auto cacheRequestWrapper = IUIAutomationCacheRequestWrapper::NewInstance(isolate, pCacheRequest);
+    auto cacheRequestWrapper = IUIAutomationCacheRequestWrapper::New(info.Env(), pCacheRequest);
 
-    info.GetReturnValue().Set(cacheRequestWrapper);
+    return cacheRequestWrapper;
 }
 
-// NAN_METHOD(IUIAutomationWrapper::AddAutomationEventHandler)
+// Napi::Value IUIAutomationWrapper::AddAutomationEventHandler(const Napi::CallbackInfo &info)
 // {
-//     auto isolate = info.GetIsolate();
+//     auto eventId = static_cast<EVENTID>(info[0].ToNumber().Int32Value());
+//     auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[1].ToObject());
+//     auto treeScope = static_cast<TreeScope>(info[2].ToNumber().Int32Value());
+//     auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[3].ToObject());
+    // auto pEventHandlerWrapper = Napi::ObjectWrap<IUIAutomationEventHandlerWrapper>::Unwrap(info[4].ToObject());
 
-//     IUIAutomationWrapper *pAutomationWrapper = Nan::ObjectWrap::Unwrap<IUIAutomationWrapper>(info.This());
+    // todo: For this class to be functional we will have to create a class that takes in a callback that can be executed when the event handler is triggered.
+    // the pattern could remain the same, you get the class in node, inherit from it.  Then put the functions there.
+    // Then the functions in node are called from the c++ code.
 
-//     IUIAutomationCacheRequest *pCacheRequest = NULL;
+    // HRESULT hr = m_pAutomation->AddAutomationEventHandler(eventId, pElementWrapper->m_pElement, treeScope, pCacheRequestWrapper->m_pCacheRequest, pEventHandlerWrapper);
 
-//     HRESULT hr = pAutomationWrapper->m_pAutomation->AddAutomationEventHandler(&pCacheRequest);
+    // if (FAILED(hr))
+    // {
+    //     return info.Env().Null();
+    // }
 
-//     if (FAILED(hr))
-//     {
-//     }
+    // auto cacheRequestWrapper = new IUIAutomationCacheRequestWrapper(info, pCacheRequestWrapper->m_pCacheRequest);
 
-//     auto cacheRequestWrapper = IUIAutomationCacheRequestWrapper::NewInstance(isolate, pCacheRequest);
-
-//     info.GetReturnValue().Set(cacheRequestWrapper);
+    // return cacheRequestWrapper->Value();
 // }
 
-VARIANT IUIAutomationWrapper::ToVariant(v8::Isolate *isolate, v8::Local<v8::Value> local)
+VARIANT IUIAutomationWrapper::ToVariant(Napi::Value local)
 {
-    auto context = isolate->GetCurrentContext();
-
     VARIANT variant;
 
-    if (local->IsInt32())
+    if (local.IsNumber())
     {
-        variant.intVal = local->Int32Value(context).ToChecked();
+        variant.intVal = local.ToNumber().Int32Value();
         variant.vt = VT_INT;
     }
-    else if (local->IsString())
+    else if (local.IsString())
     {
-        auto value = *v8::String::Utf8Value(isolate, local);
-
-        variant.bstrVal = _com_util::ConvertStringToBSTR(value);
+        auto value = local.ToString();
+        variant.bstrVal = _com_util::ConvertStringToBSTR(value.Utf8Value().c_str());
         variant.vt = VT_BSTR;
     }
-    else if (local->IsBoolean())
+    else if (local.IsBoolean())
     {
-        variant.boolVal = local->ToBoolean(isolate)->Value();
+        variant.boolVal = local.ToBoolean();
         variant.vt = VT_BOOL;
     }
 

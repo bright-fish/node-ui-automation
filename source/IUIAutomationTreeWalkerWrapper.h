@@ -2,27 +2,27 @@
 
 #include "Shared.h"
 
-class IUIAutomationTreeWalkerWrapper : public Nan::ObjectWrap
+class IUIAutomationTreeWalkerWrapper : public Napi::ObjectWrap<IUIAutomationTreeWalkerWrapper>
 {
 public:
-  static NAN_MODULE_INIT(Init);
-  static v8::Local<v8::Value> NewInstance(v8::Isolate *isolate, IUIAutomationTreeWalker *pTreeWalker);
+  static Napi::FunctionReference *Initialize(Napi::Env env);
+  static Napi::Object New(Napi::Env env, IUIAutomationTreeWalker *pTreeWalker);
 
-  static void GetProperty(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info);
+  IUIAutomationTreeWalker *m_pTreeWalker;
 
-  static NAN_METHOD(GetFirstChildElement);
-  static NAN_METHOD(GetFirstChildElementBuildCache);
-  static NAN_METHOD(GetLastChildElement);
-  static NAN_METHOD(GetLastChildElementBuildCache);
-  static NAN_METHOD(GetNextSiblingElement);
-  static NAN_METHOD(GetNextSiblingElementBuildCache);
-  static NAN_METHOD(GetParentElement);
-  static NAN_METHOD(GetParentElementBuildCache);
-  static NAN_METHOD(GetPreviousSiblingElement);
-  static NAN_METHOD(GetPreviousSiblingElementBuildCache);
-  static NAN_METHOD(NormalizeElement);
-  static NAN_METHOD(NormalizeElementBuildCache);
+  IUIAutomationTreeWalkerWrapper(const Napi::CallbackInfo &info);
+  ~IUIAutomationTreeWalkerWrapper();
 
-private:
-  static Nan::Persistent<v8::Function> constructor;
+  Napi::Value GetFirstChildElement(const Napi::CallbackInfo &info);
+  Napi::Value GetFirstChildElementBuildCache(const Napi::CallbackInfo &info);
+  Napi::Value GetLastChildElement(const Napi::CallbackInfo &info);
+  Napi::Value GetLastChildElementBuildCache(const Napi::CallbackInfo &info);
+  Napi::Value GetNextSiblingElement(const Napi::CallbackInfo &info);
+  Napi::Value GetNextSiblingElementBuildCache(const Napi::CallbackInfo &info);
+  Napi::Value GetParentElement(const Napi::CallbackInfo &info);
+  Napi::Value GetParentElementBuildCache(const Napi::CallbackInfo &info);
+  Napi::Value GetPreviousSiblingElement(const Napi::CallbackInfo &info);
+  Napi::Value GetPreviousSiblingElementBuildCache(const Napi::CallbackInfo &info);
+  Napi::Value NormalizeElement(const Napi::CallbackInfo &info);
+  Napi::Value NormalizeElementBuildCache(const Napi::CallbackInfo &info);
 };

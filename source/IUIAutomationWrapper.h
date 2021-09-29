@@ -2,26 +2,32 @@
 
 #include "Shared.h"
 
-class IUIAutomationWrapper : public Nan::ObjectWrap
+class IUIAutomationWrapper : public Napi::ObjectWrap<IUIAutomationWrapper>
 {
 public:
-  static NAN_MODULE_INIT(Init);
+  static Napi::FunctionReference *Initialize(Napi::Env env);
+  static Napi::Object New(Napi::Env env);
 
-  static NAN_METHOD(New);
-  static NAN_METHOD(GetRootElement);
-  static NAN_METHOD(CreatePropertyCondition);
-  static NAN_METHOD(CreateCacheRequest);
-  // static NAN_METHOD(ProxyFactoryMapping);
+  IUIAutomationWrapper(const Napi::CallbackInfo &info);
+  ~IUIAutomationWrapper();
 
-  static void GetProperty(v8::Local<v8::String> property, const v8::PropertyCallbackInfo<v8::Value> &info);
+  Napi::Value GetRootElement(const Napi::CallbackInfo &info);
+  Napi::Value CreatePropertyCondition(const Napi::CallbackInfo &info);
+  Napi::Value CreateCacheRequest(const Napi::CallbackInfo &info);
+  Napi::Value AddAutomationEventHandler(const Napi::CallbackInfo &info);
+
+  Napi::Value GetRawViewWalker(const Napi::CallbackInfo &info);
+  Napi::Value GetRawViewCondition(const Napi::CallbackInfo &info);
+  Napi::Value GetContentViewWalker(const Napi::CallbackInfo &info);
+  Napi::Value GetContentViewCondition(const Napi::CallbackInfo &info);
+  Napi::Value GetControlViewWalker(const Napi::CallbackInfo &info);
+  Napi::Value GetControlViewCondition(const Napi::CallbackInfo &info);
+  Napi::Value GetProxyFactoryMapping(const Napi::CallbackInfo &info);
+  Napi::Value GetReservedMixedAttributeValue(const Napi::CallbackInfo &info);
+  Napi::Value GetReservedNotSupportedValue(const Napi::CallbackInfo &info);
 
 private:
   IUIAutomation *m_pAutomation;
 
-  static Nan::Persistent<v8::Function> constructor;
-
-  explicit IUIAutomationWrapper();
-  ~IUIAutomationWrapper();
-
-  static VARIANT ToVariant(v8::Isolate* isolate, v8::Local<v8::Value> local);
+  VARIANT ToVariant(Napi::Value local);
 };
