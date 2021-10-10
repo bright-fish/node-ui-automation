@@ -1,6 +1,7 @@
 #include "Wrappers.h"
 #include "../AutomationAddon.h"
 
+
 Napi::FunctionReference *IUIAutomationElementWrapper::Initialize(Napi::Env env)
 {
     auto classDefinition = {
@@ -97,6 +98,10 @@ IUIAutomationElementWrapper::IUIAutomationElementWrapper(const Napi::CallbackInf
     }
 
     m_pElement = info[0].As<Napi::External<IUIAutomationElement>>().Data();
+}
+
+IUIAutomationElementWrapper::~IUIAutomationElementWrapper()
+{
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentName(const Napi::CallbackInfo &info)

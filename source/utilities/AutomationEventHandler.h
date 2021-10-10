@@ -2,20 +2,18 @@
 
 #include "../Shared.h"
 
-class GenericAutomationEventHandler : public IUIAutomationEventHandler
+class AutomationEventHandler : public IUIAutomationEventHandler
 {
 private:
     LONG _refCount;
-    std::function<void(IUIAutomationElement *, EVENTID)> m_fCallback;
+    Napi::ThreadSafeFunction m_threadSafeFunction;
 
 public:
-    GenericAutomationEventHandler();
-    ~GenericAutomationEventHandler();
+    AutomationEventHandler(Napi::ThreadSafeFunction threadSafeFunction);
+    ~AutomationEventHandler();
 
     ULONG STDMETHODCALLTYPE AddRef();
     HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void **ppInterface);
     ULONG STDMETHODCALLTYPE Release();
     HRESULT STDMETHODCALLTYPE HandleAutomationEvent(IUIAutomationElement *pSender, EVENTID eventID);
-
-    void SetCallback(std::function<void(IUIAutomationElement *, EVENTID)> fCallback);
 };

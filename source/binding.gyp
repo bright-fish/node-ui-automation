@@ -25,8 +25,12 @@
             "wrappers/IUIAutomationTreeWalkerWrapper.cc",
             "wrappers/IUIAutomationCacheRequestWrapper.cc", 
             "wrappers/IUIAutomationProxyFactoryMappingWrapper.cc",
+            "wrappers/IUIAutomationFocusChangedEventHandlerWrapper.cc",
             "wrappers/IUIAutomationEventHandlerWrapper.cc",
-            "utilities/GenericAutomationEventHandler.cc"
+            "wrappers/IUIAutomationPropertyChangedEventHandlerWrapper.cc",
+            "utilities/AutomationEventHandler.cc",
+            "utilities/FocusChangedEventHandler.cc",
+            "utilities/PropertyChangedEventHandler.cc"
       ],
       "include_dirs": ["<!(node -p \"require('node-addon-api').include_dir\")"],
       "libraries" : [

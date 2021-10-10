@@ -18,6 +18,8 @@ AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
     IUIAutomationElementArrayWrapperConstructor = IUIAutomationElementArrayWrapper::Initialize(env);
     IUIAutomationProxyFactoryMappingWrapperConstructor = IUIAutomationProxyFactoryMappingWrapper::Initialize(env);
     IUIAutomationEventHandlerWrapperConstructor = IUIAutomationEventHandlerWrapper::Initialize(env);
+    IUIAutomationFocusChangedEventHandlerWrapperConstructor = IUIAutomationFocusChangedEventHandlerWrapper::Initialize(env);
+    IUIAutomationPropertyChangedEventHandlerWrapperConstructor = IUIAutomationPropertyChangedEventHandlerWrapper::Initialize(env);
 
     UIA_PropertyIdsWrapper::Export(env, exports);
     UIA_EventIdsWrapper::Export(env, exports);
@@ -25,6 +27,8 @@ AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
     auto addonDefinition = {
         InstanceValue("IUIAutomation", IUIAutomationWrapperConstructor->Value()),
         InstanceValue("IUIAutomationEventHandler", IUIAutomationEventHandlerWrapperConstructor->Value()),
+        InstanceValue("IUIAutomationFocusChangedEventHandler", IUIAutomationFocusChangedEventHandlerWrapperConstructor->Value()),
+        InstanceValue("IUIAutomationPropertyChangedEventHandler", IUIAutomationPropertyChangedEventHandlerWrapperConstructor->Value()),
         InstanceValue("TreeScope", TreeScopeWrapper::New(env)),
     };
 

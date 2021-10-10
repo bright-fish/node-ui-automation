@@ -11,3 +11,5 @@
 #include "IUIAutomationEventHandlerWrapper.h"
 #include "IUnknownWrapper.h"
 #include "UIA_EventIdsWrapper.h"
+#include "IUIAutomationFocusChangedEventHandlerWrapper.h"
+#include "IUIAutomationPropertyChangedEventHandlerWrapper.h"

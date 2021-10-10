@@ -8,6 +8,7 @@ Napi::FunctionReference *IUIAutomationWrapper::Initialize(Napi::Env env)
         InstanceMethod<&IUIAutomationWrapper::CreatePropertyCondition>("createPropertyCondition"),
         InstanceMethod<&IUIAutomationWrapper::CreateCacheRequest>("createCacheRequest"),
         InstanceMethod<&IUIAutomationWrapper::AddAutomationEventHandler>("addAutomationEventHandler"),
+        InstanceMethod<&IUIAutomationWrapper::AddFocusChangedEventHandler>("addFocusChangedEventHandler"),
 
         InstanceAccessor<&IUIAutomationWrapper::GetRawViewCondition>("rawViewCondition"),
         InstanceAccessor<&IUIAutomationWrapper::GetRawViewWalker>("rawViewWalker"),
@@ -222,6 +223,58 @@ void IUIAutomationWrapper::AddAutomationEventHandler(const Napi::CallbackInfo &i
     auto pEventHandlerWrapper = Napi::ObjectWrap<IUIAutomationEventHandlerWrapper>::Unwrap(info[4].ToObject());
 
     HRESULT hResult = m_pAutomation->AddAutomationEventHandler(eventId, pElementWrapper->m_pElement, treeScope, NULL, pEventHandlerWrapper->m_pEventHandler);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+}
+
+void IUIAutomationWrapper::AddFocusChangedEventHandler(const Napi::CallbackInfo &info)
+{
+    IUIAutomationCacheRequest *pCacheRequest = NULL;
+
+    if (!info[0].IsNull())
+    {
+        auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[0].ToObject());
+        pCacheRequest = pCacheRequestWrapper->m_pCacheRequest;
+    }
+
+    auto pFocusChangedEventHandlerWrapper = Napi::ObjectWrap<IUIAutomationFocusChangedEventHandlerWrapper>::Unwrap(info[1].ToObject());
+
+    HRESULT hResult = m_pAutomation->AddFocusChangedEventHandler(pCacheRequest, pFocusChangedEventHandlerWrapper->m_pFocusChangedEventHandler);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+}
+
+void IUIAutomationWrapper::AddPropertyChangedEventHandler(const Napi::CallbackInfo &info)
+{
+    IUIAutomationElement *pElement = NULL;
+
+    auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
+    pElement = pElementWrapper->m_pElement;
+
+    auto treeScope = static_cast<TreeScope>(info[1].As<Napi::Number>().Uint32Value());
+
+    IUIAutomationCacheRequest *pCacheRequest = NULL;
+    if (!info[0].IsNull())
+    {
+        auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[2].ToObject());
+        pCacheRequest = pCacheRequestWrapper->m_pCacheRequest;
+    }
+
+    auto pPropertyChangedEventHandler = Napi::ObjectWrap<IUIAutomationPropertyChangedEventHandlerWrapper>::Unwrap(info[3].ToObject());
+
+    // todo: auto pSafeArrayWrapper = Napi::ObjectWrap<SafeArrayWrapper>::Unwrap(info[4].ToObject());
+
+    auto hResult = m_pAutomation->AddPropertyChangedEventHandler(pElement, treeScope, pCacheRequest, pPropertyChangedEventHandler->m_pPropertyChangedEventHandler, NULL);
 
     if (FAILED(hResult))
     {

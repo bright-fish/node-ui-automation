@@ -11,6 +11,7 @@ public:
   IUIAutomationElement *m_pElement;
 
   IUIAutomationElementWrapper(const Napi::CallbackInfo &info);
+  ~IUIAutomationElementWrapper();
 
   Napi::Value GetCurrentName(const Napi::CallbackInfo &info);
   Napi::Value GetCurrentAcceleratorKey(const Napi::CallbackInfo &info);

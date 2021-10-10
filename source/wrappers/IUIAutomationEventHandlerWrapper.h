@@ -1,14 +1,14 @@
 #pragma once
 
 #include "../Shared.h"
-#include "../utilities/GenericAutomationEventHandler.h"
+#include "../utilities/AutomationEventHandler.h"
 
 class IUIAutomationEventHandlerWrapper : public Napi::ObjectWrap<IUIAutomationEventHandlerWrapper>
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
 
-    GenericAutomationEventHandler* m_pEventHandler;
+    AutomationEventHandler* m_pEventHandler;
     Napi::ThreadSafeFunction m_automationCallback;
     
     void HandleAutomationEvent(IUIAutomationElement *pSender, EVENTID eventID);

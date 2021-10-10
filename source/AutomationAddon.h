@@ -15,6 +15,8 @@ public:
     Napi::FunctionReference *IUIAutomationProxyFactoryMappingWrapperConstructor;
     Napi::FunctionReference *IUnknownWrapperConstructor;
     Napi::FunctionReference *RECTWrapperConstructor;
+    Napi::FunctionReference *IUIAutomationFocusChangedEventHandlerWrapperConstructor;
+    Napi::FunctionReference *IUIAutomationPropertyChangedEventHandlerWrapperConstructor;
 
     AutomationAddon(Napi::Env env, Napi::Object exports);
     ~AutomationAddon();

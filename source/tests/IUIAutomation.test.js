@@ -1,4 +1,13 @@
-const { IUIAutomation, IUIAutomationEventHandler, UIA_NamePropertyId, UIA_Window_WindowOpenedEventId, UIA_Invoke_InvokedEventId, TreeScope } = require('../build/Debug/Automation');
+const {
+    IUIAutomation,
+    IUIAutomationEventHandler,
+    IUIAutomationFocusChangedEventHandler,
+    IUIAutomationPropertyChangedEventHandler,
+    UIA_NamePropertyId,
+    UIA_Window_WindowOpenedEventId,
+    UIA_Invoke_InvokedEventId,
+    TreeScope
+} = require('../build/Debug/Automation');
 
 describe('IUIAutomation', () => {
     let automation = null;
@@ -69,16 +78,19 @@ describe('IUIAutomation', () => {
         });
     });
 
-    fdescribe('addAutomationEventHandler', () => {
+    // todo: removeAutomationEventHandler
+    xdescribe('add/removeAutomationEventHandler', () => {
         test('returns', (done) => {
+            expect.assertions(2);
+
             automation = new IUIAutomation();
-            // todo:  the constructor does not function according to plan.  
-            // look at the constrcutor and see why its failing.  
-            // its due to the clsid not being present for the library.  
+
             const eventHandler = new IUIAutomationEventHandler((sender, eventId) => {
                 expect(sender).not.toBeNull();
 
                 expect(eventId).not.toBeNull();
+
+                console.log(sender.currentName);
 
                 done();
             });
@@ -99,14 +111,44 @@ describe('IUIAutomation', () => {
         }, 300000);
     });
 
-    describe('addFocusChangedEventHandler', () => {
-        test.todo('returns');
+    // todo: removeFocusChangedEventHandler
+    xdescribe('add/removeFocusChangedEventHandler', () => {
+        test('returns', done => {
+            expect.assertions(1);
+
+            automation = new IUIAutomation();
+
+            const focusChangedEventHandler = new IUIAutomationFocusChangedEventHandler((sender) => {
+                expect(sender).not.toBeNull();
+
+                done();
+            });
+
+            // const cacheRequest = automation.createCacheRequest();
+
+            automation.addFocusChangedEventHandler(null, focusChangedEventHandler);
+
+        }, 300000);
     });
 
-    describe('addPropertyChangedEventHandler', () => {
-        test.todo('returns');
+    fdescribe('add/removePropertyChangedEventHandler', () => {
+        test('returns', done => {
+            expect.assertions(1);
+
+            automation = new IUIAutomation();
+
+            const propertyChangedEventHandler = new IUIAutomationPropertyChangedEventHandler((sender) => {
+                expect(sender).not.toBeNull();
+
+                done();
+            });
+
+            automation.addPropertyChangedEventHandler();
+
+        });
     });
 
+    // todo: skipping
     describe('addPropertyChangedEventHandlerNativeArray', () => {
         test.todo('returns');
     });
@@ -131,10 +173,12 @@ describe('IUIAutomation', () => {
         test.todo('returns');
     });
 
+    // skipping
     describe('createAndConditionFromArray', () => {
         test.todo('returns');
     });
 
+    // skipping
     describe('createAndConditionFromNativeArray', () => {
         test.todo('returns');
     });
@@ -159,10 +203,12 @@ describe('IUIAutomation', () => {
         test.todo('returns');
     });
 
+    // todo: skipping
     describe('createOrConditionFromArray', () => {
         test.todo('returns');
     });
 
+    // todo: skipping
     describe('createOrConditionFromNativeArray', () => {
         test.todo('returns');
     });
@@ -175,6 +221,7 @@ describe('IUIAutomation', () => {
         test.todo('returns');
     });
 
+    // skipping
     describe('createProxyFactoryEntry', () => {
         test.todo('returns');
     });
@@ -239,6 +286,7 @@ describe('IUIAutomation', () => {
         test.todo('returns');
     });
 
+    // todo: skipping
     describe('intSafeArrayToNativeArray', () => {
         test.todo('returns');
     });
