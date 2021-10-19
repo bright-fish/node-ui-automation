@@ -1,4 +1,4 @@
-const { IUIAutomation, TreeScope, UIA_NamePropertyId } = require('../build/Debug/automation');
+const { IUIAutomation, TreeScope, UIA_NamePropertyId } = require('bindings')('Automation');
 
 describe('IUIAutomationElement', () => {
     let automation = null;

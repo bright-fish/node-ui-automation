@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/bright-fish/node-microsoft-ui-automation#readme",
   "dependencies": {
-    "node-addon-api": "4.1.0",
+    "bindings": "^1.5.0",
     "node-addon-api": "^4.1.0"
   },
   "devDependencies": {

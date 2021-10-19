@@ -17,6 +17,7 @@ public:
   void AddAutomationEventHandler(const Napi::CallbackInfo &info);
   void AddFocusChangedEventHandler(const Napi::CallbackInfo &info);
   void AddPropertyChangedEventHandler(const Napi::CallbackInfo &info);
+  void AddStructureChangedEventHandler(const Napi::CallbackInfo &info);
 
   Napi::Value GetRawViewWalker(const Napi::CallbackInfo &info);
   Napi::Value GetRawViewCondition(const Napi::CallbackInfo &info);
@@ -29,7 +30,7 @@ public:
   Napi::Value GetReservedNotSupportedValue(const Napi::CallbackInfo &info);
 
 private:
-  IUIAutomation *m_pAutomation;
+  ATL::CComPtr<IUIAutomation> m_pAutomation;
 
   VARIANT ToVariant(Napi::Value local);
 };

@@ -1,4 +1,4 @@
-const { IUIAutomation, UIA_NamePropertyId, TreeScope } = require('../build/Debug/automation');
+const { IUIAutomation, UIA_NamePropertyId, TreeScope } = require('bindings')('Automation');
 
 
 describe('IUIAutomationTreeWalker', () => {

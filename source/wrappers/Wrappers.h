@@ -10,6 +10,8 @@
 #include "IUIAutomationProxyFactoryMappingWrapper.h"
 #include "IUIAutomationEventHandlerWrapper.h"
 #include "IUnknownWrapper.h"
+#include "SafeArrayWrapper.h"
 #include "UIA_EventIdsWrapper.h"
 #include "IUIAutomationFocusChangedEventHandlerWrapper.h"
 #include "IUIAutomationPropertyChangedEventHandlerWrapper.h"
+#include "IUIAutomationStructureChangedEventHandlerWrapper.h"

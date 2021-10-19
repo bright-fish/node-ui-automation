@@ -84,7 +84,7 @@ Napi::FunctionReference *IUIAutomationElementWrapper::Initialize(Napi::Env env)
 }
 
 Napi::Object IUIAutomationElementWrapper::New(Napi::Env env, IUIAutomationElement *pElement)
-{
+{    
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IUIAutomationElementWrapperConstructor->New({Napi::External<IUIAutomationElement>::New(env, pElement)});
@@ -102,6 +102,7 @@ IUIAutomationElementWrapper::IUIAutomationElementWrapper(const Napi::CallbackInf
 
 IUIAutomationElementWrapper::~IUIAutomationElementWrapper()
 {
+    m_pElement.Release();
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentName(const Napi::CallbackInfo &info)

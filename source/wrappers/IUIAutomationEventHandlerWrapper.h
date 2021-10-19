@@ -11,8 +11,6 @@ public:
     AutomationEventHandler* m_pEventHandler;
     Napi::ThreadSafeFunction m_automationCallback;
     
-    void HandleAutomationEvent(IUIAutomationElement *pSender, EVENTID eventID);
-
     IUIAutomationEventHandlerWrapper(const Napi::CallbackInfo &info);
     ~IUIAutomationEventHandlerWrapper();
 };
