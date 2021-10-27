@@ -11,6 +11,11 @@ Napi::FunctionReference *IUIAutomationWrapper::Initialize(Napi::Env env)
         InstanceMethod<&IUIAutomationWrapper::AddFocusChangedEventHandler>("addFocusChangedEventHandler"),
         InstanceMethod<&IUIAutomationWrapper::AddPropertyChangedEventHandler>("addPropertyChangedEventHandler"),
         InstanceMethod<&IUIAutomationWrapper::AddStructureChangedEventHandler>("addStructureChangedEventHandler"),
+        InstanceMethod<&IUIAutomationWrapper::CheckNotSupported>("checkNotSupported"),
+        InstanceMethod<&IUIAutomationWrapper::CompareElements>("compareElements"),
+        InstanceMethod<&IUIAutomationWrapper::CreateAndCondition>("createAndCondition"),
+        InstanceMethod<&IUIAutomationWrapper::CreateFalseCondition>("createFalseCondition"),
+        InstanceMethod<&IUIAutomationWrapper::ElementFromPoint>("elementFromPoint"),
 
         InstanceAccessor<&IUIAutomationWrapper::GetRawViewCondition>("rawViewCondition"),
         InstanceAccessor<&IUIAutomationWrapper::GetRawViewWalker>("rawViewWalker"),
@@ -167,39 +172,6 @@ Napi::Value IUIAutomationWrapper::GetRootElement(const Napi::CallbackInfo &info)
     return pElementWrapper;
 }
 
-Napi::Value IUIAutomationWrapper::CreatePropertyCondition(const Napi::CallbackInfo &info)
-{
-    try
-    {
-        auto propertyIdIndex = info[0].ToNumber().Int32Value();
-        auto propertyId = static_cast<PROPERTYID>(propertyIdIndex);
-
-        auto variant = ToVariant(info[1]);
-
-        IUIAutomationCondition *pCondition = NULL;
-
-        HRESULT hResult = m_pAutomation->CreatePropertyCondition(propertyId, variant, &pCondition);
-
-        if (FAILED(hResult))
-        {
-            _com_raise_error(hResult);
-        }
-
-        auto pConditionWrapper = IUIAutomationConditionWrapper::New(info.Env(), pCondition);
-
-        return pConditionWrapper;
-    }
-    catch (_com_error &error)
-    {
-        auto size = wcslen((wchar_t *)error.ErrorMessage());
-
-        char *cpErrorMessage = NULL;
-        wcstombs(cpErrorMessage, (wchar_t *)error.ErrorMessage(), size);
-
-        throw Napi::Error::New(info.Env(), cpErrorMessage);
-    }
-}
-
 Napi::Value IUIAutomationWrapper::CreateCacheRequest(const Napi::CallbackInfo &info)
 {
     IUIAutomationCacheRequest *pCacheRequest = NULL;
@@ -289,7 +261,7 @@ void IUIAutomationWrapper::AddPropertyChangedEventHandler(const Napi::CallbackIn
         for (uint32_t i = 0; i < propertyIds.Length(); i++)
         {
             Napi::Value propertyIdValue = propertyIds[i];
-    
+
             auto propertyId = propertyIdValue.ToNumber().Uint32Value();
             auto hResult = SafeArrayPutElement(pSafeArray, (long *)&i, &propertyId);
 
@@ -330,7 +302,6 @@ void IUIAutomationWrapper::AddStructureChangedEventHandler(const Napi::CallbackI
     auto pStructureChangedEventHandler = Napi::ObjectWrap<IUIAutomationStructureChangedEventHandlerWrapper>::Unwrap(info[3].ToObject());
 
     auto hResult = m_pAutomation->AddStructureChangedEventHandler(pElement, treeScope, pCacheRequest, pStructureChangedEventHandler->m_pStructureChangedEventHandler);
-
     if (FAILED(hResult))
     {
         auto error = _com_error(hResult);
@@ -338,6 +309,195 @@ void IUIAutomationWrapper::AddStructureChangedEventHandler(const Napi::CallbackI
         throw Napi::Error::New(info.Env(), error.ErrorMessage());
     }
 }
+
+// todo:  to finish this it needs some kind of variant support in javascript.  
+// I backed of writting a VariantWrapper because I thought it wasnt necessary.  However with this function its looking necessary.  
+// to finish this I need to figure out what the variant wrapper looks like from the javascript side.  
+Napi::Value IUIAutomationWrapper::CheckNotSupported(const Napi::CallbackInfo &info)
+{
+    // auto variantWrapper = ObjectWrap<VARIANT>::Unwrap(info[0].ToObject());
+
+    VARIANT variant;
+
+    BOOL isNotSupported;
+    auto hResult = m_pAutomation->CheckNotSupported(variant, &isNotSupported);
+
+    return Napi::Boolean::New(info.Env(), isNotSupported);
+}
+
+Napi::Value IUIAutomationWrapper::CompareElements(const Napi::CallbackInfo &info)
+{
+    auto elementWrapperOne = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
+
+    auto elementWrapperTwo = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[1].ToObject());
+
+    BOOL bAreEqual;
+    auto hResult = m_pAutomation->CompareElements(elementWrapperOne->m_pElement, elementWrapperTwo->m_pElement, &bAreEqual);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return Napi::Boolean::New(info.Env(), bAreEqual);
+}
+
+Napi::Value IUIAutomationWrapper::CreateAndCondition(const Napi::CallbackInfo &info)
+{
+    auto conditionWrapperOne = Napi::ObjectWrap<IUIAutomationConditionWrapper>::Unwrap(info[0].ToObject());
+    auto conditionWrapperTwo = Napi::ObjectWrap<IUIAutomationConditionWrapper>::Unwrap(info[1].ToObject());
+
+    ATL::CComPtr<IUIAutomationCondition> pAutomationCondition;
+    auto hResult = m_pAutomation->CreateAndCondition(conditionWrapperOne->m_pCondition, conditionWrapperTwo->m_pCondition, &pAutomationCondition);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return IUIAutomationConditionWrapper::New(info.Env(), pAutomationCondition);
+}
+
+Napi::Value IUIAutomationWrapper::CreateFalseCondition(const Napi::CallbackInfo &info)
+{
+    ATL::CComPtr<IUIAutomationCondition> pAutomationCondition;
+    auto hResult = m_pAutomation->CreateFalseCondition(&pAutomationCondition);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return IUIAutomationConditionWrapper::New(info.Env(), pAutomationCondition);
+}
+
+Napi::Value IUIAutomationWrapper::CreateNotCondition(const Napi::CallbackInfo &info)
+{
+    auto conditionWrapper = Napi::ObjectWrap<IUIAutomationConditionWrapper>::Unwrap(info[0].ToObject());
+
+    ATL::CComPtr<IUIAutomationCondition> pAutomationCondition;
+    auto hResult = m_pAutomation->CreateNotCondition(conditionWrapper->m_pCondition, &pAutomationCondition);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return IUIAutomationConditionWrapper::New(info.Env(), pAutomationCondition);
+}
+
+Napi::Value IUIAutomationWrapper::CreateOrCondition(const Napi::CallbackInfo &info)
+{
+    auto conditionWrapperOne = Napi::ObjectWrap<IUIAutomationConditionWrapper>::Unwrap(info[0].ToObject());
+    auto conditionWrapperTwo = Napi::ObjectWrap<IUIAutomationConditionWrapper>::Unwrap(info[0].ToObject());
+
+    ATL::CComPtr<IUIAutomationCondition> pAutomationCondition;
+    auto hResult = m_pAutomation->CreateOrCondition(conditionWrapperOne->m_pCondition, conditionWrapperTwo->m_pCondition, &pAutomationCondition);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return IUIAutomationConditionWrapper::New(info.Env(), pAutomationCondition);
+}
+
+Napi::Value IUIAutomationWrapper::CreatePropertyCondition(const Napi::CallbackInfo &info)
+{
+    try
+    {
+        auto propertyIdIndex = info[0].ToNumber().Int32Value();
+        auto propertyId = static_cast<PROPERTYID>(propertyIdIndex);
+
+        auto variant = ToVariant(info[1]);
+
+        ATL::CComPtr<IUIAutomationCondition> pCondition;
+        HRESULT hResult = m_pAutomation->CreatePropertyCondition(propertyId, variant, &pCondition);
+
+        if (FAILED(hResult))
+        {
+            _com_raise_error(hResult);
+        }
+
+        auto pConditionWrapper = IUIAutomationConditionWrapper::New(info.Env(), pCondition);
+
+        return pConditionWrapper;
+    }
+    catch (_com_error &error)
+    {
+        auto size = wcslen((wchar_t *)error.ErrorMessage());
+
+        char *cpErrorMessage = NULL;
+        wcstombs(cpErrorMessage, (wchar_t *)error.ErrorMessage(), size);
+
+        throw Napi::Error::New(info.Env(), cpErrorMessage);
+    }
+}
+
+Napi::Value IUIAutomationWrapper::CreateTreeWalker(const Napi::CallbackInfo &info)
+{
+    auto conditionWrapper = Napi::ObjectWrap<IUIAutomationConditionWrapper>::Unwrap(info[0].ToObject());
+
+    ATL::CComPtr<IUIAutomationTreeWalker> pTreeWalker;
+    auto hResult = m_pAutomation->CreateTreeWalker(conditionWrapper->m_pCondition, &pTreeWalker);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return IUIAutomationTreeWalkerWrapper::New(info.Env(), pTreeWalker);
+}
+
+Napi::Value IUIAutomationWrapper::CreateTrueCondition(const Napi::CallbackInfo &info)
+{
+    ATL::CComPtr<IUIAutomationCondition> pAutomationCondition;
+    auto hResult = m_pAutomation->CreateTrueCondition(&pAutomationCondition);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return IUIAutomationConditionWrapper::New(info.Env(), pAutomationCondition);
+}
+
+
+Napi::Value IUIAutomationWrapper::ElementFromPoint(const Napi::CallbackInfo &info)
+{
+    auto pointObject = info[0].ToObject();
+
+    POINT point;
+    point.x = pointObject.Get("x").ToNumber().Uint32Value();
+    point.y = pointObject.Get("y").ToNumber().Uint32Value();
+
+    ATL::CComPtr<IUIAutomationElement> pAutomationElement;
+    auto hResult = m_pAutomation->ElementFromPoint(point, &pAutomationElement);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return IUIAutomationElementWrapper::New(info.Env(), pAutomationElement);
+}
+
 
 VARIANT IUIAutomationWrapper::ToVariant(Napi::Value local)
 {

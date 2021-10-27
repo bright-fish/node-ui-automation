@@ -12,12 +12,21 @@ public:
   ~IUIAutomationWrapper();
 
   Napi::Value GetRootElement(const Napi::CallbackInfo &info);
-  Napi::Value CreatePropertyCondition(const Napi::CallbackInfo &info);
   Napi::Value CreateCacheRequest(const Napi::CallbackInfo &info);
   void AddAutomationEventHandler(const Napi::CallbackInfo &info);
   void AddFocusChangedEventHandler(const Napi::CallbackInfo &info);
   void AddPropertyChangedEventHandler(const Napi::CallbackInfo &info);
   void AddStructureChangedEventHandler(const Napi::CallbackInfo &info);
+  Napi::Value CheckNotSupported(const Napi::CallbackInfo &info);
+  Napi::Value CompareElements(const Napi::CallbackInfo &info);
+  Napi::Value CreateAndCondition(const Napi::CallbackInfo &info);
+  Napi::Value CreateFalseCondition(const Napi::CallbackInfo &info);
+  Napi::Value CreateNotCondition(const Napi::CallbackInfo &info);
+  Napi::Value CreateOrCondition(const Napi::CallbackInfo &info);
+  Napi::Value CreatePropertyCondition(const Napi::CallbackInfo &info);
+  Napi::Value CreateTreeWalker(const Napi::CallbackInfo &info);
+  Napi::Value CreateTrueCondition(const Napi::CallbackInfo &info);
+  Napi::Value ElementFromPoint(const Napi::CallbackInfo &info);
 
   Napi::Value GetRawViewWalker(const Napi::CallbackInfo &info);
   Napi::Value GetRawViewCondition(const Napi::CallbackInfo &info);
