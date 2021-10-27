@@ -1,9 +1,23 @@
-const { IUIAutomation, UIA_NamePropertyId } = require('../build/Debug/automation');
+const {
+    IUIAutomation,
+    IUIAutomationEventHandler,
+    IUIAutomationFocusChangedEventHandler,
+    IUIAutomationPropertyChangedEventHandler,
+    UIA_NamePropertyId,
+    UIA_Window_WindowOpenedEventId,
+    UIA_HasKeyboardFocusPropertyId,
+    UIA_ToggleToggleStatePropertyId,
+    TreeScope
+} = require('bindings')('Automation');
 
 describe('IUIAutomation', () => {
     let automation = null;
 
-    test('new IUIAutomation()', () => {
+    test('constructor', () => {
+        automation = new IUIAutomation();
+    });
+
+    beforeEach(() => {
         automation = new IUIAutomation();
     });
 
@@ -16,7 +30,9 @@ describe('IUIAutomation', () => {
     });
 
     describe('contentViewCondition', () => {
-        test.todo('returns');
+        test('returns', () => {
+            expect(automation.contentViewCondition).not.toBeNull();
+        });
     });
 
     describe('contentViewWalker', () => {
@@ -26,7 +42,9 @@ describe('IUIAutomation', () => {
     });
 
     describe('controlViewCondition', () => {
-        test.todo('returns');
+        test('returns', () => {
+            expect(automation.controlViewCondition).not.toBeNull();
+        });
     });
 
     describe('controlViewWalker', () => {
@@ -36,11 +54,15 @@ describe('IUIAutomation', () => {
     });
 
     describe('proxyFactoryMapping', () => {
-        test.todo('returns');
+        test('returns', () => {
+            expect(automation.proxyFactoryMapping).not.toBeNull();
+        });
     });
 
     describe('rawViewCondition', () => {
-        test.todo('returns');
+        test('returns', () => {
+            expect(automation.rawViewCondition).not.toBeNull();
+        });
     });
 
     describe('rawViewWalker', () => {
@@ -50,31 +72,111 @@ describe('IUIAutomation', () => {
     });
 
     describe('reservedMixedAttributeValue', () => {
-        test.todo('returns');
+        test('returns', () => {
+            expect(automation.reservedMixedAttributeValue).not.toBeNull();
+        });
     });
 
     describe('reservedNotSupportedValue', () => {
-        test.todo('returns');
+        test('returns', () => {
+            expect(automation.reservedNotSupportedValue).not.toBeNull();
+        });
     });
 
-    describe('addAutomationEventHandler', () => {
-        test.todo('returns');
-    })
+    // todo: removeAutomationEventHandler
+    xdescribe('add/removeAutomationEventHandler', () => {
+        test('returns', (done) => {
+            expect.assertions(2);
 
-    describe('addFocusChangedEventHandler', () => {
-        test.todo('returns');
+            const eventHandler = new IUIAutomationEventHandler((sender, eventId) => {
+                expect(sender).not.toBeNull();
+
+                expect(eventId).not.toBeNull();
+
+                console.log(sender.currentName);
+
+                done();
+            });
+
+            const desktopElement = automation.getRootElement();
+
+            const winverNamePropertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
+
+            const winverElement = desktopElement.findFirst(TreeScope.TreeScope_Subtree, winverNamePropertyCondition);
+
+            const propertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "Microsoft Software License Terms");
+
+            const cacheRequest = automation.createCacheRequest();
+
+            const termsLink = winverElement.findFirst(TreeScope.TreeScope_Subtree, propertyCondition);
+
+            automation.addAutomationEventHandler(UIA_Window_WindowOpenedEventId, desktopElement, TreeScope.TreeScope_Subtree, cacheRequest, eventHandler);
+        }, 300000);
     });
 
-    describe('addPropertyChangedEventHandler', () => {
-        test.todo('returns');
+    // todo: removeFocusChangedEventHandler
+    xdescribe('add/removeFocusChangedEventHandler', () => {
+        test('returns', done => {
+            expect.assertions(1);
+
+            const focusChangedEventHandler = new IUIAutomationFocusChangedEventHandler((sender) => {
+                expect(sender).not.toBeNull();
+
+                done();
+            });
+
+            // const cacheRequest = automation.createCacheRequest();
+
+            automation.addFocusChangedEventHandler(null, focusChangedEventHandler);
+
+        }, 300000);
     });
 
+    // todo: broken, come back and fix a different day.  
+    xdescribe('add/removePropertyChangedEventHandler', () => {
+        test('returns', (done) => {
+            expect.assertions(1);
+
+            const desktopElement = automation.getRootElement();
+
+            const winverNamePropertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
+
+            const winverElement = desktopElement.findFirst(TreeScope.TreeScope_Subtree, winverNamePropertyCondition);
+
+            const propertyChangedEventHandler = new IUIAutomationPropertyChangedEventHandler((sender) => {
+                expect(sender).not.toBeNull();
+
+                done();
+            });
+
+            automation.addPropertyChangedEventHandler(desktopElement, TreeScope.TreeScope_Subtree, null, propertyChangedEventHandler, [UIA_ToggleToggleStatePropertyId]);
+        }, 300000);
+    });
+
+    // todo: skipping
     describe('addPropertyChangedEventHandlerNativeArray', () => {
         test.todo('returns');
     });
 
     describe('addStructureChangedEventHandler', () => {
-        test.todo('returns');
+        test('returns', (done) => {
+            expect.assertions(1);
+
+            const desktopElement = automation.getRootElement();
+
+            const winverNamePropertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
+
+            const winverElement = desktopElement.findFirst(TreeScope.TreeScope_Subtree, winverNamePropertyCondition);
+
+            const structureChangedEventHandler = new IUIAutomationStructureChangedEventHandler((sender) => {
+                expect(sender).not.toBeNull();
+
+                done();
+            });
+
+            automation.addStructureChangedEventHandler(desktopElement, TreeScope.TreeScope_Subtree, null, structureChangedEventHandler, [UIA_ToggleToggleStatePropertyId]);
+
+        }, 300000);
     });
 
     describe('checkNotSupported', () => {
@@ -93,16 +195,22 @@ describe('IUIAutomation', () => {
         test.todo('returns');
     });
 
+    // skipping
     describe('createAndConditionFromArray', () => {
         test.todo('returns');
     });
 
+    // skipping
     describe('createAndConditionFromNativeArray', () => {
         test.todo('returns');
     });
 
     describe('createCacheRequest', () => {
-        test.todo('returns');
+        test('returns', () => {
+            const cacheRequest = automation.createCacheRequest();
+
+            expect(cacheRequest).not.toBeNull();
+        });
     });
 
     describe('createFalseCondition', () => {
@@ -117,10 +225,12 @@ describe('IUIAutomation', () => {
         test.todo('returns');
     });
 
+    // todo: skipping
     describe('createOrConditionFromArray', () => {
         test.todo('returns');
     });
 
+    // todo: skipping
     describe('createOrConditionFromNativeArray', () => {
         test.todo('returns');
     });
@@ -133,6 +243,7 @@ describe('IUIAutomation', () => {
         test.todo('returns');
     });
 
+    // skipping
     describe('createProxyFactoryEntry', () => {
         test.todo('returns');
     });
@@ -197,6 +308,7 @@ describe('IUIAutomation', () => {
         test.todo('returns');
     });
 
+    // todo: skipping
     describe('intSafeArrayToNativeArray', () => {
         test.todo('returns');
     });
