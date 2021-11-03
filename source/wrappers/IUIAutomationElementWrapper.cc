@@ -1,11 +1,22 @@
 #include "Wrappers.h"
 #include "../AutomationAddon.h"
-
+#include "../utilities/Functions.h"
 
 Napi::FunctionReference *IUIAutomationElementWrapper::Initialize(Napi::Env env)
 {
     auto classDefinition = {
+        InstanceMethod<&IUIAutomationElementWrapper::BuildUpdatedCache>("buildUpdatedCache"),
+        InstanceMethod<&IUIAutomationElementWrapper::FindAll>("findAll"),
+        InstanceMethod<&IUIAutomationElementWrapper::FindAllBuildCache>("findAllBuildCache"),
         InstanceMethod<&IUIAutomationElementWrapper::FindFirst>("findFirst"),
+        InstanceMethod<&IUIAutomationElementWrapper::FindFirstBuildCache>("findFirstBuildCache"),
+        InstanceMethod<&IUIAutomationElementWrapper::GetCachedChildren>("getCachedChildren"),
+        InstanceMethod<&IUIAutomationElementWrapper::GetCachedPropertyValue>("getCachedPropertyValue"),
+        InstanceMethod<&IUIAutomationElementWrapper::GetCachedPropertyValueEx>("getCachedPropertyValueEx"),
+        InstanceMethod<&IUIAutomationElementWrapper::GetClickablePoint>("getClickablePoint"),
+        InstanceMethod<&IUIAutomationElementWrapper::GetCurrentPropertyValue>("getCurrentPropertyValue"),
+        InstanceMethod<&IUIAutomationElementWrapper::GetCurrentPropertyValueEx>("getCurrentPropertyValueEx"),
+        InstanceMethod<&IUIAutomationElementWrapper::SetFocus>("setFocus"),
 
         InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentName>("currentName"),
         InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentAcceleratorKey>("currentAcceleratorKey"),
@@ -84,7 +95,7 @@ Napi::FunctionReference *IUIAutomationElementWrapper::Initialize(Napi::Env env)
 }
 
 Napi::Object IUIAutomationElementWrapper::New(Napi::Env env, IUIAutomationElement *pElement)
-{    
+{
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IUIAutomationElementWrapperConstructor->New({Napi::External<IUIAutomationElement>::New(env, pElement)});
@@ -104,6 +115,249 @@ IUIAutomationElementWrapper::~IUIAutomationElementWrapper()
 {
     m_pElement.Release();
 }
+
+Napi::Value IUIAutomationElementWrapper::BuildUpdatedCache(const Napi::CallbackInfo &info)
+{
+    auto cacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[0].ToObject());
+
+    IUIAutomationElement *pElement;
+    auto hResult = m_pElement->BuildUpdatedCache(cacheRequestWrapper->m_pCacheRequest, &pElement);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return IUIAutomationElementWrapper::New(info.Env(), pElement);
+}
+
+Napi::Value IUIAutomationElementWrapper::FindAll(const Napi::CallbackInfo &info)
+{
+    auto treeScope = static_cast<TreeScope>(info[0].ToNumber().Int32Value());
+
+    auto pConditionWrapper = Napi::ObjectWrap<IUIAutomationConditionWrapper>::Unwrap(info[1].ToObject());
+
+    IUIAutomationElementArray *pFoundElements;
+    HRESULT hResult = m_pElement->FindAll(treeScope, pConditionWrapper->m_pCondition, &pFoundElements);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return IUIAutomationElementArrayWrapper::New(info.Env(), pFoundElements);
+}
+
+Napi::Value IUIAutomationElementWrapper::FindAllBuildCache(const Napi::CallbackInfo &info)
+{
+    auto treeScope = static_cast<TreeScope>(info[0].ToNumber().Int32Value());
+
+    auto pConditionWrapper = Napi::ObjectWrap<IUIAutomationConditionWrapper>::Unwrap(info[1].ToObject());
+
+    auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[2].ToObject());
+
+    IUIAutomationElementArray *pFoundElements;
+    HRESULT hResult = m_pElement->FindAllBuildCache(treeScope, pConditionWrapper->m_pCondition, pCacheRequestWrapper->m_pCacheRequest, &pFoundElements);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return IUIAutomationElementArrayWrapper::New(info.Env(), pFoundElements);
+}
+
+Napi::Value IUIAutomationElementWrapper::FindFirst(const Napi::CallbackInfo &info)
+{
+    auto treeScope = static_cast<TreeScope>(info[0].ToNumber().Int32Value());
+
+    auto pConditionWrapper = Napi::ObjectWrap<IUIAutomationConditionWrapper>::Unwrap(info[1].ToObject());
+
+    IUIAutomationElement *pFoundElement = NULL;
+    HRESULT hResult = m_pElement->FindFirst(treeScope, pConditionWrapper->m_pCondition, &pFoundElement);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    auto foundElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pFoundElement);
+
+    return foundElementWrapper;
+}
+
+Napi::Value IUIAutomationElementWrapper::FindFirstBuildCache(const Napi::CallbackInfo &info)
+{
+    auto treeScope = static_cast<TreeScope>(info[0].ToNumber().Uint32Value());
+
+    auto pConditionWrapper = Napi::ObjectWrap<IUIAutomationConditionWrapper>::Unwrap(info[1].ToObject());
+
+    auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[2].ToObject());
+
+    IUIAutomationElement *pFoundElement = NULL;
+    HRESULT hResult = m_pElement->FindFirstBuildCache(treeScope, pConditionWrapper->m_pCondition, pCacheRequestWrapper->m_pCacheRequest, &pFoundElement);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return IUIAutomationElementWrapper::New(info.Env(), pFoundElement);
+}
+
+Napi::Value IUIAutomationElementWrapper::GetCachedChildren(const Napi::CallbackInfo &info)
+{
+    IUIAutomationElementArray *pElementArray = NULL;
+    HRESULT hResult = m_pElement->GetCachedChildren(&pElementArray);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return IUIAutomationElementArrayWrapper::New(info.Env(), pElementArray);
+}
+
+Napi::Value IUIAutomationElementWrapper::GetCachedParent(const Napi::CallbackInfo &info)
+{
+    IUIAutomationElement *pElement = NULL;
+    HRESULT hResult = m_pElement->GetCachedParent(&pElement);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return IUIAutomationElementWrapper::New(info.Env(), pElement);
+}
+
+Napi::Value IUIAutomationElementWrapper::GetCachedPropertyValue(const Napi::CallbackInfo &info)
+{
+    auto propertyId = static_cast<PROPERTYID>(info[0].ToNumber().Uint32Value());
+
+    VARIANT variant;
+    HRESULT hResult = m_pElement->GetCachedPropertyValue(propertyId, &variant);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return FromVariant(info, variant);
+}
+
+Napi::Value IUIAutomationElementWrapper::GetCachedPropertyValueEx(const Napi::CallbackInfo &info)
+{
+    auto propertyId = static_cast<PROPERTYID>(info[0].ToNumber().Uint32Value());
+
+    auto ignoreDefaultValue = info[1].ToBoolean().Value();
+
+    VARIANT variant;
+    HRESULT hResult = m_pElement->GetCachedPropertyValueEx(propertyId, ignoreDefaultValue, &variant);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return FromVariant(info, variant);
+}
+
+Napi::Value IUIAutomationElementWrapper::GetClickablePoint(const Napi::CallbackInfo &info)
+{
+    auto pointObject = info[0].ToObject();
+
+    POINT point;
+    point.x = pointObject.Get("x").ToNumber().Uint32Value();
+    point.y = pointObject.Get("y").ToNumber().Uint32Value();
+
+    BOOL gotClickable;
+    HRESULT hResult = m_pElement->GetClickablePoint(&point, &gotClickable);
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return Napi::Boolean::New(info.Env(), gotClickable);
+}
+
+Napi::Value IUIAutomationElementWrapper::GetCurrentPropertyValue(const Napi::CallbackInfo &info)
+{
+    auto propertyId = static_cast<PROPERTYID>(info[0].ToNumber().Uint32Value());
+
+    VARIANT variant;
+    HRESULT hResult = m_pElement->GetCurrentPropertyValue(propertyId, &variant);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return FromVariant(info, variant);
+}
+
+Napi::Value IUIAutomationElementWrapper::GetCurrentPropertyValueEx(const Napi::CallbackInfo &info)
+{
+    auto propertyId = static_cast<PROPERTYID>(info[0].ToNumber().Uint32Value());
+
+    auto ignoreDefaultValue = info[1].ToBoolean().Value();
+
+    VARIANT variant;
+    HRESULT hResult = m_pElement->GetCurrentPropertyValueEx(propertyId, ignoreDefaultValue, &variant);
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+
+    return FromVariant(info, variant);
+}
+
+
+
+void IUIAutomationElementWrapper::SetFocus(const Napi::CallbackInfo &info)
+{
+    HRESULT hResult = m_pElement->SetFocus();
+
+    if (FAILED(hResult))
+    {
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
+    }
+}
+
+
+
+
+
+
+
+
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentName(const Napi::CallbackInfo &info)
 {
@@ -869,18 +1123,4 @@ Napi::Value IUIAutomationElementWrapper::GetCachedProviderDescription(const Napi
     }
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(providerDescription));
-}
-
-Napi::Value IUIAutomationElementWrapper::FindFirst(const Napi::CallbackInfo &info)
-{
-    auto treeScope = static_cast<TreeScope>(info[0].ToNumber().Int32Value());
-
-    auto pConditionWrapper = Napi::ObjectWrap<IUIAutomationConditionWrapper>::Unwrap(info[1].ToObject());
-
-    IUIAutomationElement *pFoundElement = NULL;
-    HRESULT hr = m_pElement->FindFirst(treeScope, pConditionWrapper->m_pCondition, &pFoundElement);
-
-    auto foundElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pFoundElement);
-
-    return foundElementWrapper;
 }

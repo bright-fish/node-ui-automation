@@ -28,3 +28,8 @@ IUIAutomationProxyFactoryMappingWrapper::IUIAutomationProxyFactoryMappingWrapper
 
     m_pProxyFactoryMapping = info[0].As<Napi::External<IUIAutomationProxyFactoryMapping>>().Data();
 }
+
+IUIAutomationProxyFactoryMappingWrapper::~IUIAutomationProxyFactoryMappingWrapper() 
+{
+    m_pProxyFactoryMapping->Release();
+}

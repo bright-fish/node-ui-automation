@@ -11,5 +11,5 @@ public:
   ATL::CComPtr<IUIAutomationCondition> m_pCondition;
 
   IUIAutomationConditionWrapper(const Napi::CallbackInfo &info);
-  // ~IUIAutomationConditionWrapper();
+  ~IUIAutomationConditionWrapper();
 };

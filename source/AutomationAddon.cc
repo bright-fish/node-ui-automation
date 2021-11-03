@@ -39,6 +39,7 @@ AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
 
 AutomationAddon::~AutomationAddon()
 {
+    CoUninitialize();
 }
 
 NODE_API_ADDON(AutomationAddon)

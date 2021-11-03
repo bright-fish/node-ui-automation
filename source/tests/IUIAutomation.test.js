@@ -6,7 +6,6 @@ const {
     IUIAutomationStructureChangedEventHandler,
     UIA_NamePropertyId,
     UIA_Window_WindowOpenedEventId,
-    UIA_HasKeyboardFocusPropertyId,
     UIA_ToggleToggleStatePropertyId,
     UIA_AutomationIdPropertyId,
     TreeScope
@@ -123,6 +122,7 @@ describe('IUIAutomation', () => {
 
             automation.addFocusChangedEventHandler(null, focusChangedEventHandler);
 
+            // automation.removeFocusChanedEventHandler()
         }, 300000);
     });
 
@@ -147,7 +147,7 @@ describe('IUIAutomation', () => {
         }, 300000);
     });
 
-    // todo: skipping
+    // skipping
     describe('addPropertyChangedEventHandlerNativeArray', () => {
         test.todo('returns');
     });
@@ -174,7 +174,7 @@ describe('IUIAutomation', () => {
         }, 300000);
     });
 
-    // todo: come back for this possibly.  
+    // skipping  
     describe('checkNotSupported', () => {
         test.todo('returns');
     });
@@ -195,7 +195,7 @@ describe('IUIAutomation', () => {
         });
     });
 
-    // todo: skipping for now.  
+    // skipping  
     describe('compareRuntimeIds', () => {
         test.todo('returns');
     });
@@ -262,12 +262,12 @@ describe('IUIAutomation', () => {
         });
     });
 
-    // todo: skipping
+    // skipping
     describe('createOrConditionFromArray', () => {
         test.todo('returns');
     });
 
-    // todo: skipping
+    // skipping
     describe('createOrConditionFromNativeArray', () => {
         test.todo('returns');
     });
@@ -337,23 +337,47 @@ describe('IUIAutomation', () => {
     });
 
     describe('elementFromPointBuildCache', () => {
-        test.todo('returns');
+        test('returns', () => {
+            const cacheRequest = automation.createCacheRequest();
+
+            const element = automation.elementFromPointBuildCache({ x: 123, y: 123 }, cacheRequest);
+
+            expect(element).toBeDefined();
+        });
     });
 
     describe('getFocusedElement', () => {
-        test.todo('returns');
+        test('returns', () => {
+            const element = automation.getFocusedElement();
+
+            expect(element).toBeDefined();
+        });
     });
 
     describe('getFocusedElementBuildCache', () => {
-        test.todo('returns');
+        test('returns', () => {
+            const cacheRequest = automation.createCacheRequest();
+
+            const element = automation.getFocusedElementBuildCache(cacheRequest);
+
+            expect(element).toBeDefined();
+        });
     });
 
     describe('getPatternProgrammaticName', () => {
-        test.todo('returns');
+        test('returns', () => {
+            // todo: need pattern names
+            // const element = automation.getPatternProgrammaticName();
+        });
     });
 
     describe('getPropertyProgrammaticName', () => {
-        test.todo('returns');
+        test('returns', () => {
+            const propertyName = automation.getPatternProgrammaticName(UIA_NamePropertyId);
+
+            // todo: verify this.
+            expect(propertyName).toBe('Name');
+        });
     });
 
     describe('getRootElement', () => {
@@ -365,7 +389,13 @@ describe('IUIAutomation', () => {
     });
 
     describe('getRootElementBuildCache', () => {
-        test.todo('returns');
+        test('returns', () => { 
+            const cacheRequest = automation.createCacheRequest();
+
+            const desktopElement = automation.getRootElementBuildCache(cacheRequest);
+
+            expect(desktopElement).not.toBeNull();
+        });
     });
 
     // todo: skipping
@@ -373,20 +403,25 @@ describe('IUIAutomation', () => {
         test.todo('returns');
     });
 
+    // skipping
     describe('pollForPotentialSupportedPatterns', () => {
         test.todo('returns');
     });
 
+    // skipping
     describe('pollForPotentialSupportedProperties', () => {
         test.todo('returns');
     });
 
+    // skipping
     describe('rectToVariant', () => {
         test.todo('returns');
     });
 
     describe('removeAllEventHandlers', () => {
-        test.todo('returns');
+        test('returns', () => {
+
+        });
     });
 
     describe('removeAutomationEventHandler', () => {
@@ -405,10 +440,12 @@ describe('IUIAutomation', () => {
         test.todo('returns');
     });
 
+    // skipping
     describe('safeArrayToRectNativeArray', () => {
         test.todo('returns');
     });
 
+    // skipping
     describe('variantToRect', () => {
         test.todo('returns');
     });

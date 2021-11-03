@@ -8,10 +8,10 @@ public:
   static Napi::FunctionReference *Initialize(Napi::Env env);
   static Napi::Object New(Napi::Env env, IUIAutomationElementArray * pElementArray);
 
-  IUIAutomationElementArray *m_pElementArray;
+  ATL::CComPtr<IUIAutomationElementArray> m_pElementArray;
 
   IUIAutomationElementArrayWrapper(const Napi::CallbackInfo &info);
-  // ~IUIAutomationElementArrayWrapper();
+  ~IUIAutomationElementArrayWrapper();
 
   Napi::Value GetElement(const Napi::CallbackInfo &info);
 };

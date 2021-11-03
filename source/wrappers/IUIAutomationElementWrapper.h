@@ -13,6 +13,20 @@ public:
   IUIAutomationElementWrapper(const Napi::CallbackInfo &info);
   ~IUIAutomationElementWrapper();
 
+  Napi::Value BuildUpdatedCache(const Napi::CallbackInfo &info);
+  Napi::Value FindAll(const Napi::CallbackInfo &info);
+  Napi::Value FindAllBuildCache(const Napi::CallbackInfo &info);
+  Napi::Value FindFirst(const Napi::CallbackInfo &info);
+  Napi::Value FindFirstBuildCache(const Napi::CallbackInfo &info);
+  Napi::Value GetCachedChildren(const Napi::CallbackInfo &info);
+  Napi::Value GetCachedParent(const Napi::CallbackInfo &info);
+  Napi::Value GetCachedPropertyValue(const Napi::CallbackInfo &info);
+  Napi::Value GetCachedPropertyValueEx(const Napi::CallbackInfo &info);
+  Napi::Value GetClickablePoint(const Napi::CallbackInfo &info);
+  Napi::Value GetCurrentPropertyValue(const Napi::CallbackInfo &info);
+  Napi::Value GetCurrentPropertyValueEx(const Napi::CallbackInfo &info);
+  void SetFocus(const Napi::CallbackInfo &info);
+
   Napi::Value GetCurrentName(const Napi::CallbackInfo &info);
   Napi::Value GetCurrentAcceleratorKey(const Napi::CallbackInfo &info);
   Napi::Value GetCurrentAccessKey(const Napi::CallbackInfo &info);
@@ -78,6 +92,4 @@ public:
   Napi::Value GetCachedOrientation(const Napi::CallbackInfo &info);
   Napi::Value GetCachedProcessId(const Napi::CallbackInfo &info);
   Napi::Value GetCachedProviderDescription(const Napi::CallbackInfo &info);
-
-  Napi::Value FindFirst(const Napi::CallbackInfo &info);
 };

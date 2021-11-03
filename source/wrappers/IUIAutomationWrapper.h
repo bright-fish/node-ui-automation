@@ -11,7 +11,6 @@ public:
   IUIAutomationWrapper(const Napi::CallbackInfo &info);
   ~IUIAutomationWrapper();
 
-  Napi::Value GetRootElement(const Napi::CallbackInfo &info);
   Napi::Value CreateCacheRequest(const Napi::CallbackInfo &info);
   void AddAutomationEventHandler(const Napi::CallbackInfo &info);
   void AddFocusChangedEventHandler(const Napi::CallbackInfo &info);
@@ -27,6 +26,18 @@ public:
   Napi::Value CreateTreeWalker(const Napi::CallbackInfo &info);
   Napi::Value CreateTrueCondition(const Napi::CallbackInfo &info);
   Napi::Value ElementFromPoint(const Napi::CallbackInfo &info);
+  Napi::Value ElementFromPointBuildCache(const Napi::CallbackInfo &info);
+  Napi::Value GetFocusedElement(const Napi::CallbackInfo &info);
+  Napi::Value GetFocusedElementBuildCache(const Napi::CallbackInfo &info);
+  Napi::Value GetPatternProgrammaticName(const Napi::CallbackInfo &info);
+  Napi::Value GetPropertyProgrammaticName(const Napi::CallbackInfo &info);
+  Napi::Value GetRootElement(const Napi::CallbackInfo &info);
+  Napi::Value GetRootElementBuildCache(const Napi::CallbackInfo &info);
+  void RemoveAllEventHandlers(const Napi::CallbackInfo &info);
+  void RemoveAutomationEventHandler(const Napi::CallbackInfo &info);
+  void RemoveFocusChangedEventHandler(const Napi::CallbackInfo &info);
+  void RemovePropertyChangedEventHandler(const Napi::CallbackInfo &info);
+  void RemoveStructureChangedEventHandler(const Napi::CallbackInfo &info);
 
   Napi::Value GetRawViewWalker(const Napi::CallbackInfo &info);
   Napi::Value GetRawViewCondition(const Napi::CallbackInfo &info);
@@ -40,6 +51,4 @@ public:
 
 private:
   ATL::CComPtr<IUIAutomation> m_pAutomation;
-
-  VARIANT ToVariant(Napi::Value local);
 };

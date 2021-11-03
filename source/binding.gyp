@@ -29,7 +29,8 @@
             "utilities/AutomationEventHandler.cc",
             "utilities/FocusChangedEventHandler.cc",
             "utilities/PropertyChangedEventHandler.cc",
-            "utilities/StructureChangedEventHandler.cc"
+            "utilities/StructureChangedEventHandler.cc",
+            "utilities/Functions.cc"
       ],
       "include_dirs": ["<!(node -p \"require('node-addon-api').include_dir\")"],
       "libraries" : [

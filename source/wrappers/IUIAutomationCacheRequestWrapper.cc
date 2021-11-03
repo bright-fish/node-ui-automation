@@ -28,3 +28,8 @@ IUIAutomationCacheRequestWrapper::IUIAutomationCacheRequestWrapper(const Napi::C
 
     m_pCacheRequest = info[0].As<Napi::External<IUIAutomationCacheRequest>>().Data();
 }
+
+IUIAutomationCacheRequestWrapper::~IUIAutomationCacheRequestWrapper()
+{
+    m_pCacheRequest.Release();
+}

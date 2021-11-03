@@ -28,3 +28,8 @@ IUIAutomationConditionWrapper::IUIAutomationConditionWrapper(const Napi::Callbac
 
     m_pCondition = info[0].As<Napi::External<IUIAutomationCondition>>().Data();
 }
+
+IUIAutomationConditionWrapper::~IUIAutomationConditionWrapper()
+{
+    m_pCondition.Release();
+}

@@ -11,5 +11,5 @@ public:
   IUIAutomationProxyFactoryMapping *m_pProxyFactoryMapping;
 
   IUIAutomationProxyFactoryMappingWrapper(const Napi::CallbackInfo &info);
-  // ~IUIAutomationProxyFactoryMappingWrapper();
+  ~IUIAutomationProxyFactoryMappingWrapper();
 };

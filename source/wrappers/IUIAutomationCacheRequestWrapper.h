@@ -11,5 +11,5 @@ public:
   ATL::CComPtr<IUIAutomationCacheRequest> m_pCacheRequest;
 
   IUIAutomationCacheRequestWrapper(const Napi::CallbackInfo &info);
-  // ~IUIAutomationCacheRequestWrapper();
+  ~IUIAutomationCacheRequestWrapper();
 };

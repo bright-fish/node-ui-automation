@@ -31,7 +31,14 @@ IUIAutomationElementArrayWrapper::IUIAutomationElementArrayWrapper(const Napi::C
     }
 
     m_pElementArray = info[0].As<Napi::External<IUIAutomationElementArray>>().Data();
+
 }
+
+IUIAutomationElementArrayWrapper::~IUIAutomationElementArrayWrapper() 
+{
+    m_pElementArray.Release();
+}
+
 
 // todo: indexer
 // todo: iterator?
@@ -49,10 +56,10 @@ Napi::Value IUIAutomationElementArrayWrapper::GetElement(const Napi::CallbackInf
 
     if (FAILED(hResult))
     {
-        return info.Env().Null();
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(info.Env(), error.ErrorMessage());
     }
 
-    auto pElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pElement);
-
-    return pElementWrapper;
+    return IUIAutomationElementWrapper::New(info.Env(), pElement);
 }
