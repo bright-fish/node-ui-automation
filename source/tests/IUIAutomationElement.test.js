@@ -1,21 +1,10 @@
 const { IUIAutomation, TreeScope, UIA_NamePropertyId } = require('bindings')('Automation');
-const { exec } = require('child_process');
 
 describe('IUIAutomationElement', () => {
     let winver = null;
     let automation = null;
     let desktopElement = null;
     let winverElement = null;
-
-    beforeAll((done) => {
-        winver = exec('winver', (error, stdout, stderr) => {
-            done();
-        });
-    });
-
-    afterAll(() => {
-        winver.kill();
-    });
 
     test('getRootElement', () => {
         automation = new IUIAutomation();
@@ -109,6 +98,7 @@ describe('IUIAutomationElement', () => {
     test.todo('getCurrentPatternAs');
 
     test('getCurrentPropertyValue', () => { 
+        // todo: here
         const value = winverElement.getCurrentPropertyValue(UIA_NamePropertyId);
 
         expect(value).toBe('About Windows');

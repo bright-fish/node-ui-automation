@@ -11,6 +11,7 @@ Napi::FunctionReference *IUIAutomationElementWrapper::Initialize(Napi::Env env)
         InstanceMethod<&IUIAutomationElementWrapper::FindFirst>("findFirst"),
         InstanceMethod<&IUIAutomationElementWrapper::FindFirstBuildCache>("findFirstBuildCache"),
         InstanceMethod<&IUIAutomationElementWrapper::GetCachedChildren>("getCachedChildren"),
+        InstanceMethod<&IUIAutomationElementWrapper::GetCachedParent>("getCachedParent"),
         InstanceMethod<&IUIAutomationElementWrapper::GetCachedPropertyValue>("getCachedPropertyValue"),
         InstanceMethod<&IUIAutomationElementWrapper::GetCachedPropertyValueEx>("getCachedPropertyValueEx"),
         InstanceMethod<&IUIAutomationElementWrapper::GetClickablePoint>("getClickablePoint"),
@@ -123,12 +124,7 @@ Napi::Value IUIAutomationElementWrapper::BuildUpdatedCache(const Napi::CallbackI
     IUIAutomationElement *pElement;
     auto hResult = m_pElement->BuildUpdatedCache(cacheRequestWrapper->m_pCacheRequest, &pElement);
 
-    if (FAILED(hResult))
-    {
-        auto error = _com_error(hResult);
-
-        throw Napi::Error::New(info.Env(), error.ErrorMessage());
-    }
+    HandleResult(info, hResult);
 
     return IUIAutomationElementWrapper::New(info.Env(), pElement);
 }
@@ -142,12 +138,7 @@ Napi::Value IUIAutomationElementWrapper::FindAll(const Napi::CallbackInfo &info)
     IUIAutomationElementArray *pFoundElements;
     HRESULT hResult = m_pElement->FindAll(treeScope, pConditionWrapper->m_pCondition, &pFoundElements);
 
-    if (FAILED(hResult))
-    {
-        auto error = _com_error(hResult);
-
-        throw Napi::Error::New(info.Env(), error.ErrorMessage());
-    }
+    HandleResult(info, hResult);
 
     return IUIAutomationElementArrayWrapper::New(info.Env(), pFoundElements);
 }
@@ -163,12 +154,7 @@ Napi::Value IUIAutomationElementWrapper::FindAllBuildCache(const Napi::CallbackI
     IUIAutomationElementArray *pFoundElements;
     HRESULT hResult = m_pElement->FindAllBuildCache(treeScope, pConditionWrapper->m_pCondition, pCacheRequestWrapper->m_pCacheRequest, &pFoundElements);
 
-    if (FAILED(hResult))
-    {
-        auto error = _com_error(hResult);
-
-        throw Napi::Error::New(info.Env(), error.ErrorMessage());
-    }
+    HandleResult(info, hResult);
 
     return IUIAutomationElementArrayWrapper::New(info.Env(), pFoundElements);
 }
@@ -182,12 +168,7 @@ Napi::Value IUIAutomationElementWrapper::FindFirst(const Napi::CallbackInfo &inf
     IUIAutomationElement *pFoundElement = NULL;
     HRESULT hResult = m_pElement->FindFirst(treeScope, pConditionWrapper->m_pCondition, &pFoundElement);
 
-    if (FAILED(hResult))
-    {
-        auto error = _com_error(hResult);
-
-        throw Napi::Error::New(info.Env(), error.ErrorMessage());
-    }
+    HandleResult(info, hResult);
 
     auto foundElementWrapper = IUIAutomationElementWrapper::New(info.Env(), pFoundElement);
 
@@ -205,12 +186,7 @@ Napi::Value IUIAutomationElementWrapper::FindFirstBuildCache(const Napi::Callbac
     IUIAutomationElement *pFoundElement = NULL;
     HRESULT hResult = m_pElement->FindFirstBuildCache(treeScope, pConditionWrapper->m_pCondition, pCacheRequestWrapper->m_pCacheRequest, &pFoundElement);
 
-    if (FAILED(hResult))
-    {
-        auto error = _com_error(hResult);
-
-        throw Napi::Error::New(info.Env(), error.ErrorMessage());
-    }
+    HandleResult(info, hResult);
 
     return IUIAutomationElementWrapper::New(info.Env(), pFoundElement);
 }
@@ -220,12 +196,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedChildren(const Napi::CallbackI
     IUIAutomationElementArray *pElementArray = NULL;
     HRESULT hResult = m_pElement->GetCachedChildren(&pElementArray);
 
-    if (FAILED(hResult))
-    {
-        auto error = _com_error(hResult);
-
-        throw Napi::Error::New(info.Env(), error.ErrorMessage());
-    }
+    HandleResult(info, hResult);
 
     return IUIAutomationElementArrayWrapper::New(info.Env(), pElementArray);
 }
@@ -235,50 +206,35 @@ Napi::Value IUIAutomationElementWrapper::GetCachedParent(const Napi::CallbackInf
     IUIAutomationElement *pElement = NULL;
     HRESULT hResult = m_pElement->GetCachedParent(&pElement);
 
-    if (FAILED(hResult))
-    {
-        auto error = _com_error(hResult);
-
-        throw Napi::Error::New(info.Env(), error.ErrorMessage());
-    }
+    HandleResult(info, hResult);
 
     return IUIAutomationElementWrapper::New(info.Env(), pElement);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCachedPropertyValue(const Napi::CallbackInfo &info)
 {
-    auto propertyId = static_cast<PROPERTYID>(info[0].ToNumber().Uint32Value());
+    auto propertyId = static_cast<PROPERTYID>(info[0].ToNumber().Int32Value());
 
     VARIANT variant;
     HRESULT hResult = m_pElement->GetCachedPropertyValue(propertyId, &variant);
 
-    if (FAILED(hResult))
-    {
-        auto error = _com_error(hResult);
+    HandleResult(info, hResult);
 
-        throw Napi::Error::New(info.Env(), error.ErrorMessage());
-    }
-
-    return FromVariant(info, variant);
+    return FromVariant(info.Env(), variant);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCachedPropertyValueEx(const Napi::CallbackInfo &info)
 {
-    auto propertyId = static_cast<PROPERTYID>(info[0].ToNumber().Uint32Value());
+    auto propertyId = static_cast<PROPERTYID>(info[0].ToNumber().Int32Value());
 
     auto ignoreDefaultValue = info[1].ToBoolean().Value();
 
     VARIANT variant;
     HRESULT hResult = m_pElement->GetCachedPropertyValueEx(propertyId, ignoreDefaultValue, &variant);
 
-    if (FAILED(hResult))
-    {
-        auto error = _com_error(hResult);
+    HandleResult(info, hResult);
 
-        throw Napi::Error::New(info.Env(), error.ErrorMessage());
-    }
-
-    return FromVariant(info, variant);
+    return FromVariant(info.Env(), variant);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetClickablePoint(const Napi::CallbackInfo &info)
@@ -291,12 +247,8 @@ Napi::Value IUIAutomationElementWrapper::GetClickablePoint(const Napi::CallbackI
 
     BOOL gotClickable;
     HRESULT hResult = m_pElement->GetClickablePoint(&point, &gotClickable);
-    if (FAILED(hResult))
-    {
-        auto error = _com_error(hResult);
 
-        throw Napi::Error::New(info.Env(), error.ErrorMessage());
-    }
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), gotClickable);
 }
@@ -308,14 +260,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentPropertyValue(const Napi::Cal
     VARIANT variant;
     HRESULT hResult = m_pElement->GetCurrentPropertyValue(propertyId, &variant);
 
-    if (FAILED(hResult))
-    {
-        auto error = _com_error(hResult);
+    HandleResult(info, hResult);
 
-        throw Napi::Error::New(info.Env(), error.ErrorMessage());
-    }
-
-    return FromVariant(info, variant);
+    return FromVariant(info.Env(), variant);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentPropertyValueEx(const Napi::CallbackInfo &info)
@@ -327,43 +274,25 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentPropertyValueEx(const Napi::C
     VARIANT variant;
     HRESULT hResult = m_pElement->GetCurrentPropertyValueEx(propertyId, ignoreDefaultValue, &variant);
 
-    if (FAILED(hResult))
-    {
-        auto error = _com_error(hResult);
+    HandleResult(info, hResult);
 
-        throw Napi::Error::New(info.Env(), error.ErrorMessage());
-    }
-
-    return FromVariant(info, variant);
+    return FromVariant(info.Env(), variant);
 }
-
-
 
 void IUIAutomationElementWrapper::SetFocus(const Napi::CallbackInfo &info)
 {
     HRESULT hResult = m_pElement->SetFocus();
 
-    if (FAILED(hResult))
-    {
-        auto error = _com_error(hResult);
-
-        throw Napi::Error::New(info.Env(), error.ErrorMessage());
-    }
+    HandleResult(info, hResult);
 }
-
-
-
-
-
-
-
-
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentName(const Napi::CallbackInfo &info)
 {
     BSTR name = NULL;
 
-    m_pElement->get_CurrentName(&name);
+    auto hResult = m_pElement->get_CurrentName(&name);
+
+    HandleResult(info, hResult);
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(name));
 }
@@ -372,7 +301,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentAcceleratorKey(const Napi::Ca
 {
     BSTR acceloratorKey = NULL;
 
-    m_pElement->get_CurrentAcceleratorKey(&acceloratorKey);
+    auto hResult = m_pElement->get_CurrentAcceleratorKey(&acceloratorKey);
+
+    HandleResult(info, hResult);
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(acceloratorKey));
 }
@@ -381,7 +312,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentAccessKey(const Napi::Callbac
 {
     BSTR accessKey = NULL;
 
-    m_pElement->get_CurrentAccessKey(&accessKey);
+    auto hResult = m_pElement->get_CurrentAccessKey(&accessKey);
+
+    HandleResult(info, hResult);
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(accessKey));
 }
@@ -390,7 +323,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentAriaProperties(const Napi::Ca
 {
     BSTR ariaProperties = NULL;
 
-    m_pElement->get_CurrentAriaProperties(&ariaProperties);
+    auto hResult = m_pElement->get_CurrentAriaProperties(&ariaProperties);
+
+    HandleResult(info, hResult);
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(ariaProperties));
 }
@@ -399,7 +334,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentAriaRole(const Napi::Callback
 {
     BSTR ariaRole = NULL;
 
-    m_pElement->get_CurrentAriaRole(&ariaRole);
+    auto hResult = m_pElement->get_CurrentAriaRole(&ariaRole);
+
+    HandleResult(info, hResult);
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(ariaRole));
 }
@@ -408,7 +345,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentAutomationId(const Napi::Call
 {
     BSTR automationId = NULL;
 
-    m_pElement->get_CurrentAutomationId(&automationId);
+    auto hResult = m_pElement->get_CurrentAutomationId(&automationId);
+
+    HandleResult(info, hResult);
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(automationId));
 }
@@ -417,18 +356,20 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentBoundingRectangle(const Napi:
 {
     RECT boundingRectangle;
 
-    m_pElement->get_CurrentBoundingRectangle(&boundingRectangle);
+    auto hResult = m_pElement->get_CurrentBoundingRectangle(&boundingRectangle);
 
-    auto boundingRectangleWrapper = RectWrapper::New(info.Env(), &boundingRectangle);
+    HandleResult(info, hResult);
 
-    return boundingRectangleWrapper;
+    return RectWrapper::New(info.Env(), &boundingRectangle);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentClassName(const Napi::CallbackInfo &info)
 {
     BSTR className = NULL;
 
-    m_pElement->get_CurrentClassName(&className);
+    auto hResult = m_pElement->get_CurrentClassName(&className);
+
+    HandleResult(info, hResult);
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(className));
 }
@@ -436,18 +377,20 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentClassName(const Napi::Callbac
 Napi::Value IUIAutomationElementWrapper::GetCurrentControllerFor(const Napi::CallbackInfo &info)
 {
     IUIAutomationElementArray *controllerFor;
-    m_pElement->get_CurrentControllerFor(&controllerFor);
+    auto hResult = m_pElement->get_CurrentControllerFor(&controllerFor);
 
-    auto controllerForWrapper = IUIAutomationElementArrayWrapper::New(info.Env(), controllerFor);
+    HandleResult(info, hResult);
 
-    return controllerForWrapper;
+    return IUIAutomationElementArrayWrapper::New(info.Env(), controllerFor);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentControlType(const Napi::CallbackInfo &info)
 {
     CONTROLTYPEID controlTypeId = NULL;
 
-    m_pElement->get_CurrentControlType(&controlTypeId);
+    auto hResult = m_pElement->get_CurrentControlType(&controlTypeId);
+
+    HandleResult(info, hResult);
 
     return Napi::Number::New(info.Env(), controlTypeId);
 }
@@ -456,7 +399,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentCulture(const Napi::CallbackI
 {
     int culture;
 
-    m_pElement->get_CurrentCulture(&culture);
+    auto hResult = m_pElement->get_CurrentCulture(&culture);
+
+    HandleResult(info, hResult);
 
     return Napi::Number::New(info.Env(), culture);
 }
@@ -465,29 +410,31 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentDescribedBy(const Napi::Callb
 {
     IUIAutomationElementArray *describedBy;
 
-    m_pElement->get_CurrentDescribedBy(&describedBy);
+    auto hResult = m_pElement->get_CurrentDescribedBy(&describedBy);
 
-    auto describedByWrapper = IUIAutomationElementArrayWrapper::New(info.Env(), describedBy);
+    HandleResult(info, hResult);
 
-    return describedByWrapper;
+    return IUIAutomationElementArrayWrapper::New(info.Env(), describedBy);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentFlowsTo(const Napi::CallbackInfo &info)
 {
     IUIAutomationElementArray *flowsTo;
 
-    m_pElement->get_CurrentFlowsTo(&flowsTo);
+    auto hResult = m_pElement->get_CurrentFlowsTo(&flowsTo);
 
-    auto flowsToWrapper = IUIAutomationElementArrayWrapper::New(info.Env(), flowsTo);
+    HandleResult(info, hResult);
 
-    return flowsToWrapper;
+    return IUIAutomationElementArrayWrapper::New(info.Env(), flowsTo);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentFrameworkId(const Napi::CallbackInfo &info)
 {
     BSTR frameworkId = NULL;
 
-    m_pElement->get_CurrentFrameworkId(&frameworkId);
+    auto hResult = m_pElement->get_CurrentFrameworkId(&frameworkId);
+
+    HandleResult(info, hResult);
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(frameworkId));
 }
@@ -495,7 +442,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentFrameworkId(const Napi::Callb
 Napi::Value IUIAutomationElementWrapper::GetCurrentHasKeyboardFocus(const Napi::CallbackInfo &info)
 {
     BOOL hasKeyboardFocus = NULL;
-    m_pElement->get_CurrentHasKeyboardFocus(&hasKeyboardFocus);
+    auto hResult = m_pElement->get_CurrentHasKeyboardFocus(&hasKeyboardFocus);
+
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), hasKeyboardFocus);
 }
@@ -504,7 +453,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentHelpText(const Napi::Callback
 {
     BSTR helpText = NULL;
 
-    m_pElement->get_CurrentHelpText(&helpText);
+    auto hResult = m_pElement->get_CurrentHelpText(&helpText);
+
+    HandleResult(info, hResult);
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(helpText));
 }
@@ -513,7 +464,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentIsContentElement(const Napi::
 {
     BOOL isContentElement = NULL;
 
-    m_pElement->get_CurrentIsContentElement(&isContentElement);
+    auto hResult = m_pElement->get_CurrentIsContentElement(&isContentElement);
+
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), isContentElement);
 }
@@ -522,7 +475,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentIsControlElement(const Napi::
 {
     BOOL isControlElement = NULL;
 
-    m_pElement->get_CurrentIsControlElement(&isControlElement);
+    auto hResult = m_pElement->get_CurrentIsControlElement(&isControlElement);
+
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), isControlElement);
 }
@@ -531,7 +486,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentIsDataValidForForm(const Napi
 {
     BOOL isDataValidForForm = NULL;
 
-    m_pElement->get_CurrentIsDataValidForForm(&isDataValidForForm);
+    auto hResult = m_pElement->get_CurrentIsDataValidForForm(&isDataValidForForm);
+
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), isDataValidForForm);
 }
@@ -540,7 +497,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentIsEnabled(const Napi::Callbac
 {
     BOOL isEnabled = NULL;
 
-    m_pElement->get_CurrentIsEnabled(&isEnabled);
+    auto hResult = m_pElement->get_CurrentIsEnabled(&isEnabled);
+
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), isEnabled);
 }
@@ -549,7 +508,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentIsKeyboardFocusable(const Nap
 {
     BOOL isKeyboardFocusable = NULL;
 
-    m_pElement->get_CurrentIsKeyboardFocusable(&isKeyboardFocusable);
+    auto hResult = m_pElement->get_CurrentIsKeyboardFocusable(&isKeyboardFocusable);
+
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), isKeyboardFocusable);
 }
@@ -558,7 +519,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentIsOffscreen(const Napi::Callb
 {
     BOOL isOffscreen = NULL;
 
-    m_pElement->get_CurrentIsOffscreen(&isOffscreen);
+    auto hResult = m_pElement->get_CurrentIsOffscreen(&isOffscreen);
+
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), isOffscreen);
 }
@@ -567,7 +530,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentIsPassword(const Napi::Callba
 {
     BOOL isPassword = NULL;
 
-    m_pElement->get_CurrentIsPassword(&isPassword);
+    auto hResult = m_pElement->get_CurrentIsPassword(&isPassword);
+
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), isPassword);
 }
@@ -576,7 +541,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentIsRequiredForForm(const Napi:
 {
     BOOL isRequiredForForm = NULL;
 
-    m_pElement->get_CurrentIsRequiredForForm(&isRequiredForForm);
+    auto hResult = m_pElement->get_CurrentIsRequiredForForm(&isRequiredForForm);
+
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), isRequiredForForm);
 }
@@ -585,7 +552,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentItemStatus(const Napi::Callba
 {
     BSTR itemStatus = NULL;
 
-    m_pElement->get_CurrentItemStatus(&itemStatus);
+    auto hResult = m_pElement->get_CurrentItemStatus(&itemStatus);
+
+    HandleResult(info, hResult);
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(itemStatus));
 }
@@ -594,7 +563,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentItemType(const Napi::Callback
 {
     BSTR itemType = NULL;
 
-    m_pElement->get_CurrentItemType(&itemType);
+    auto hResult = m_pElement->get_CurrentItemType(&itemType);
+
+    HandleResult(info, hResult);
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(itemType));
 }
@@ -603,18 +574,20 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentLabeledBy(const Napi::Callbac
 {
     IUIAutomationElement *element;
 
-    m_pElement->get_CurrentLabeledBy(&element);
+    auto hResult = m_pElement->get_CurrentLabeledBy(&element);
 
-    auto elementWrapper = IUIAutomationElementWrapper::New(info.Env(), element);
+    HandleResult(info, hResult);
 
-    return elementWrapper;
+    return IUIAutomationElementWrapper::New(info.Env(), element);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentLocalizedControlType(const Napi::CallbackInfo &info)
 {
     BSTR localizedControlType = NULL;
 
-    m_pElement->get_CurrentLocalizedControlType(&localizedControlType);
+    auto hResult = m_pElement->get_CurrentLocalizedControlType(&localizedControlType);
+
+    HandleResult(info, hResult);
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(localizedControlType));
 }
@@ -623,7 +596,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentNativeWindowHandle(const Napi
 {
     UIA_HWND nativeWindowHandle;
 
-    m_pElement->get_CurrentNativeWindowHandle(&nativeWindowHandle);
+    auto hResult = m_pElement->get_CurrentNativeWindowHandle(&nativeWindowHandle);
+
+    HandleResult(info, hResult);
 
     throw E_NOTIMPL;
     // return Napi::External<UIA_HWND>::New(info.Env(), nativeWindowHandle);
@@ -633,7 +608,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentOrientation(const Napi::Callb
 {
     OrientationType orientationType;
 
-    m_pElement->get_CurrentOrientation(&orientationType);
+    auto hResult = m_pElement->get_CurrentOrientation(&orientationType);
+
+    HandleResult(info, hResult);
 
     return Napi::Number::New(info.Env(), orientationType);
 }
@@ -642,7 +619,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentProcessId(const Napi::Callbac
 {
     int processId;
 
-    m_pElement->get_CurrentProcessId(&processId);
+    auto hResult = m_pElement->get_CurrentProcessId(&processId);
+
+    HandleResult(info, hResult);
 
     return Napi::Number::New(info.Env(), processId);
 }
@@ -651,7 +630,9 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentProviderDescription(const Nap
 {
     BSTR providerDescription = NULL;
 
-    m_pElement->get_CurrentProviderDescription(&providerDescription);
+    auto hResult = m_pElement->get_CurrentProviderDescription(&providerDescription);
+
+    HandleResult(info, hResult);
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(providerDescription));
 }
@@ -660,7 +641,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedName(const Napi::CallbackInfo 
 {
     BSTR name = NULL;
 
-    m_pElement->get_CachedName(&name);
+    auto hResult = m_pElement->get_CachedName(&name);
+
+    HandleResult(info, hResult);
 
     if (!name)
     {
@@ -674,7 +657,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedAcceleratorKey(const Napi::Cal
 {
     BSTR acceloratorKey = NULL;
 
-    m_pElement->get_CachedAcceleratorKey(&acceloratorKey);
+    auto hResult = m_pElement->get_CachedAcceleratorKey(&acceloratorKey);
+
+    HandleResult(info, hResult);
 
     if (!acceloratorKey)
     {
@@ -688,7 +673,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedAccessKey(const Napi::Callback
 {
     BSTR accessKey = NULL;
 
-    m_pElement->get_CachedAccessKey(&accessKey);
+    auto hResult = m_pElement->get_CachedAccessKey(&accessKey);
+
+    HandleResult(info, hResult);
 
     if (!accessKey)
     {
@@ -702,7 +689,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedAriaProperties(const Napi::Cal
 {
     BSTR ariaProperties = NULL;
 
-    m_pElement->get_CachedAriaProperties(&ariaProperties);
+    auto hResult = m_pElement->get_CachedAriaProperties(&ariaProperties);
+
+    HandleResult(info, hResult);
 
     if (!ariaProperties)
     {
@@ -716,7 +705,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedAriaRole(const Napi::CallbackI
 {
     BSTR ariaRole = NULL;
 
-    m_pElement->get_CachedAriaRole(&ariaRole);
+    auto hResult = m_pElement->get_CachedAriaRole(&ariaRole);
+
+    HandleResult(info, hResult);
 
     if (!ariaRole)
     {
@@ -730,7 +721,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedAutomationId(const Napi::Callb
 {
     BSTR automationId = NULL;
 
-    m_pElement->get_CachedAutomationId(&automationId);
+    auto hResult = m_pElement->get_CachedAutomationId(&automationId);
+
+    HandleResult(info, hResult);
 
     if (!automationId)
     {
@@ -746,22 +739,18 @@ Napi::Value IUIAutomationElementWrapper::GetCachedBoundingRectangle(const Napi::
 
     auto hResult = m_pElement->get_CachedBoundingRectangle(&boundingRectangle);
 
-    if (FAILED(hResult))
-    {
-        return info.Env()
-            .Null();
-    }
+    HandleResult(info, hResult);
 
-    auto boundingRectangleWrapper = RectWrapper::New(info.Env(), &boundingRectangle);
-
-    return boundingRectangleWrapper;
+    return RectWrapper::New(info.Env(), &boundingRectangle);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCachedClassName(const Napi::CallbackInfo &info)
 {
     BSTR className = NULL;
 
-    m_pElement->get_CachedClassName(&className);
+    auto hResult = m_pElement->get_CachedClassName(&className);
+
+    HandleResult(info, hResult);
 
     if (!className)
     {
@@ -777,15 +766,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedControllerFor(const Napi::Call
     IUIAutomationElementArray *controllerFor;
     auto hResult = m_pElement->get_CachedControllerFor(&controllerFor);
 
-    if (FAILED(hResult))
-    {
-        return info.Env()
-            .Null();
-    }
+    HandleResult(info, hResult);
 
-    auto controllerForWrapper = IUIAutomationElementArrayWrapper::New(info.Env(), controllerFor);
-
-    return controllerForWrapper;
+    return IUIAutomationElementArrayWrapper::New(info.Env(), controllerFor);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCachedControlType(const Napi::CallbackInfo &info)
@@ -794,11 +777,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedControlType(const Napi::Callba
 
     auto hResult = m_pElement->get_CachedControlType(&controlTypeId);
 
-    if (FAILED(hResult))
-    {
-        return info.Env()
-            .Null();
-    }
+    HandleResult(info, hResult);
 
     return Napi::Number::New(info.Env(), controlTypeId);
 }
@@ -809,11 +788,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedCulture(const Napi::CallbackIn
 
     auto hResult = m_pElement->get_CachedCulture(&culture);
 
-    if (FAILED(hResult))
-    {
-        info.Env()
-            .Null();
-    }
+    HandleResult(info, hResult);
 
     return Napi::Number::New(info.Env(), culture);
 }
@@ -824,15 +799,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedDescribedBy(const Napi::Callba
 
     auto hResult = m_pElement->get_CachedDescribedBy(&describedBy);
 
-    if (FAILED(hResult))
-    {
-        return info.Env()
-            .Null();
-    }
+    HandleResult(info, hResult);
 
-    auto describedByWrapper = IUIAutomationElementArrayWrapper::New(info.Env(), describedBy);
-
-    return describedByWrapper;
+    return IUIAutomationElementArrayWrapper::New(info.Env(), describedBy);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCachedFlowsTo(const Napi::CallbackInfo &info)
@@ -841,22 +810,18 @@ Napi::Value IUIAutomationElementWrapper::GetCachedFlowsTo(const Napi::CallbackIn
 
     auto hResult = m_pElement->get_CachedFlowsTo(&flowsTo);
 
-    if (FAILED(hResult))
-    {
-        return info.Env()
-            .Null();
-    }
+    HandleResult(info, hResult);
 
-    auto flowsToWrapper = IUIAutomationElementArrayWrapper::New(info.Env(), flowsTo);
-
-    return flowsToWrapper;
+    return IUIAutomationElementArrayWrapper::New(info.Env(), flowsTo);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCachedFrameworkId(const Napi::CallbackInfo &info)
 {
     BSTR frameworkId = NULL;
 
-    m_pElement->get_CachedFrameworkId(&frameworkId);
+    auto hResult = m_pElement->get_CachedFrameworkId(&frameworkId);
+
+    HandleResult(info, hResult);
 
     if (!frameworkId)
     {
@@ -872,11 +837,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedHasKeyboardFocus(const Napi::C
     BOOL hasKeyboardFocus = NULL;
     auto hResult = m_pElement->get_CachedHasKeyboardFocus(&hasKeyboardFocus);
 
-    if (FAILED(hResult))
-    {
-        return info.Env()
-            .Null();
-    }
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), hasKeyboardFocus);
 }
@@ -885,7 +846,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedHelpText(const Napi::CallbackI
 {
     BSTR helpText = NULL;
 
-    m_pElement->get_CachedHelpText(&helpText);
+    auto hResult = m_pElement->get_CachedHelpText(&helpText);
+
+    HandleResult(info, hResult);
 
     if (!helpText)
     {
@@ -902,11 +865,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedIsContentElement(const Napi::C
 
     auto hResult = m_pElement->get_CachedIsContentElement(&isContentElement);
 
-    if (FAILED(hResult))
-    {
-        return info.Env()
-            .Null();
-    }
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), isContentElement);
 }
@@ -917,11 +876,8 @@ Napi::Value IUIAutomationElementWrapper::GetCachedIsControlElement(const Napi::C
 
     auto hResult = m_pElement->get_CachedIsControlElement(&isControlElement);
 
-    if (FAILED(hResult))
-    {
-        return info.Env()
-            .Null();
-    }
+    HandleResult(info, hResult);
+
     return Napi::Boolean::New(info.Env(), isControlElement);
 }
 
@@ -931,11 +887,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedIsDataValidForForm(const Napi:
 
     auto hResult = m_pElement->get_CachedIsDataValidForForm(&isDataValidForForm);
 
-    if (FAILED(hResult))
-    {
-        return info.Env()
-            .Null();
-    }
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), isDataValidForForm);
 }
@@ -946,11 +898,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedIsEnabled(const Napi::Callback
 
     auto hResult = m_pElement->get_CachedIsEnabled(&isEnabled);
 
-    if (FAILED(hResult))
-    {
-        return info.Env()
-            .Null();
-    }
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), isEnabled);
 }
@@ -961,10 +909,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedIsKeyboardFocusable(const Napi
 
     auto hResult = m_pElement->get_CachedIsKeyboardFocusable(&isKeyboardFocusable);
 
-    if (FAILED(hResult))
-    {
-        return info.Env().Null();
-    }
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), isKeyboardFocusable);
 }
@@ -975,10 +920,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedIsOffscreen(const Napi::Callba
 
     auto hResult = m_pElement->get_CachedIsOffscreen(&isOffscreen);
 
-    if (FAILED(hResult))
-    {
-        return info.Env().Null();
-    }
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), isOffscreen);
 }
@@ -989,10 +931,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedIsPassword(const Napi::Callbac
 
     auto hResult = m_pElement->get_CachedIsPassword(&isPassword);
 
-    if (FAILED(hResult))
-    {
-        return info.Env().Null();
-    }
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), isPassword);
 }
@@ -1003,10 +942,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedIsRequiredForForm(const Napi::
 
     auto hResult = m_pElement->get_CachedIsRequiredForForm(&isRequiredForForm);
 
-    if (FAILED(hResult))
-    {
-        return info.Env().Null();
-    }
+    HandleResult(info, hResult);
 
     return Napi::Boolean::New(info.Env(), isRequiredForForm);
 }
@@ -1015,7 +951,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedItemStatus(const Napi::Callbac
 {
     BSTR itemStatus = NULL;
 
-    m_pElement->get_CachedItemStatus(&itemStatus);
+    auto hResult = m_pElement->get_CachedItemStatus(&itemStatus);
+
+    HandleResult(info, hResult);
 
     if (!itemStatus)
     {
@@ -1029,7 +967,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedItemType(const Napi::CallbackI
 {
     BSTR itemType = NULL;
 
-    m_pElement->get_CachedItemType(&itemType);
+    auto hResult = m_pElement->get_CachedItemType(&itemType);
+
+    HandleResult(info, hResult);
 
     if (!itemType)
     {
@@ -1043,18 +983,20 @@ Napi::Value IUIAutomationElementWrapper::GetCachedLabeledBy(const Napi::Callback
 {
     IUIAutomationElement *element;
 
-    m_pElement->get_CachedLabeledBy(&element);
+    auto hResult = m_pElement->get_CachedLabeledBy(&element);
 
-    auto elementWrapper = IUIAutomationElementWrapper::New(info.Env(), element);
+    HandleResult(info, hResult);
 
-    return elementWrapper;
+    return IUIAutomationElementWrapper::New(info.Env(), element);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCachedLocalizedControlType(const Napi::CallbackInfo &info)
 {
     BSTR localizedControlType = NULL;
 
-    m_pElement->get_CachedLocalizedControlType(&localizedControlType);
+    auto hResult = m_pElement->get_CachedLocalizedControlType(&localizedControlType);
+
+    HandleResult(info, hResult);
 
     if (!localizedControlType)
     {
@@ -1070,14 +1012,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedNativeWindowHandle(const Napi:
 
     auto hResult = m_pElement->get_CachedNativeWindowHandle(&nativeWindowHandle);
 
-    if (FAILED(hResult))
-    {
-        return info.Env()
-            .Null();
-    }
-    throw E_NOTIMPL;
+    HandleResult(info, hResult);
 
-    // todo:  return Napi::External::New(info.Env(), nativeWindowHandle);
+    return Napi::External<UIA_HWND>::New(info.Env(), &nativeWindowHandle);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCachedOrientation(const Napi::CallbackInfo &info)
@@ -1086,11 +1023,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedOrientation(const Napi::Callba
 
     auto hResult = m_pElement->get_CachedOrientation(&orientationType);
 
-    if (FAILED(hResult))
-    {
-        return info.Env()
-            .Null();
-    }
+    HandleResult(info, hResult);
 
     return Napi::Number::New(info.Env(), orientationType);
 }
@@ -1101,11 +1034,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedProcessId(const Napi::Callback
 
     auto hResult = m_pElement->get_CachedProcessId(&processId);
 
-    if (FAILED(hResult))
-    {
-        return info.Env()
-            .Null();
-    }
+    HandleResult(info, hResult);
 
     return Napi::Number::New(info.Env(), processId);
 }
@@ -1114,7 +1043,9 @@ Napi::Value IUIAutomationElementWrapper::GetCachedProviderDescription(const Napi
 {
     BSTR providerDescription = NULL;
 
-    m_pElement->get_CachedProviderDescription(&providerDescription);
+    auto hResult = m_pElement->get_CachedProviderDescription(&providerDescription);
+
+    HandleResult(info, hResult);
 
     if (!providerDescription)
     {

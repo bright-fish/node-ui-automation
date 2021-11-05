@@ -1,4 +1,3 @@
-
 #include "Wrappers.h"
 #include "../AutomationAddon.h"
 #include "../Shared.h"
@@ -24,4 +23,5 @@ IUIAutomationFocusChangedEventHandlerWrapper::IUIAutomationFocusChangedEventHand
 
 IUIAutomationFocusChangedEventHandlerWrapper::~IUIAutomationFocusChangedEventHandlerWrapper()
 {
+
 }

@@ -2,6 +2,7 @@
 #include "../Shared.h"
 #include "PropertyChangedEvent.h"
 #include "../wrappers/IUIAutomationElementWrapper.h"
+#include "../utilities/Functions.h"
 
 PropertyChangedEventHandler::PropertyChangedEventHandler(Napi::ThreadSafeFunction threadSafeFunction)
 {
@@ -66,7 +67,7 @@ HRESULT PropertyChangedEventHandler::HandlePropertyChangedEvent(IUIAutomationEle
         function.Call({
             IUIAutomationElementWrapper::New(env, event->pSender),
             Napi::Number::New(env, event->propertyId),
-            // todo Variant wrapper.  VariantWrapper::New(env, event->newValue),
+            FromVariant(env, event->newValue)
         });
 
         delete event;

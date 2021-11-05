@@ -2,5 +2,6 @@
 
 #include "../Shared.h"
 
-VARIANT ToVariant(const Napi::CallbackInfo &info, Napi::Value local);
-Napi::Value FromVariant(const Napi::CallbackInfo &info, VARIANT variant);
+void HandleResult(const Napi::CallbackInfo &info, HRESULT hResult);
+VARIANT ToVariant(Napi::Env env, Napi::Value local);
+Napi::Value FromVariant(Napi::Env env, VARIANT variant);

@@ -1,5 +1,6 @@
 #include "Wrappers.h"
 #include "../AutomationAddon.h"
+#include "../utilities/Functions.h"
 
 Napi::FunctionReference *IUIAutomationElementArrayWrapper::Initialize(Napi::Env env)
 {
@@ -54,12 +55,7 @@ Napi::Value IUIAutomationElementArrayWrapper::GetElement(const Napi::CallbackInf
     IUIAutomationElement *pElement = NULL;
     auto hResult = m_pElementArray->GetElement(number.Int32Value(), &pElement);
 
-    if (FAILED(hResult))
-    {
-        auto error = _com_error(hResult);
-
-        throw Napi::Error::New(info.Env(), error.ErrorMessage());
-    }
+    HandleResult(info, hResult);
 
     return IUIAutomationElementWrapper::New(info.Env(), pElement);
 }

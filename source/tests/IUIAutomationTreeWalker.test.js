@@ -1,22 +1,25 @@
 const { IUIAutomation, UIA_NamePropertyId, TreeScope } = require('bindings')('Automation');
 
-
 describe('IUIAutomationTreeWalker', () => {
     let automation = null;
     let rawViewWalker = null;
     let desktopElement = null;
     let winverElement = null;
 
-    test('get rawViewWalker', () => {
+    beforeAll(() => {
         automation = new IUIAutomation();
-
-        rawViewWalker = automation.rawViewWalker;
 
         desktopElement = automation.getRootElement();
 
         const propertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
 
         winverElement = desktopElement.findFirst(TreeScope.TreeScope_Subtree, propertyCondition);
+    });
+
+    test('rawViewWalker getter', () => {
+        rawViewWalker = automation.rawViewWalker;
+
+        expect(rawViewWalker).toBeDefined();
     });
 
     test('getFirstChildElement', () => {
@@ -94,7 +97,7 @@ describe('IUIAutomationTreeWalker', () => {
 
         expect(normalizedElement).not.toBeNull();
     });
-    
+
     test('normalizeElementBuildCache', () => {
         const cacheRequest = automation.createCacheRequest();
 

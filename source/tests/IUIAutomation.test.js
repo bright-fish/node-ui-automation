@@ -76,7 +76,6 @@ describe('IUIAutomation', () => {
         });
     });
 
-    // todo: removeAutomationEventHandler
     xdescribe('add/removeAutomationEventHandler', () => {
         test('returns', (done) => {
             expect.assertions(2);
@@ -87,6 +86,8 @@ describe('IUIAutomation', () => {
                 expect(eventId).not.toBeNull();
 
                 console.log(sender.currentName);
+
+                // todo: automation.removeAutomationEventHandler(eventHandler);
 
                 done();
             });
