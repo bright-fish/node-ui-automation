@@ -190,10 +190,17 @@ void IUIAutomationWrapper::AddAutomationEventHandler(const Napi::CallbackInfo &i
     auto eventId = static_cast<EVENTID>(info[0].ToNumber().Int32Value());
     auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[1].ToObject());
     auto treeScope = static_cast<TreeScope>(info[2].ToNumber().Int32Value());
-    auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[3].ToObject());
+
+    IUIAutomationCacheRequest *pCacheRequest = NULL;
+    if (!info[3].IsNull())
+    {
+        auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[3].ToObject());
+        pCacheRequest = pCacheRequestWrapper->m_pCacheRequest;
+    }
+
     auto pEventHandlerWrapper = Napi::ObjectWrap<IUIAutomationEventHandlerWrapper>::Unwrap(info[4].ToObject());
 
-    HRESULT hResult = m_pAutomation->AddAutomationEventHandler(eventId, pElementWrapper->m_pElement, treeScope, NULL, pEventHandlerWrapper->m_pEventHandler);
+    HRESULT hResult = m_pAutomation->AddAutomationEventHandler(eventId, pElementWrapper->m_pElement, treeScope, pCacheRequest, pEventHandlerWrapper->m_pEventHandler);
 
     HandleResult(info, hResult);
 }
@@ -360,8 +367,7 @@ Napi::Value IUIAutomationWrapper::CreateOrCondition(const Napi::CallbackInfo &in
 
 Napi::Value IUIAutomationWrapper::CreatePropertyCondition(const Napi::CallbackInfo &info)
 {
-    auto propertyIdIndex = info[0].ToNumber().Int32Value();
-    auto propertyId = static_cast<PROPERTYID>(propertyIdIndex);
+    auto propertyId = static_cast<PROPERTYID>(info[0].ToNumber().Int32Value());
 
     auto variant = ToVariant(info.Env(), info[1]);
 
@@ -421,10 +427,15 @@ Napi::Value IUIAutomationWrapper::ElementFromPointBuildCache(const Napi::Callbac
     point.x = pointObject.Get("x").ToNumber().Uint32Value();
     point.y = pointObject.Get("y").ToNumber().Uint32Value();
 
-    auto cacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[1].ToObject());
+    IUIAutomationCacheRequest *pCacheRequest = NULL;
+    if (!info[1].IsNull())
+    {
+        auto cacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[1].ToObject());
+        pCacheRequest = cacheRequestWrapper->m_pCacheRequest;
+    }
 
     ATL::CComPtr<IUIAutomationElement> pAutomationElement;
-    auto hResult = m_pAutomation->ElementFromPointBuildCache(point, cacheRequestWrapper->m_pCacheRequest, &pAutomationElement);
+    auto hResult = m_pAutomation->ElementFromPointBuildCache(point, pCacheRequest, &pAutomationElement);
 
     HandleResult(info, hResult);
 
@@ -443,10 +454,15 @@ Napi::Value IUIAutomationWrapper::GetFocusedElement(const Napi::CallbackInfo &in
 
 Napi::Value IUIAutomationWrapper::GetFocusedElementBuildCache(const Napi::CallbackInfo &info)
 {
-    auto cacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[0].ToObject());
+    IUIAutomationCacheRequest *pCacheRequest = NULL;
+    if (!info[1].IsNull())
+    {
+        auto cacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[0].ToObject());
+        pCacheRequest = cacheRequestWrapper->m_pCacheRequest;
+    }
 
     ATL::CComPtr<IUIAutomationElement> pAutomationElement;
-    auto hResult = m_pAutomation->GetFocusedElementBuildCache(cacheRequestWrapper->m_pCacheRequest, &pAutomationElement);
+    auto hResult = m_pAutomation->GetFocusedElementBuildCache(pCacheRequest, &pAutomationElement);
 
     HandleResult(info, hResult);
 

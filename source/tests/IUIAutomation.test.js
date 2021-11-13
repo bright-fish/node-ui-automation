@@ -11,6 +11,7 @@ const {
     TreeScope
 } = require('bindings')('Automation');
 
+
 describe('IUIAutomation', () => {
     let automation = null;
 

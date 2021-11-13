@@ -32,6 +32,7 @@ AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
         InstanceValue("IUIAutomationPropertyChangedEventHandler", IUIAutomationPropertyChangedEventHandlerWrapperConstructor->Value()),
         InstanceValue("IUIAutomationStructureChangedEventHandler", IUIAutomationStructureChangedEventHandlerWrapperConstructor->Value()),
         InstanceValue("TreeScope", TreeScopeWrapper::New(env)),
+        InstanceValue("AutomationElementMode", AutomationElementModeWrapper::New(env)),
     };
 
     DefineAddon(exports, addonDefinition);

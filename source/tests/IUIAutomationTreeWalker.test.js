@@ -17,9 +17,7 @@ describe('IUIAutomationTreeWalker', () => {
     });
 
     test('rawViewWalker getter', () => {
-        rawViewWalker = automation.rawViewWalker;
-
-        expect(rawViewWalker).toBeDefined();
+        expect(automation.rawViewWalker).toBeDefined();
     });
 
     test('getFirstChildElement', () => {

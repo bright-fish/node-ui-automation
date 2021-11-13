@@ -1,4 +1,4 @@
-const { IUIAutomation, TreeScope, UIA_NamePropertyId } = require('bindings')('Automation');
+const { IUIAutomation, TreeScope, UIA_NamePropertyId, AutomationElementMode } = require('bindings')('Automation');
 
 describe('IUIAutomationElement', () => {
     let winver = null;
@@ -75,13 +75,33 @@ describe('IUIAutomationElement', () => {
     test.todo('getCachedPatternAs');
 
     test('getCachedPropertyValue', () => { 
-        const value = winverElement.getCachedPropertyValue(UIA_NamePropertyId);
+        let cacheRequest = automation.createCacheRequest();
+
+        cacheRequest.automationElementMode = AutomationElementMode.None;
+
+        cacheRequest.treeFilter = automation.rawViewCondition;
+
+        cacheRequest.addProperty(UIA_NamePropertyId);
+
+        winverCachedElement = winverElement.buildUpdatedCache(cacheRequest);
+
+        const value = winverCachedElement.getCachedPropertyValue(UIA_NamePropertyId);
 
         expect(value).toBe('About Windows');
     });
 
     test('getCachedPropertyValueEx', () => { 
-        const value = winverElement.getCachedPropertyValueEx(UIA_NamePropertyId, true);
+        let cacheRequest = automation.createCacheRequest();
+
+        cacheRequest.automationElementMode = AutomationElementMode.None;
+
+        cacheRequest.treeFilter = automation.rawViewCondition;
+
+        cacheRequest.addProperty(UIA_NamePropertyId);
+
+        winverCachedElement = winverElement.buildUpdatedCache(cacheRequest);
+
+        const value = winverCachedElement.getCachedPropertyValueEx(UIA_NamePropertyId, true);
 
         expect(value).toBe('About Windows');
     });
@@ -98,7 +118,6 @@ describe('IUIAutomationElement', () => {
     test.todo('getCurrentPatternAs');
 
     test('getCurrentPropertyValue', () => { 
-        // todo: here
         const value = winverElement.getCurrentPropertyValue(UIA_NamePropertyId);
 
         expect(value).toBe('About Windows');
