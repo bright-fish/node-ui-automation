@@ -3,7 +3,6 @@
 #include "UIA_PropertyIdsWrapper.h"
 #include "AutomationElementModeWrapper.h"
 #include "TreeScopeWrapper.h"
-#include "SafeArrayWrapper.h"
 #include "RectWrapper.h"
 
 #include "IUnknownWrapper.h"
