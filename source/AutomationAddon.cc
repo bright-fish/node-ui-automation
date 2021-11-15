@@ -22,17 +22,17 @@ AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
     IUIAutomationPropertyChangedEventHandlerWrapperConstructor = IUIAutomationPropertyChangedEventHandlerWrapper::Initialize(env);
     IUIAutomationStructureChangedEventHandlerWrapperConstructor = IUIAutomationStructureChangedEventHandlerWrapper::Initialize(env);
 
-    UIA_PropertyIdsWrapper::Export(env, exports);
-    UIA_EventIdsWrapper::Export(env, exports);
-
     auto addonDefinition = {
-        InstanceValue("IUIAutomation", IUIAutomationWrapperConstructor->Value()),
-        InstanceValue("IUIAutomationEventHandler", IUIAutomationEventHandlerWrapperConstructor->Value()),
-        InstanceValue("IUIAutomationFocusChangedEventHandler", IUIAutomationFocusChangedEventHandlerWrapperConstructor->Value()),
-        InstanceValue("IUIAutomationPropertyChangedEventHandler", IUIAutomationPropertyChangedEventHandlerWrapperConstructor->Value()),
-        InstanceValue("IUIAutomationStructureChangedEventHandler", IUIAutomationStructureChangedEventHandlerWrapperConstructor->Value()),
-        InstanceValue("TreeScope", TreeScopeWrapper::New(env)),
-        InstanceValue("AutomationElementMode", AutomationElementModeWrapper::New(env)),
+        InstanceValue("Automation", IUIAutomationWrapperConstructor->Value()),
+        InstanceValue("AutomationEventHandler", IUIAutomationEventHandlerWrapperConstructor->Value()),
+        InstanceValue("AutomationFocusChangedEventHandler", IUIAutomationFocusChangedEventHandlerWrapperConstructor->Value()),
+        InstanceValue("AutomationPropertyChangedEventHandler", IUIAutomationPropertyChangedEventHandlerWrapperConstructor->Value()),
+        InstanceValue("AutomationStructureChangedEventHandler", IUIAutomationStructureChangedEventHandlerWrapperConstructor->Value()),
+        InstanceValue("TreeScopes", TreeScopeWrapper::New(env)),
+        InstanceValue("AutomationElementModes", AutomationElementModeWrapper::New(env)),
+        InstanceValue("AutomationProperties", UIA_PropertyIdsWrapper::New(env)),
+        InstanceValue("AutomationEvents", UIA_EventIdsWrapper::New(env)),
+        InstanceValue("AutomationPatterns", UIA_PatternIdsWrapper::New(env)),
     };
 
     DefineAddon(exports, addonDefinition);

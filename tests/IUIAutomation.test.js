@@ -1,26 +1,24 @@
 const {
-    IUIAutomation,
-    IUIAutomationEventHandler,
-    IUIAutomationFocusChangedEventHandler,
-    IUIAutomationPropertyChangedEventHandler,
-    IUIAutomationStructureChangedEventHandler,
-    UIA_NamePropertyId,
-    UIA_Window_WindowOpenedEventId,
-    UIA_ToggleToggleStatePropertyId,
-    UIA_AutomationIdPropertyId,
-    TreeScope
-} = require('bindings')('Automation');
-
+    Automation,
+    AutomationEventHandler,
+    AutomationFocusChangedEventHandler,
+    AutomationPropertyChangedEventHandler,
+    AutomationStructureChangedEventHandler,
+    AutomationProperties,
+    AutomationEvents,
+    TreeScopes,
+    AutomationPatterns
+} = require('microsoft-ui-automation');
 
 describe('IUIAutomation', () => {
     let automation = null;
 
     test('constructor', () => {
-        automation = new IUIAutomation();
+        automation = new Automation();
     });
 
     beforeEach(() => {
-        automation = new IUIAutomation();
+        automation = new Automation();
     });
 
     describe('contentViewCondition', () => {
@@ -69,6 +67,7 @@ describe('IUIAutomation', () => {
         test('returns', () => {
             expect(automation.reservedMixedAttributeValue).not.toBeNull();
         });
+
     });
 
     describe('reservedNotSupportedValue', () => {
@@ -81,7 +80,7 @@ describe('IUIAutomation', () => {
         test('returns', (done) => {
             expect.assertions(2);
 
-            const eventHandler = new IUIAutomationEventHandler((sender, eventId) => {
+            const eventHandler = new AutomationEventHandler((sender, eventId) => {
                 expect(sender).not.toBeNull();
 
                 expect(eventId).not.toBeNull();
@@ -95,17 +94,17 @@ describe('IUIAutomation', () => {
 
             const desktopElement = automation.getRootElement();
 
-            const winverNamePropertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
+            const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
 
-            const winverElement = desktopElement.findFirst(TreeScope.TreeScope_Subtree, winverNamePropertyCondition);
+            const winverElement = desktopElement.findFirst(TreeScopes.Subtree, winverNamePropertyCondition);
 
-            const propertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "Microsoft Software License Terms");
+            const propertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "Microsoft Software License Terms");
 
             const cacheRequest = automation.createCacheRequest();
 
-            const termsLink = winverElement.findFirst(TreeScope.TreeScope_Subtree, propertyCondition);
+            const termsLink = winverElement.findFirst(TreeScopes.Subtree, propertyCondition);
 
-            automation.addAutomationEventHandler(UIA_Window_WindowOpenedEventId, desktopElement, TreeScope.TreeScope_Subtree, cacheRequest, eventHandler);
+            automation.addAutomationEventHandler(AutomationEvents.Window_WindowOpenedEventId, desktopElement, TreeScopes.Subtree, cacheRequest, eventHandler);
         }, 300000);
     });
 
@@ -114,7 +113,7 @@ describe('IUIAutomation', () => {
         test('returns', done => {
             expect.assertions(1);
 
-            const focusChangedEventHandler = new IUIAutomationFocusChangedEventHandler((sender) => {
+            const focusChangedEventHandler = new AutomationFocusChangedEventHandler((sender) => {
                 expect(sender).not.toBeNull();
 
                 done();
@@ -135,17 +134,17 @@ describe('IUIAutomation', () => {
 
             const desktopElement = automation.getRootElement();
 
-            const winverNamePropertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
+            const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
 
-            const winverElement = desktopElement.findFirst(TreeScope.TreeScope_Subtree, winverNamePropertyCondition);
+            const winverElement = desktopElement.findFirst(TreeScopes.Subtree, winverNamePropertyCondition);
 
-            const propertyChangedEventHandler = new IUIAutomationPropertyChangedEventHandler((sender) => {
+            const propertyChangedEventHandler = new AutomationPropertyChangedEventHandler((sender) => {
                 expect(sender).not.toBeNull();
 
                 done();
             });
 
-            automation.addPropertyChangedEventHandler(desktopElement, TreeScope.TreeScope_Subtree, null, propertyChangedEventHandler, [UIA_ToggleToggleStatePropertyId]);
+            automation.addPropertyChangedEventHandler(desktopElement, TreeScopes.Subtree, null, propertyChangedEventHandler, [UIA_ToggleToggleStatePropertyId]);
         }, 300000);
     });
 
@@ -161,17 +160,17 @@ describe('IUIAutomation', () => {
 
             const desktopElement = automation.getRootElement();
 
-            const winverNamePropertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "tests");
+            const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "tests");
 
-            const winverElement = desktopElement.findFirst(TreeScope.TreeScope_Subtree, winverNamePropertyCondition);
+            const winverElement = desktopElement.findFirst(TreeScopes.Subtree, winverNamePropertyCondition);
 
-            const structureChangedEventHandler = new IUIAutomationStructureChangedEventHandler((sender) => {
+            const structureChangedEventHandler = new AutomationStructureChangedEventHandler((sender) => {
                 expect(sender).not.toBeNull();
 
                 done();
             });
 
-            automation.addStructureChangedEventHandler(winverElement, TreeScope.TreeScope_Subtree, null, structureChangedEventHandler);
+            automation.addStructureChangedEventHandler(winverElement, TreeScopes.Subtree, null, structureChangedEventHandler);
 
         }, 300000);
     });
@@ -181,15 +180,15 @@ describe('IUIAutomation', () => {
         test.todo('returns');
     });
 
-    fdescribe('compareElements', () => {
+    describe('compareElements', () => {
         test('returns', () => {
             const desktopElement = automation.getRootElement();
 
-            const winverNamePropertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
+            const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
 
-            const winverElementOne = desktopElement.findFirst(TreeScope.TreeScope_Subtree, winverNamePropertyCondition);
+            const winverElementOne = desktopElement.findFirst(TreeScopes.Subtree, winverNamePropertyCondition);
 
-            const winverElementTwo = desktopElement.findFirst(TreeScope.TreeScope_Subtree, winverNamePropertyCondition);
+            const winverElementTwo = desktopElement.findFirst(TreeScopes.Subtree, winverNamePropertyCondition);
 
             const areEqual = automation.compareElements(winverElementOne, winverElementTwo);
 
@@ -204,10 +203,10 @@ describe('IUIAutomation', () => {
 
     describe('createAndCondition', () => {
         test('returns', () => {
-            const winverNamePropertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
-            const winverAutomationIdPropertyCondition = automation.createPropertyCondition(UIA_AutomationIdPropertyId, 13095);
+            const winverNamePropertyConditionOne = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+            const winverNamePropertyConditionTwo = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
 
-            const andCondition = automation.createAndCondition(winverNamePropertyCondition, winverAutomationIdPropertyCondition);
+            const andCondition = automation.createAndCondition(winverNamePropertyConditionOne, winverNamePropertyConditionTwo);
 
             expect(andCondition).toBeDefined();
         });
@@ -231,7 +230,6 @@ describe('IUIAutomation', () => {
         });
     });
 
-    // todo: test
     describe('createFalseCondition', () => {
         test('returns', () => {
             const falseCondition = automation.createFalseCondition();
@@ -240,10 +238,9 @@ describe('IUIAutomation', () => {
         });
     });
 
-    // todo: test
     describe('createNotCondition', () => {
         test('returns', () => {
-            const winverNamePropertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
+            const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
 
             const notCondition = automation.createNotCondition(winverNamePropertyCondition);
 
@@ -251,16 +248,16 @@ describe('IUIAutomation', () => {
         });
     });
 
-    // todo: test
     describe('createOrCondition', () => {
         test('returns', () => {
-            const winverNamePropertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
-            const winverAutomationIdPropertyCondition = automation.createPropertyCondition(UIA_AutomationIdPropertyId, 13095);
+            const winverNamePropertyConditionOne = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+            const winverNamePropertyConditionTwo = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
 
-            const notCondition = automation.createOrCondition(winverNamePropertyCondition, winverAutomationIdPropertyCondition);
+            // const winverAutomationIdPropertyCondition = automation.createPropertyCondition(AutomationProperties.AutomationIdPropertyId, 13095);
 
-            expect(notCondition).toBeDefined();
+            const orCondition = automation.createOrCondition(winverNamePropertyConditionOne, winverNamePropertyConditionTwo);
 
+            expect(orCondition).toBeDefined();
         });
     });
 
@@ -276,7 +273,7 @@ describe('IUIAutomation', () => {
 
     describe('createPropertyCondition', () => {
         test('returns', () => {
-            const propertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
+            const propertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
 
             expect(propertyCondition).not.toBeNull();
         });
@@ -294,7 +291,7 @@ describe('IUIAutomation', () => {
 
     describe('createTreeWalker', () => {
         test('returns', () => {
-            const propertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
+            const propertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
 
             const treeWalker = automation.createTreeWalker(propertyCondition);
 
@@ -375,10 +372,9 @@ describe('IUIAutomation', () => {
 
     describe('getPropertyProgrammaticName', () => {
         test('returns', () => {
-            const propertyName = automation.getPatternProgrammaticName(UIA_NamePropertyId);
+            const propertyName = automation.getPatternProgrammaticName(AutomationPatterns.DragPatternId);
 
-            // todo: verify this.
-            expect(propertyName).toBe('Name');
+            expect(propertyName).toBe('DragPattern');
         });
     });
 
@@ -391,7 +387,7 @@ describe('IUIAutomation', () => {
     });
 
     describe('getRootElementBuildCache', () => {
-        test('returns', () => { 
+        test('returns', () => {
             const cacheRequest = automation.createCacheRequest();
 
             const desktopElement = automation.getRootElementBuildCache(cacheRequest);
@@ -400,7 +396,7 @@ describe('IUIAutomation', () => {
         });
     });
 
-    // todo: skipping
+    // skipping
     describe('intSafeArrayToNativeArray', () => {
         test.todo('returns');
     });

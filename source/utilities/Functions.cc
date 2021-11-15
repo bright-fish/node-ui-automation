@@ -25,20 +25,15 @@ VARIANT ToVariant(Napi::Env env, Napi::Value local)
     }
     else if (local.IsNumber())
     {
-        variant.vt = VT_I4;
-        variant.iVal = local.ToNumber().Int32Value();
+        variant = ATL::CComVariant(local.ToNumber().Int32Value());
     }
     else if (local.IsString())
     {
-        auto value = local.ToString();
-
-        variant.vt = VT_BSTR;
-        variant.bstrVal = _com_util::ConvertStringToBSTR(value.Utf8Value().c_str());
+        variant = ATL::CComVariant(_com_util::ConvertStringToBSTR(local.ToString().Utf8Value().c_str()));
     }
     else if (local.IsBoolean())
     {
-        variant.vt = VT_BOOL;
-        variant.boolVal = local.ToBoolean();
+        variant = ATL::CComVariant(local.ToBoolean());
     }
     else
     {

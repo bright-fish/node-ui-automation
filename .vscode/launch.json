@@ -18,16 +18,8 @@
                 "<node_internals>/**"
             ],
             "outputCapture": "std",
-            "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "Launch Example",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\example.js"
-        },
+            "program": "${workspaceRoot}/tests/node_modules/jest/bin/jest.js",
+            "cwd": "${workspaceFolder}/tests"
+        }
     ]
 }

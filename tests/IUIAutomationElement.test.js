@@ -1,14 +1,12 @@
-const { IUIAutomation, TreeScope, UIA_NamePropertyId, AutomationElementMode } = require('bindings')('Automation');
+const { Automation, TreeScopes, AutomationProperties, AutomationElementModes } = require('microsoft-ui-automation');
 
 describe('IUIAutomationElement', () => {
     let winver = null;
-    let automation = null;
+    const automation = new Automation();
     let desktopElement = null;
     let winverElement = null;
 
     test('getRootElement', () => {
-        automation = new IUIAutomation();
-
         desktopElement = automation.getRootElement();
     });
 
@@ -21,9 +19,9 @@ describe('IUIAutomationElement', () => {
     });
 
     test('findAll', () => {
-        const winverNamePropertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
+        const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
 
-        const elements = desktopElement.findAll(TreeScope.TreeScope_Subtree, winverNamePropertyCondition);
+        const elements = desktopElement.findAll(TreeScopes.Subtree, winverNamePropertyCondition);
 
         const winverElement = elements.getElement(0);
 
@@ -32,27 +30,29 @@ describe('IUIAutomationElement', () => {
 
 
     test('findAllBuildCache', () => {
-        const winverNamePropertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
+        const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
 
         let cacheRequest = automation.createCacheRequest();
 
-        const winverElement = desktopElement.findAllBuildCache(TreeScope.TreeScope_Subtree, winverNamePropertyCondition, cacheRequest);
+        const winverElement = desktopElement.findAllBuildCache(TreeScopes.Subtree, winverNamePropertyCondition, cacheRequest);
+
+        expect(winverElement).toBeDefined();
     });
 
     test('findFirst', () => {
-        const propertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
+        const propertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
 
-        winverElement = desktopElement.findFirst(TreeScope.TreeScope_Subtree, propertyCondition);
+        winverElement = desktopElement.findFirst(TreeScopes.Subtree, propertyCondition);
 
         expect(winverElement).not.toBeNull();
     });
 
     test('findFirstBuildCache', () => {
-        const propertyCondition = automation.createPropertyCondition(UIA_NamePropertyId, "About Windows");
+        const propertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
 
         const cacheRequest = automation.createCacheRequest();
 
-        winverElement = desktopElement.findFirstBuildCache(TreeScope.TreeScope_Subtree, propertyCondition, cacheRequest);
+        winverElement = desktopElement.findFirstBuildCache(TreeScopes.Subtree, propertyCondition, cacheRequest);
 
         expect(winverElement).not.toBeNull();
     });
@@ -74,39 +74,39 @@ describe('IUIAutomationElement', () => {
     // skipped: requires inheritance and use of IUnknown.  
     test.todo('getCachedPatternAs');
 
-    test('getCachedPropertyValue', () => { 
+    test('getCachedPropertyValue', () => {
         let cacheRequest = automation.createCacheRequest();
 
-        cacheRequest.automationElementMode = AutomationElementMode.None;
+        cacheRequest.automationElementMode = AutomationElementModes.None;
 
         cacheRequest.treeFilter = automation.rawViewCondition;
 
-        cacheRequest.addProperty(UIA_NamePropertyId);
+        cacheRequest.addProperty(AutomationProperties.NamePropertyId);
 
         winverCachedElement = winverElement.buildUpdatedCache(cacheRequest);
 
-        const value = winverCachedElement.getCachedPropertyValue(UIA_NamePropertyId);
+        const value = winverCachedElement.getCachedPropertyValue(AutomationProperties.NamePropertyId);
 
         expect(value).toBe('About Windows');
     });
 
-    test('getCachedPropertyValueEx', () => { 
+    test('getCachedPropertyValueEx', () => {
         let cacheRequest = automation.createCacheRequest();
 
-        cacheRequest.automationElementMode = AutomationElementMode.None;
+        cacheRequest.automationElementMode = AutomationElementModes.None;
 
         cacheRequest.treeFilter = automation.rawViewCondition;
 
-        cacheRequest.addProperty(UIA_NamePropertyId);
+        cacheRequest.addProperty(AutomationProperties.NamePropertyId);
 
         winverCachedElement = winverElement.buildUpdatedCache(cacheRequest);
 
-        const value = winverCachedElement.getCachedPropertyValueEx(UIA_NamePropertyId, true);
+        const value = winverCachedElement.getCachedPropertyValueEx(AutomationProperties.NamePropertyId, true);
 
         expect(value).toBe('About Windows');
     });
 
-    test('getClickablePoint', () => { 
+    test('getClickablePoint', () => {
         const isClickable = winverElement.getClickablePoint({ x: 123, y: 123 });
 
         expect(isClickable).toBe(false);
@@ -117,14 +117,14 @@ describe('IUIAutomationElement', () => {
     // skipped
     test.todo('getCurrentPatternAs');
 
-    test('getCurrentPropertyValue', () => { 
-        const value = winverElement.getCurrentPropertyValue(UIA_NamePropertyId);
+    test('getCurrentPropertyValue', () => {
+        const value = winverElement.getCurrentPropertyValue(AutomationProperties.NamePropertyId);
 
         expect(value).toBe('About Windows');
     });
 
-    test('getCurrentPropertyValueEx', () => { 
-        const value = winverElement.getCurrentPropertyValueEx(UIA_NamePropertyId, true);
+    test('getCurrentPropertyValueEx', () => {
+        const value = winverElement.getCurrentPropertyValueEx(AutomationProperties.NamePropertyId, true);
 
         expect(value).toBe('About Windows');
     });
@@ -132,7 +132,7 @@ describe('IUIAutomationElement', () => {
     // skipped
     test.todo('getRuntimeId');
 
-    test('setFocus', () => { 
+    test('setFocus', () => {
         winverElement.setFocus();
     });
 });

@@ -1,15 +1,12 @@
 {
-  "name": "microsoft-ui-automation",
+  "name": "microsoft-ui-automation-tests",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "configure": "node-gyp configure",
-    "build": "node-gyp build",
-    "clean": "node-gyp clean",
-    "rebuild": "node-gyp rebuild --debug"
+    "link": "npm link microsoft-ui-automation",
+    "test": "jest"
   },
-  "types": "./index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bright-fish/node-microsoft-ui-automation.git"
@@ -21,8 +18,7 @@
   },
   "homepage": "https://github.com/bright-fish/node-microsoft-ui-automation#readme",
   "dependencies": {
-    "bindings": "^1.5.0",
-    "node-addon-api": "^4.1.0"
+    "microsoft-ui-automation": "*"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",

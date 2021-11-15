@@ -11,6 +11,7 @@
             "AutomationAddon.cc",
             "wrappers/UIA_EventIdsWrapper.cc",
             "wrappers/UIA_PropertyIdsWrapper.cc",
+            "wrappers/UIA_PatternIdsWrapper.cc",
             "wrappers/TreeScopeWrapper.cc",
             "wrappers/RectWrapper.cc",
             "wrappers/IUnknownWrapper.cc",

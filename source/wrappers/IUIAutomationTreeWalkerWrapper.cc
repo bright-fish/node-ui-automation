@@ -44,7 +44,7 @@ IUIAutomationTreeWalkerWrapper::IUIAutomationTreeWalkerWrapper(const Napi::Callb
 
 IUIAutomationTreeWalkerWrapper::~IUIAutomationTreeWalkerWrapper()
 {
-    m_pTreeWalker->Release();
+    m_pTreeWalker.Release();
 }
 
 Napi::Value IUIAutomationTreeWalkerWrapper::GetFirstChildElement(const Napi::CallbackInfo &info)
