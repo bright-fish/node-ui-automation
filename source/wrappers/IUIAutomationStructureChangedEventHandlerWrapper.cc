@@ -16,7 +16,10 @@ Napi::FunctionReference *IUIAutomationStructureChangedEventHandlerWrapper::Initi
 
 IUIAutomationStructureChangedEventHandlerWrapper::IUIAutomationStructureChangedEventHandlerWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUIAutomationStructureChangedEventHandlerWrapper>(info)
 {
-    // todo: needs some guards to validate input is a function.
+    if(!info[0].IsFunction())
+    {
+        throw Napi::Error::New(info.Env(), "First parameter must be a callback function.");
+    }
 
     m_automationCallback = Napi::ThreadSafeFunction::New(info.Env(), info[0].As<Napi::Function>(), "IUIAutomationStructureChangedEventHandlerWrapper", 0, 1);
 

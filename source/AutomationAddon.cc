@@ -21,7 +21,9 @@ AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
     IUIAutomationFocusChangedEventHandlerWrapperConstructor = IUIAutomationFocusChangedEventHandlerWrapper::Initialize(env);
     IUIAutomationPropertyChangedEventHandlerWrapperConstructor = IUIAutomationPropertyChangedEventHandlerWrapper::Initialize(env);
     IUIAutomationStructureChangedEventHandlerWrapperConstructor = IUIAutomationStructureChangedEventHandlerWrapper::Initialize(env);
-
+    IInvokeProviderWrapperConstructor = IInvokeProviderWrapper::Initialize(env);
+    IRawElementProviderSimpleWrapperConstructor = IRawElementProviderSimpleWrapper::Initialize(env);
+    
     auto addonDefinition = {
         InstanceValue("Automation", IUIAutomationWrapperConstructor->Value()),
         InstanceValue("AutomationEventHandler", IUIAutomationEventHandlerWrapperConstructor->Value()),

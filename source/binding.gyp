@@ -31,7 +31,12 @@
             "utilities/FocusChangedEventHandler.cc",
             "utilities/PropertyChangedEventHandler.cc",
             "utilities/StructureChangedEventHandler.cc",
-            "utilities/Functions.cc"
+            "utilities/Functions.cc",
+
+            "providers/IAnnotationProviderWrapper.cc",
+            "providers/IInvokeProviderWrapper.cc",
+            "providers/IRawElementProviderSimpleWrapper.cc",
+            "providers/IDockProviderWrapper.cc",
       ],
       "include_dirs": ["<!(node -p \"require('node-addon-api').include_dir\")"],
       "libraries" : [

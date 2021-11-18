@@ -1,6 +1,7 @@
 #include "Wrappers.h"
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
+#include "../providers/Providers.h"
 
 Napi::FunctionReference *IUIAutomationElementWrapper::Initialize(Napi::Env env)
 {
@@ -613,6 +614,19 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentOrientation(const Napi::Callb
     HandleResult(info, hResult);
 
     return Napi::Number::New(info.Env(), orientationType);
+}
+
+Napi::Value IUIAutomationElementWrapper::GetCurrentPattern(const Napi::CallbackInfo &info)
+{
+    IUnknown *pProvider;
+
+    auto patternId = static_cast<PATTERNID>(info[0].ToNumber().Int32Value());
+
+    auto hResult = m_pElement->GetCurrentPattern(patternId, &pProvider);
+
+    HandleResult(info, hResult);
+
+    return GetPatternProviderByPatternId(info, pProvider, patternId);
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentProcessId(const Napi::CallbackInfo &info)

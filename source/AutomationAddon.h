@@ -18,7 +18,9 @@ public:
     Napi::FunctionReference *IUIAutomationFocusChangedEventHandlerWrapperConstructor;
     Napi::FunctionReference *IUIAutomationPropertyChangedEventHandlerWrapperConstructor;
     Napi::FunctionReference *IUIAutomationStructureChangedEventHandlerWrapperConstructor;
-
+    Napi::FunctionReference *IInvokeProviderWrapperConstructor;
+    Napi::FunctionReference *IRawElementProviderSimpleWrapperConstructor;
+    
     AutomationAddon(Napi::Env env, Napi::Object exports);
     ~AutomationAddon();
 };

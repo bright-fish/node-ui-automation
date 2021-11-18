@@ -18,8 +18,7 @@
                 "<node_internals>/**"
             ],
             "outputCapture": "std",
-            "program": "${workspaceRoot}/tests/node_modules/jest/bin/jest.js",
-            "cwd": "${workspaceFolder}/tests"
+            "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
         }
     ]
 }

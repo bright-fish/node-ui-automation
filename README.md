@@ -14,3 +14,12 @@ https://docs.microsoft.com/en-us/windows/win32/winauto/uiauto-howto-topics-for-u
     * AnnotationTypes
     * StyleIds
     * LandmarkTypeIds
+
+* Figure out how to use the control patterns.  
+* Implement all control patterns.  
+
+
+* Look through the C# library again and see what is missing. 
+* Read the docs and verify I didnt miss anything.
+* Think about what to do with the library.  
+* Potentially ship it. 

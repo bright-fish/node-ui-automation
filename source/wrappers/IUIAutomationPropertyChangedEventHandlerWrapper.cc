@@ -16,7 +16,10 @@ Napi::FunctionReference *IUIAutomationPropertyChangedEventHandlerWrapper::Initia
 
 IUIAutomationPropertyChangedEventHandlerWrapper::IUIAutomationPropertyChangedEventHandlerWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUIAutomationPropertyChangedEventHandlerWrapper>(info)
 {
-    // todo: needs some guards to validate input is a function.
+    if(!info[0].IsFunction())
+    {
+        throw Napi::Error::New(info.Env(), "First parameter must be a callback function.");
+    }
 
     m_pThreadSafeFunction = Napi::ThreadSafeFunction::New(info.Env(), info[0].As<Napi::Function>(), "IUIAutomationPropertyChangedEventHandlerWrapper", 0, 1);
     

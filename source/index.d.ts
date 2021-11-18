@@ -16,24 +16,558 @@ export declare interface AutomationElementArray {
     getElement(index: number): AutomationElement;
 }
 
-interface Point {
+export declare interface Point {
     x: number;
     y: number;
 }
 
-type Variant = string | number | null;
+export declare type Variant = string | number | null;
+
+export declare interface IAnnotationProvider {
+    annotationTypeId: string;
+    annotationTypeName: string;
+    author: string;
+    dateTime: string;
+    target: AutomationElement;
+}
+
+export declare enum DockPositions {
+    Top,
+    Left,
+    Bottom,
+    Right,
+    Fill,
+    None
+}
+
+export declare interface IDockProvider {
+    dockPosition: DockPositions;
+
+    setDockPosition(dockPosition: DockPositions): void;
+}
+
+export declare interface IDragProvider {
+    dropEffects: string[];
+    dropEffect: string;
+    isGrabbed: boolean;
+    getGrabbedItems: IRawElementProviderSimple[];
+}
+
+export declare interface IDropTargetProvider {
+    dropTargetEffect: string;
+    dropTargetEffects: string[];
+}
+
+export declare enum ExpandCollapseState {
+    // todo: enum pass
+    Collapsed,
+    Expanded,
+    PartiallyExpanded,
+    LeafNode
+}
+
+export declare interface IExpandCollapseProvider {
+    collapse(): void;
+    expand(): void;
+    expandCollapseState: ExpandCollapseState
+}
+
+export declare interface IGridItemProvider {
+    column: number;
+    columnSpan: number;
+    containingGrid: IRawElementProviderSimple;
+    row: number;
+    rowSpan: number;
+}
+
+export declare interface IGridProvider {
+    columnCount: number;
+    rowCount: number;
+    getItem(row: number, column: number): IRawElementProviderSimple;
+}
+
+export declare interface IInvokeProvider {
+    invoke(): void;
+}
+
+export declare interface IItemContainerProvider {
+    findItemByProperty(startAfter: IRawElementProviderSimple, propertyId: AutomationProperties, value: Variant): IRawElementProviderSimple;
+}
+
+export declare interface IAccessible {
+
+}
+
+export declare interface SelectionFlags {
+    None: 0,
+    TakeFocus: 0x1,
+    AddSelection: 0x2,
+    RemoveSelection: 0x4,
+    TakeSelection: 0x8,
+    ExtendSelection: 0x10
+}
+
+export declare interface ILegacyIAccessibleProvider {
+    doDefaultAction(): void;
+    childId: number;
+    defaultAction: string;
+    description: string;
+    help: string;
+    keyboardShortcut: string;
+    name: string;
+    role: number;
+    state: number;
+    value: string;
+    getAccessible(): IAccessible;
+    getSelection(): IRawElementProviderSimple[];
+    select(flag: SelectionFlags);
+    setValue(value: string): void;
+}
+
+export declare interface IMultipleViewProvider {
+    currentView: number;
+    getSupportedViews(): number[];
+    getViewName(viewId: number): string;
+    setCurrentView(viewId: number): void;
+}
+
+export declare interface IObjectModelProvider {
+    // todo:  getUnderlyingObjectModel();
+    // this function requires that we return an IUnknown pointer and casting that doesnt really make sense.  
+    // one thought would be to return the underlying pointer as a node buffer.  This would allow someone to get the memory out of it if neccessary.  
+
+}
+
+// skipping
+// export declare interface IProxyProviderWinEventHandler  {
+
+// }
+
+// skipping
+// export declare interface IProxyProviderWinEventSink   {
+
+// }
+
+
+export declare interface IRangeValueProvider {
+    isReadOnly: boolean;
+    largeChange: number;
+    maximum: number;
+    minimum: number;
+    smallChange: number;
+    value: string;
+    setValue(value: number);
+}
+
+// skipping
+// export declare interface IRawElementProviderAdviseEvents  {
+
+// }
+
+
+export declare interface IRawElementProviderFragment {
+
+}
+
+
+export declare interface IRawElementProviderFragmentRoot {
+
+}
+
+
+export declare interface IRawElementProviderHostingAccessibles {
+
+}
+
+
+export declare interface IRawElementProviderHwndOverride {
+
+}
+
+// todo: figure out values
+export declare enum ProviderOptions {
+    ClientSideProvider = 0x1,
+    ServerSideProvider = 0x2,
+    NonClientAreaProvider = 0x4,
+    OverrideProvider = 0x8,
+    ProviderOwnsSetFocus = 0x10,
+    UseComThreading = 0x20,
+    RefuseNonClientSupport = 0x40,
+    HasNativeIAccessible = 0x80,
+    UseClientCoordinates = 0x100
+}
+
+export declare interface IRawElementProviderSimple {
+    hostElementProvider: IRawElementProviderSimple;
+    providerOptions: ProviderOptions;
+
+    // todo: this is missing, figure out if feasible.  
+    // getPatternProvider(patternId: AutomationPatterns.CustomNavigationPatternId): IAnnotationProvider;    
+    getPatternProvider(patternId: AutomationPatterns.AnnotationPatternId): IAnnotationProvider;
+    getPatternProvider(patternId: AutomationPatterns.DockPatternId): IDockProvider;
+    getPatternProvider(patternId: AutomationPatterns.DragPatternId): IDragProvider;
+    getPatternProvider(patternId: AutomationPatterns.DropTargetPatternId): IDropTargetProvider;
+    getPatternProvider(patternId: AutomationPatterns.ExpandCollapsePatternId): IExpandCollapseProvider;
+    getPatternProvider(patternId: AutomationPatterns.GridItemPatternId): IGridItemProvider;
+    getPatternProvider(patternId: AutomationPatterns.GridPatternId): IGridProvider;
+    getPatternProvider(patternId: AutomationPatterns.InvokePatternId): IInvokeProvider;
+    getPatternProvider(patternId: AutomationPatterns.ItemContainerPatternId): IItemContainerProvider;
+    getPatternProvider(patternId: AutomationPatterns.LegacyIAccessiblePatternId): ILegacyIAccessibleProvider;
+    getPatternProvider(patternId: AutomationPatterns.MultipleViewPatternId): IMultipleViewProvider;
+    getPatternProvider(patternId: AutomationPatterns.ObjectModelPatternId): IObjectModelProvider; // todo: not implemented due to complexity.
+    getPatternProvider(patternId: AutomationPatterns.RangeValuePatternId): IRangeValueProvider;
+    getPatternProvider(patternId: AutomationPatterns.ScrollItemPatternId): IScrollItemProvider;
+    getPatternProvider(patternId: AutomationPatterns.ScrollPatternId): IScrollProvider;
+    getPatternProvider(patternId: AutomationPatterns.SelectionItemPatternId): ISelectionItemProvider;
+    getPatternProvider(patternId: AutomationPatterns.SelectionPatternId): ISelectionProvider;
+    getPatternProvider(patternId: AutomationPatterns.SelectionPattern2Id): ISelectionProvider2;
+    getPatternProvider(patternId: AutomationPatterns.SpreadsheetItemPatternId): ISpreadsheetItemProvider;
+    getPatternProvider(patternId: AutomationPatterns.SpreadsheetPatternId): ISpreadsheetProvider;
+    getPatternProvider(patternId: AutomationPatterns.StylesPatternId): IStylesProvider;
+    getPatternProvider(patternId: AutomationPatterns.SynchronizedInputPatternId): ISynchronizedInputProvider;
+    getPatternProvider(patternId: AutomationPatterns.TableItemPatternId): ITableItemProvider;
+    getPatternProvider(patternId: AutomationPatterns.TablePatternId): ITableProvider;
+    getPatternProvider(patternId: AutomationPatterns.TextChildPatternId): ITextChildProvider;
+    getPatternProvider(patternId: AutomationPatterns.TextEditPatternId): ITextEditProvider;
+    getPatternProvider(patternId: AutomationPatterns.TextPatternId): ITextProvider;
+    getPatternProvider(patternId: AutomationPatterns.TextPattern2Id): ITextProvider2;
+    getPatternProvider(patternId: AutomationPatterns.TogglePatternId): IToggleProvider;
+    getPatternProvider(patternId: AutomationPatterns.TransformPatternId): ITransformProvider;
+    getPatternProvider(patternId: AutomationPatterns.TransformPattern2Id): ITransformProvider2;
+    getPatternProvider(patternId: AutomationPatterns.ValuePatternId): IValueProvider;
+    getPatternProvider(patternId: AutomationPatterns.VirtualizedItemPatternId): IVirtualizedItemProvider;
+    getPatternProvider(patternId: AutomationPatterns.WindowPatternId): IWindowProvider;
+    getPatternProvider(patternId: AutomationPatterns): unknown;
+
+    getPropertyValue(propertyId: AutomationProperties): Variant;
+}
+
+export declare interface IRawElementProviderSimple2 extends IRawElementProviderSimple {
+    showContextMenu(): void;
+}
+
+export declare interface AutomationMetadataIdentifiers {
+
+}
+
+export declare interface IRawElementProviderSimple3 extends IRawElementProviderSimple2 {
+    getMetadataValue(targetId: number, metadataId: AutomationMetadataIdentifiers): Variant;
+}
+
+
+
+// skipping
+// export declare interface IRawElementProviderWindowlessSite {
+
+// }
+
+
+export declare interface IScrollItemProvider {
+    scrollIntoView(): void;
+}
+
+
+
+export declare interface IScrollProvider {
+    horizontallyScrollable: boolean;
+    horizontalScrollPercent: number;
+    horizontalViewSize: number;
+    verticallyScrollable: boolean;
+    verticalScrollPercent: number;
+    verticalViewSize: number;
+    scroll(horizontalAmount: number, verticalAmount: number);
+    setScrollPercent(horizontalPercent: number, verticalPercent: number);
+}
+
+export declare interface ISelectionItemProvider {
+    addToSelection(): void;
+    isSelected: boolean;
+    selectionContainer: IRawElementProviderSimple;
+    removeFromSelection(): void;
+    select(): void;
+}
+
+export declare interface ISelectionProvider {
+    canSelectMultiple: boolean;
+    isSelectionRequired: boolean;
+    getSelection(): IRawElementProviderSimple[];
+}
+
+export declare interface ISelectionProvider2 {
+    currentSelectedItem: IRawElementProviderSimple;
+    firstSelectedItem: IRawElementProviderSimple;
+    itemCount: number;
+    lastSelectedItem: IRawElementProviderSimple;
+}
+
+export declare interface AutomationAnnotationTypes {
+    // todo: enum pass
+}
+export declare interface ISpreadsheetItemProvider {
+    formula: string;
+    getAnnotationObjects(): IRawElementProviderSimple[];
+    getAnnotationTypes(): AutomationAnnotationTypes[];
+}
+
+export declare interface ISpreadsheetProvider {
+    getItemByName(name: string): IRawElementProviderSimple
+}
+
+export declare interface AutomationStyles {
+    // todo: enum pass
+}
+
+export declare interface IStylesProvider {
+    extendedProperties: string;
+    fillColor: number;
+    fillPatternColor: number;
+    fillPatternStyle: string;
+    shape: string;
+    styleId: AutomationStyles;
+    styleName: string;
+}
+
+
+export declare interface AutomationSynchronizedInputTypes {
+    // todo: enum pass
+    KeyUp,
+    KeyDown,
+    LeftMouseUp,
+    LeftMouseDown,
+    RightMouseUp,
+    RightMouseDown
+}
+
+export declare interface ISynchronizedInputProvider {
+    cancel();
+    startListening(synchronizedInputType: AutomationSynchronizedInputTypes);
+}
+
+export declare interface ITableItemProvider {
+    getColumnHeaderItems(): IRawElementProviderSimple[];
+    getRowHeaderItems(): IRawElementProviderSimple[];
+}
+
+export declare enum AutomationRowOrColumnMajor {
+    // todo: enum pass
+    RowMajor,
+    ColumnMajor,
+    Indeterminate
+}
+
+export declare interface ITableProvider {
+    rowOrColumnMajor: AutomationRowOrColumnMajor;
+    getColumnHeaders(): IRawElementProviderSimple[];
+    getRowHeaders(): IRawElementProviderSimple[];
+}
+
+export declare interface ITextChildProvider {
+    textContainer: IRawElementProviderSimple;
+    textRange: ITextRangeProvider;
+}
+
+export declare interface ITextEditProvider {
+    getActiveComposition(): ITextRangeProvider;
+    getC
+    onversionTarget(): ITextRangeProvider;
+}
+export declare enum AutomationSupportedTextSelections {
+    // todo: enum pass
+    None,
+    Single,
+    Multiple
+}
+
+export declare interface ITextProvider {
+    documentRange: ITextRangeProvider
+    supportedTextSelection: AutomationSupportedTextSelections;
+    getSelection(): ITextRangeProvider[];
+    getVisibleRanges(): ITextRangeProvider[];
+    rangeFromChild(childElement: IRawElementProviderSimple): ITextRangeProvider;
+    rangeFromPoint(point: Point): ITextRangeProvider;
+}
+
+
+
+export declare interface ITextProvider2 extends ITextProvider {
+    getCaretRange(): { isActive: boolean, value: ITextRangeProvider };
+    rangeFromAnnotation(annotationElement: IRawElementProviderSimple): ITextRangeProvider;
+}
+
+export declare enum AutomationTextPatternRangeEndpoint {
+    // todo: enum pass
+    Start,
+    End
+}
+
+export declare enum TextUnits {
+    // todo: enum pass
+    Character,
+    Format,
+    Word,
+    Line,
+    Paragraph,
+    Page,
+    Document
+}
+
+export declare enum AutomationAttributes {
+    // todo: enum pass
+}
+
+
+export declare interface ITextRangeProvider {
+    addToSelection(): void;
+    clone(): ITextRangeProvider;
+    compare(range: ITextRangeProvider): boolean;
+    compareEndpoints(endpoint: AutomationTextPatternRangeEndpoint, targeRange: ITextRangeProvider, targetEndpoint: AutomationTextPatternRangeEndpoint): number;
+    expandToEnclosingUnit(textUnit: TextUnits);
+    findAttribute(attributeId: AutomationAttributes, value: Variant, backward: boolean): ITextRangeProvider;
+    findText(text: string, backward: boolean, ignoreCase: boolean): ITextRangeProvider;
+    getAttributeValue(attributeId: AutomationAttributes): Variant;
+    getBoundingRectangles(): Rect[]; //todo: read documentation and validate all 3 special cases.  
+    getChildren(): IRawElementProviderSimple[];
+    getEnclosingElement(): IRawElementProviderSimple;
+    getText(maxLength: number): string;
+    move(textUnit: TextUnits, count: number): number;
+    moveEndpointByRange(endpoint: AutomationTextPatternRangeEndpoint, targetRange: ITextRangeProvider, targetEndpoint: AutomationTextPatternRangeEndpoint): void;
+    moveEndpointByUnit(endpoint: AutomationTextPatternRangeEndpoint, textUnit: TextUnits, count: number): number;
+    removeFromSelection(): void;
+    scrollIntoView(alignTop: boolean): void;
+    select(): void;
+}
+
+export declare interface ITextRangeProvider2 extends ITextRangeProvider {
+    showContextMenu(): void;
+}
+
+export declare enum ToggleStates {
+    // todo: enum pass
+
+    Off,
+    On,
+    Indeterminate
+}
+
+
+export declare interface IToggleProvider {
+    toggleState: ToggleStates;
+    toggle(): void;
+}
+
+export declare interface ITransformProvider {
+    canMove: boolean;
+    canResize: boolean;
+    canRotate: boolean;
+    move(x: number, y: number);
+    resize(width: number, height: number);
+    rotate(degrees: number);
+}
+export declare enum ZoomUnits {
+    NoAmount,
+    LargeDecrement,
+    SmallDecrement,
+    LargeIncrement,
+    SmallIncrement
+}
+
+export declare interface ITransformProvider2 extends ITransformProvider {
+    canZoom: boolean;
+    zoomLevel: number;
+    zoomMaximum: number;
+    zoomMinimum: number;
+    zoom(zoom: number);
+    zoomByUnit(zoomUnit: ZoomUnits)
+}
+
+export declare interface IValueProvider {
+    isReadOnly: boolean;
+    value: string;
+    setValue(value: string): void;
+}
+
+export declare interface IVirtualizedItemProvider {
+    realize(): void;
+}
+
+export declare enum WindowInteractionStates {
+    // todo: enum pass
+    Running,
+    Closing,
+    ReadyForUserInteraction,
+    BlockedByModalWindow,
+    NotResponding
+}
+
+export declare enum WindowVisualStates {
+    // todo: enum pass
+    Normal,
+    Maximized,
+    Minimized
+}
+export declare interface IWindowProvider {
+    close(): void;
+    canMaximize: boolean;
+    canMinimize: boolean;
+    isModal: boolean;
+    isTopmost: boolean;
+    windowInteractionState: WindowInteractionStates;
+    windowVisualState: WindowVisualStates;
+    setVisualState(state: WindowVisualStates): void;
+    waitForInputIdle(milliseconds: number): boolean;
+}
+
 
 export declare interface AutomationElement {
     buildUpdatedCache(cacheRequest: AutomationCacheRequest): AutomationElement;
     findAll(treeScope: TreeScopes, condition: AutomationCondition): AutomationElementArray;
-    findAllBuildCache(treeScope: TreeScopes, cacheRequest: AutomationCacheRequest, condition: AutomationCondition);
-    findFirst(treeScope: TreeScopes, condition: AutomationCondition);
-    findFirstBuildCache(treeScope: TreeScopes, condition: AutomationCondition, cacheRequest: AutomationCacheRequest);
+    findAllBuildCache(treeScope: TreeScopes, cacheRequest: AutomationCacheRequest, condition: AutomationCondition): AutomationElementArray;
+    findFirst(treeScope: TreeScopes, condition: AutomationCondition): AutomationElement;
+    findFirstBuildCache(treeScope: TreeScopes, condition: AutomationCondition, cacheRequest: AutomationCacheRequest): AutomationElement;
     getCachedChildren(): AutomationElementArray;
     getCachedParent(): AutomationElement;
     getCachedPropertyValue(propertyId: AutomationProperties): Variant;
-    getCachedPropertyValueEx(propertyId: AutomationProperties, ignoreDefaultValue: boolean);
+    getCachedPropertyValueEx(propertyId: AutomationProperties, ignoreDefaultValue: boolean): Variant;
     getClickablePoint(point: Point): boolean;
+
+    // todo: this is missing, figure out if feasible.  
+    // getCurrentPattern(patternId: AutomationPatterns.CustomNavigationPatternId): IAnnotationProvider;    
+    getCurrentPattern(patternId: AutomationPatterns.AnnotationPatternId): IAnnotationProvider;
+    getCurrentPattern(patternId: AutomationPatterns.DockPatternId): IDockProvider;
+    getCurrentPattern(patternId: AutomationPatterns.DragPatternId): IDragProvider;
+    getCurrentPattern(patternId: AutomationPatterns.DropTargetPatternId): IDropTargetProvider;
+    getCurrentPattern(patternId: AutomationPatterns.ExpandCollapsePatternId): IExpandCollapseProvider;
+    getCurrentPattern(patternId: AutomationPatterns.GridItemPatternId): IGridItemProvider;
+    getCurrentPattern(patternId: AutomationPatterns.GridPatternId): IGridProvider;
+    getCurrentPattern(patternId: AutomationPatterns.InvokePatternId): IInvokeProvider;
+    getCurrentPattern(patternId: AutomationPatterns.ItemContainerPatternId): IItemContainerProvider;
+    getCurrentPattern(patternId: AutomationPatterns.LegacyIAccessiblePatternId): ILegacyIAccessibleProvider;
+    getCurrentPattern(patternId: AutomationPatterns.MultipleViewPatternId): IMultipleViewProvider;
+    getCurrentPattern(patternId: AutomationPatterns.ObjectModelPatternId): IObjectModelProvider; // todo: not implemented due to complexity.
+    getCurrentPattern(patternId: AutomationPatterns.RangeValuePatternId): IRangeValueProvider;
+    getCurrentPattern(patternId: AutomationPatterns.ScrollItemPatternId): IScrollItemProvider;
+    getCurrentPattern(patternId: AutomationPatterns.ScrollPatternId): IScrollProvider;
+    getCurrentPattern(patternId: AutomationPatterns.SelectionItemPatternId): ISelectionItemProvider;
+    getCurrentPattern(patternId: AutomationPatterns.SelectionPatternId): ISelectionProvider;
+    getCurrentPattern(patternId: AutomationPatterns.SelectionPattern2Id): ISelectionProvider2;
+    getCurrentPattern(patternId: AutomationPatterns.SpreadsheetItemPatternId): ISpreadsheetItemProvider;
+    getCurrentPattern(patternId: AutomationPatterns.SpreadsheetPatternId): ISpreadsheetProvider;
+    getCurrentPattern(patternId: AutomationPatterns.StylesPatternId): IStylesProvider;
+    getCurrentPattern(patternId: AutomationPatterns.SynchronizedInputPatternId): ISynchronizedInputProvider;
+    getCurrentPattern(patternId: AutomationPatterns.TableItemPatternId): ITableItemProvider;
+    getCurrentPattern(patternId: AutomationPatterns.TablePatternId): ITableProvider;
+    getCurrentPattern(patternId: AutomationPatterns.TextChildPatternId): ITextChildProvider;
+    getCurrentPattern(patternId: AutomationPatterns.TextEditPatternId): ITextEditProvider;
+    getCurrentPattern(patternId: AutomationPatterns.TextPatternId): ITextProvider;
+    getCurrentPattern(patternId: AutomationPatterns.TextPattern2Id): ITextProvider2;
+    getCurrentPattern(patternId: AutomationPatterns.TogglePatternId): IToggleProvider;
+    getCurrentPattern(patternId: AutomationPatterns.TransformPatternId): ITransformProvider;
+    getCurrentPattern(patternId: AutomationPatterns.TransformPattern2Id): ITransformProvider2;
+    getCurrentPattern(patternId: AutomationPatterns.ValuePatternId): IValueProvider;
+    getCurrentPattern(patternId: AutomationPatterns.VirtualizedItemPatternId): IVirtualizedItemProvider;
+    getCurrentPattern(patternId: AutomationPatterns.WindowPatternId): IWindowProvider;
+    getCurrentPattern(patternId: AutomationPatterns): unknown;
+
     getCurrentPropertyValue(propertyId: AutomationProperties): Variant;
     getCurrentPropertyValueEx(propertyId: AutomationProperties, ignoreDefaultValues: boolean): Variant;
     setFocus(): void;
@@ -105,8 +639,6 @@ export declare interface AutomationElement {
     cachedProviderDescription: string;
 }
 
-
-
 export declare class AutomationEventHandler {
     constructor(callback: (sender: AutomationElement, eventId: AutomationEvents) => void);
 }
@@ -144,7 +676,7 @@ export declare interface AutomationTreeWalker {
 
 export declare class Automation {
     constructor();
-    
+
     createCacheRequest(): AutomationCacheRequest;
     addAutomationEventHandler(eventId: AutomationEvents, element: AutomationElement, treeScope: TreeScopes, cacheRequest: AutomationCacheRequest, eventHandler: AutomationEventHandler): void;
     addFocusChangedEventHandler(cacheRequest: AutomationCacheRequest, eventHandler: AutomationFocusChangedEventHandler): void;

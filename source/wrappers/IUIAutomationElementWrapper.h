@@ -23,6 +23,7 @@ public:
   Napi::Value GetCachedPropertyValue(const Napi::CallbackInfo &info);
   Napi::Value GetCachedPropertyValueEx(const Napi::CallbackInfo &info);
   Napi::Value GetClickablePoint(const Napi::CallbackInfo &info);
+  Napi::Value GetCurrentPattern(const Napi::CallbackInfo &info);
   Napi::Value GetCurrentPropertyValue(const Napi::CallbackInfo &info);
   Napi::Value GetCurrentPropertyValueEx(const Napi::CallbackInfo &info);
   void SetFocus(const Napi::CallbackInfo &info);

@@ -11,15 +11,7 @@ const {
 } = require('microsoft-ui-automation');
 
 describe('IUIAutomation', () => {
-    let automation = null;
-
-    test('constructor', () => {
-        automation = new Automation();
-    });
-
-    beforeEach(() => {
-        automation = new Automation();
-    });
+    let automation = new Automation();
 
     describe('contentViewCondition', () => {
         test('returns', () => {
@@ -87,7 +79,7 @@ describe('IUIAutomation', () => {
 
                 console.log(sender.currentName);
 
-                // todo: automation.removeAutomationEventHandler(eventHandler);
+                automation.removeAutomationEventHandler(eventHandler);
 
                 done();
             });
@@ -108,7 +100,6 @@ describe('IUIAutomation', () => {
         }, 300000);
     });
 
-    // todo: removeFocusChangedEventHandler
     xdescribe('add/removeFocusChangedEventHandler', () => {
         test('returns', done => {
             expect.assertions(1);
@@ -116,18 +107,16 @@ describe('IUIAutomation', () => {
             const focusChangedEventHandler = new AutomationFocusChangedEventHandler((sender) => {
                 expect(sender).not.toBeNull();
 
+                automation.removeFocusChangedEventHandler(focusChangedEventHandler);
+
                 done();
             });
 
-            // const cacheRequest = automation.createCacheRequest();
-
             automation.addFocusChangedEventHandler(null, focusChangedEventHandler);
-
-            // automation.removeFocusChanedEventHandler()
         }, 300000);
     });
 
-    // todo: broken, come back and fix a different day.  
+    // todo: figure out a way to test this.  
     xdescribe('add/removePropertyChangedEventHandler', () => {
         test('returns', (done) => {
             expect.assertions(1);
@@ -139,7 +128,9 @@ describe('IUIAutomation', () => {
             const winverElement = desktopElement.findFirst(TreeScopes.Subtree, winverNamePropertyCondition);
 
             const propertyChangedEventHandler = new AutomationPropertyChangedEventHandler((sender) => {
-                expect(sender).not.toBeNull();
+                expect(sender).toBeDefined();
+
+                automation.removePropertyChangedEventHandler(focusChangedEventHandler);
 
                 done();
             });
@@ -153,7 +144,7 @@ describe('IUIAutomation', () => {
         test.todo('returns');
     });
 
-    // todo: fix it.
+    // todo: figure out way to test this.
     xdescribe('addStructureChangedEventHandler', () => {
         test('returns', (done) => {
             expect.assertions(1);
@@ -166,6 +157,8 @@ describe('IUIAutomation', () => {
 
             const structureChangedEventHandler = new AutomationStructureChangedEventHandler((sender) => {
                 expect(sender).not.toBeNull();
+
+                automation.removeStructureChangedEventHandler(focusChangedEventHandler);
 
                 done();
             });
@@ -203,10 +196,10 @@ describe('IUIAutomation', () => {
 
     describe('createAndCondition', () => {
         test('returns', () => {
-            const winverNamePropertyConditionOne = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
-            const winverNamePropertyConditionTwo = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+            const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+            const winverAutomationIdPropertyCondition = automation.createPropertyCondition(AutomationProperties.AutomationIdPropertyId, '13095');
 
-            const andCondition = automation.createAndCondition(winverNamePropertyConditionOne, winverNamePropertyConditionTwo);
+            const andCondition = automation.createAndCondition(winverNamePropertyCondition, winverAutomationIdPropertyCondition);
 
             expect(andCondition).toBeDefined();
         });
@@ -250,12 +243,10 @@ describe('IUIAutomation', () => {
 
     describe('createOrCondition', () => {
         test('returns', () => {
-            const winverNamePropertyConditionOne = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
-            const winverNamePropertyConditionTwo = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+            const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+            const winverAutomationIdPropertyCondition = automation.createPropertyCondition(AutomationProperties.AutomationIdPropertyId, '13095');
 
-            // const winverAutomationIdPropertyCondition = automation.createPropertyCondition(AutomationProperties.AutomationIdPropertyId, 13095);
-
-            const orCondition = automation.createOrCondition(winverNamePropertyConditionOne, winverNamePropertyConditionTwo);
+            const orCondition = automation.createOrCondition(winverNamePropertyCondition, winverAutomationIdPropertyCondition);
 
             expect(orCondition).toBeDefined();
         });
@@ -279,7 +270,7 @@ describe('IUIAutomation', () => {
         });
     });
 
-    // todo: skipping just being lazy.  
+    // skipping: implementation is possible.  just being lazy. 
     describe('createPropertyConditionEx', () => {
         test.todo('returns');
     });
@@ -307,7 +298,7 @@ describe('IUIAutomation', () => {
         });
     });
 
-    // skipping: HWND conversion doesnt seem too important with the scope of this project.  
+    // skipping: HWND conversion doesnt seem too important with the scope of this project at the moment.  
     describe('elementFromHandle', () => {
         test.todo('returns');
     });
@@ -317,12 +308,12 @@ describe('IUIAutomation', () => {
         test.todo('returns');
     });
 
-    // skipping: out of scope of javascript.  how do you interop with com from javascript?  
+    // skipping: not sure of use case.    
     describe('elementFromIAccessible', () => {
         test.todo('returns');
     });
 
-    // skipping: out of scope.  
+    // skipping: not sure of use case.  
     describe('elementFromIAccessibleBuildCache', () => {
         test.todo('returns');
     });
@@ -365,16 +356,17 @@ describe('IUIAutomation', () => {
 
     describe('getPatternProgrammaticName', () => {
         test('returns', () => {
-            // todo: need pattern names
-            // const element = automation.getPatternProgrammaticName();
+            const patternName = automation.getPatternProgrammaticName(AutomationPatterns.DragPatternId);
+
+            expect(patternName).toBe('DragPattern');
         });
     });
 
     describe('getPropertyProgrammaticName', () => {
         test('returns', () => {
-            const propertyName = automation.getPatternProgrammaticName(AutomationPatterns.DragPatternId);
+            const propertyName = automation.getPropertyProgrammaticName(AutomationProperties.NamePropertyId);
 
-            expect(propertyName).toBe('DragPattern');
+            expect(propertyName).toBe('Name');
         });
     });
 
@@ -382,7 +374,7 @@ describe('IUIAutomation', () => {
         test('returns', () => {
             const desktopElement = automation.getRootElement();
 
-            expect(desktopElement).not.toBeNull();
+            expect(desktopElement).toBeDefined();
         });
     });
 
@@ -392,7 +384,7 @@ describe('IUIAutomation', () => {
 
             const desktopElement = automation.getRootElementBuildCache(cacheRequest);
 
-            expect(desktopElement).not.toBeNull();
+            expect(desktopElement).toBeDefined();
         });
     });
 
@@ -418,22 +410,26 @@ describe('IUIAutomation', () => {
 
     describe('removeAllEventHandlers', () => {
         test('returns', () => {
-
+            automation.removeAllEventHandlers();
         });
     });
 
+    // skipping: test included in above
     describe('removeAutomationEventHandler', () => {
         test.todo('returns');
     });
 
+    // skipping: test included in above
     describe('removeFocusChangedEventHandler', () => {
         test.todo('returns');
     });
 
+    // skipping: test included in above
     describe('removePropertyChangedEventHandler', () => {
         test.todo('returns');
     });
-
+    
+    // skipping: test included in above
     describe('removeStructureChangedEventHandler', () => {
         test.todo('returns');
     });

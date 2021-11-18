@@ -40,9 +40,6 @@ IUIAutomationElementArrayWrapper::~IUIAutomationElementArrayWrapper()
     m_pElementArray.Release();
 }
 
-
-// todo: indexer
-// todo: iterator?
 Napi::Value IUIAutomationElementArrayWrapper::GetElement(const Napi::CallbackInfo &info)
 {
     auto number = info[0].ToNumber();

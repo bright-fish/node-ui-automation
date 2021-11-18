@@ -1,14 +1,9 @@
-const { Automation, TreeScopes, AutomationProperties, AutomationElementModes } = require('microsoft-ui-automation');
+const { Automation, TreeScopes, AutomationProperties, AutomationElementModes, AutomationPatterns, DockPositions } = require('microsoft-ui-automation');
 
 describe('IUIAutomationElement', () => {
-    let winver = null;
     const automation = new Automation();
-    let desktopElement = null;
-    let winverElement = null;
-
-    test('getRootElement', () => {
-        desktopElement = automation.getRootElement();
-    });
+    let desktopElement = automation.getRootElement();
+    let winverElement = desktopElement.findFirst(TreeScopes.Subtree, propertyCondition);
 
     test('buildUpdatedCache', () => {
         let cacheRequest = automation.createCacheRequest();
@@ -112,8 +107,41 @@ describe('IUIAutomationElement', () => {
         expect(isClickable).toBe(false);
     });
 
-    // skipped
-    test.todo('getCurrentPattern');
+    describe('getCurrentPattern', () => {
+        // todo: find somewhere in some application where this exists.
+        // test('annotationProvider', () => {
+        //     const okButtonCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, 'OK');
+        //     const winverOkButton = winverElement.findFirst(TreeScopes.Subtree, okButtonCondition);
+
+        //     const annotationPattern = winverOkButton.getCurrentPattern(AutomationPatterns.AnnotationPatternId);
+        //     expect(annotationPattern).toBeDefined();
+        // });
+
+        test('invokeProvider', () => {
+            const okButtonCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, 'OK');
+            const winverOkButton = winverElement.findFirst(TreeScopes.Subtree, okButtonCondition);
+
+            const invokePattern = winverOkButton.getCurrentPattern(AutomationPatterns.InvokePatternId);
+            invokePattern.invoke();
+        });
+
+        test('dockProvider', () => {
+            const okButtonCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, 'OK');
+            const winverOkButton = winverElement.findFirst(TreeScopes.Subtree, okButtonCondition);
+
+            const dockProvider = winverOkButton.getCurrentPattern(AutomationPatterns.DockPatternId);
+            const dockPosition = dockProvider.dockPosition();
+
+            expect(dockPosition).toBe(DockPositions.Left);
+
+            dockProvider.setDockPosition(DockPositions.Right);
+        });
+
+        test('dragProvider', () => {
+
+        });
+    })
+
     // skipped
     test.todo('getCurrentPatternAs');
 
