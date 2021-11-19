@@ -7,10 +7,10 @@ public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
     static Napi::Object New(Napi::Env env, IInvokeProvider *pInvokeProvider);
 
-    void Invoke(const Napi::CallbackInfo &info);
-
     IInvokeProviderWrapper(const Napi::CallbackInfo &info);
     ~IInvokeProviderWrapper();
+
+    void Invoke(const Napi::CallbackInfo &info);
 private:
     IInvokeProvider *m_pIInvokeProvider;
 };

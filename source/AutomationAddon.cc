@@ -21,8 +21,19 @@ AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
     IUIAutomationFocusChangedEventHandlerWrapperConstructor = IUIAutomationFocusChangedEventHandlerWrapper::Initialize(env);
     IUIAutomationPropertyChangedEventHandlerWrapperConstructor = IUIAutomationPropertyChangedEventHandlerWrapper::Initialize(env);
     IUIAutomationStructureChangedEventHandlerWrapperConstructor = IUIAutomationStructureChangedEventHandlerWrapper::Initialize(env);
+
+    IAnnotationProviderWrapperConstructor = IAnnotationProviderWrapper::Initialize(env);
+    IDockProviderWrapperConstructor = IDockProviderWrapper::Initialize(env);
+    IDragProviderWrapperConstructor = IDragProviderWrapper::Initialize(env);
+    IDropTargetProviderWrapperConstructor = IDropTargetProviderWrapper::Initialize(env);
+    IExpandCollapseProviderWrapperConstructor = IExpandCollapseProviderWrapper::Initialize(env);
+    IGridItemProviderWrapperConstructor = IGridItemProviderWrapper::Initialize(env);
+    IGridProviderWrapperConstructor = IGridProviderWrapper::Initialize(env);
     IInvokeProviderWrapperConstructor = IInvokeProviderWrapper::Initialize(env);
+    IItemContainerProviderWrapperConstructor = IItemContainerProviderWrapper::Initialize(env);
+    
     IRawElementProviderSimpleWrapperConstructor = IRawElementProviderSimpleWrapper::Initialize(env);
+
     
     auto addonDefinition = {
         InstanceValue("Automation", IUIAutomationWrapperConstructor->Value()),

@@ -23,7 +23,7 @@ Napi::Object IDropTargetProviderWrapper::New(Napi::Env env, IDropTargetProvider 
 {
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->IInvokeProviderWrapperConstructor->New({Napi::External<IDropTargetProvider>::New(env, pIDropTargetProvider)});
+    return automationAddon->IDropTargetProviderWrapperConstructor->New({Napi::External<IDropTargetProvider>::New(env, pIDropTargetProvider)});
 }
 
 IDropTargetProviderWrapper::IDropTargetProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IDropTargetProviderWrapper>(info)

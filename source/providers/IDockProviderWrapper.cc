@@ -22,7 +22,7 @@ Napi::Object IDockProviderWrapper::New(Napi::Env env, IDockProvider *pDockProvid
 {
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->IInvokeProviderWrapperConstructor->New({Napi::External<IDockProvider>::New(env, pDockProvider)});
+    return automationAddon->IDockProviderWrapperConstructor->New({Napi::External<IDockProvider>::New(env, pDockProvider)});
 }
 
 IDockProviderWrapper::IDockProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IDockProviderWrapper>(info)

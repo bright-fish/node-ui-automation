@@ -9,3 +9,4 @@
 #include "IExpandCollapseProviderWrapper.h"
 #include "IGridItemProviderWrapper.h"
 #include "IGridProviderWrapper.h"
+#include "IItemContainerProviderWrapper.h"

@@ -26,7 +26,7 @@ Napi::Object IAnnotationProviderWrapper::New(Napi::Env env, IAnnotationProvider 
 {
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->IInvokeProviderWrapperConstructor->New({Napi::External<IAnnotationProvider>::New(env, pAnnotationProvider)});
+    return automationAddon->IAnnotationProviderWrapperConstructor->New({Napi::External<IAnnotationProvider>::New(env, pAnnotationProvider)});
 }
 
 IAnnotationProviderWrapper::IAnnotationProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IAnnotationProviderWrapper>(info)

@@ -25,7 +25,7 @@ Napi::Object IDragProviderWrapper::New(Napi::Env env, IDragProvider *pIDragProvi
 {
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->IInvokeProviderWrapperConstructor->New({Napi::External<IDragProvider>::New(env, pIDragProvider)});
+    return automationAddon->IDragProviderWrapperConstructor->New({Napi::External<IDragProvider>::New(env, pIDragProvider)});
 }
 
 IDragProviderWrapper::IDragProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IDragProviderWrapper>(info)

@@ -24,7 +24,7 @@ Napi::Object IGridProviderWrapper::New(Napi::Env env, IGridProvider *pIGridProvi
 {
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->IInvokeProviderWrapperConstructor->New({Napi::External<IGridProvider>::New(env, pIGridProvider)});
+    return automationAddon->IGridProviderWrapperConstructor->New({Napi::External<IGridProvider>::New(env, pIGridProvider)});
 }
 
 IGridProviderWrapper::IGridProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IGridProviderWrapper>(info)

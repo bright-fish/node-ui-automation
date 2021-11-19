@@ -34,14 +34,15 @@
             "utilities/Functions.cc",
 
             "providers/IAnnotationProviderWrapper.cc",
-            "providers/IInvokeProviderWrapper.cc",
             "providers/IRawElementProviderSimpleWrapper.cc",
             "providers/IDockProviderWrapper.cc",
             "providers/IDragProviderWrapper.cc",
             "providers/IDropTargetProviderWrapper.cc",
             "providers/IExpandCollapseProviderWrapper.cc",
             "providers/IGridItemProviderWrapper.cc",
-            "providers/IGridProviderWrapper.cc"
+            "providers/IGridProviderWrapper.cc",
+            "providers/IInvokeProviderWrapper.cc",
+            "providers/IItemContainerProviderWrapper.cc"
 
       ],
       "include_dirs": ["<!(node -p \"require('node-addon-api').include_dir\")"],

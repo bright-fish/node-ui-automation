@@ -24,7 +24,7 @@ Napi::Object IExpandCollapseProviderWrapper::New(Napi::Env env, IExpandCollapseP
 {
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->IInvokeProviderWrapperConstructor->New({Napi::External<IExpandCollapseProvider>::New(env, pIExpandCollapseProvider)});
+    return automationAddon->IExpandCollapseProviderWrapperConstructor->New({Napi::External<IExpandCollapseProvider>::New(env, pIExpandCollapseProvider)});
 }
 
 IExpandCollapseProviderWrapper::IExpandCollapseProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IExpandCollapseProviderWrapper>(info)

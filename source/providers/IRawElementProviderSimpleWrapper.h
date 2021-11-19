@@ -15,6 +15,5 @@ public:
     Napi::Value GetPatternProvider(const Napi::CallbackInfo &info);
     Napi::Value GetPropertyValue(const Napi::CallbackInfo &info);
 
-private:
     IRawElementProviderSimple *m_pRawElementProviderSimple;
 };
