@@ -37,6 +37,12 @@
             "providers/IInvokeProviderWrapper.cc",
             "providers/IRawElementProviderSimpleWrapper.cc",
             "providers/IDockProviderWrapper.cc",
+            "providers/IDragProviderWrapper.cc",
+            "providers/IDropTargetProviderWrapper.cc",
+            "providers/IExpandCollapseProviderWrapper.cc",
+            "providers/IGridItemProviderWrapper.cc",
+            "providers/IGridProviderWrapper.cc"
+
       ],
       "include_dirs": ["<!(node -p \"require('node-addon-api').include_dir\")"],
       "libraries" : [

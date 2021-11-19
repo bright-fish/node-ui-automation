@@ -50,7 +50,7 @@ export declare interface IDragProvider {
     dropEffects: string[];
     dropEffect: string;
     isGrabbed: boolean;
-    getGrabbedItems: IRawElementProviderSimple[];
+    getGrabbedItems(): IRawElementProviderSimple[];
 }
 
 export declare interface IDropTargetProvider {
