@@ -10,3 +10,5 @@
 #include "IGridItemProviderWrapper.h"
 #include "IGridProviderWrapper.h"
 #include "IItemContainerProviderWrapper.h"
+#include "ILegacyIAccessibleProviderWrapper.h"
+#include "IMultipleViewProviderWrapper.h"

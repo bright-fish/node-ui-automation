@@ -6,6 +6,7 @@
 #include "RectWrapper.h"
 
 #include "IUnknownWrapper.h"
+#include "IAccessibleWrapper.h"
 #include "IUIAutomationWrapper.h"
 #include "IUIAutomationElementWrapper.h"
 #include "IUIAutomationConditionWrapper.h"

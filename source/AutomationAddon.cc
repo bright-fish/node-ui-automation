@@ -31,6 +31,7 @@ AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
     IGridProviderWrapperConstructor = IGridProviderWrapper::Initialize(env);
     IInvokeProviderWrapperConstructor = IInvokeProviderWrapper::Initialize(env);
     IItemContainerProviderWrapperConstructor = IItemContainerProviderWrapper::Initialize(env);
+    IMultipleViewProviderWrapperConstructor = IMultipleViewProviderWrapper::Initialize(env);
     
     IRawElementProviderSimpleWrapperConstructor = IRawElementProviderSimpleWrapper::Initialize(env);
 

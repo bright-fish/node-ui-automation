@@ -14,6 +14,8 @@ public:
     Napi::FunctionReference *IUIAutomationEventHandlerWrapperConstructor;
     Napi::FunctionReference *IUIAutomationProxyFactoryMappingWrapperConstructor;
     Napi::FunctionReference *IUnknownWrapperConstructor;
+    Napi::FunctionReference *IAccessibleWrapperConstructor;
+
     Napi::FunctionReference *RECTWrapperConstructor;
     Napi::FunctionReference *IUIAutomationFocusChangedEventHandlerWrapperConstructor;
     Napi::FunctionReference *IUIAutomationPropertyChangedEventHandlerWrapperConstructor;
@@ -28,6 +30,9 @@ public:
     Napi::FunctionReference *IGridProviderWrapperConstructor;
     Napi::FunctionReference *IInvokeProviderWrapperConstructor;
     Napi::FunctionReference *IItemContainerProviderWrapperConstructor;
+    Napi::FunctionReference *ILegacyIAccessibleProviderWrapperConstructor;
+    Napi::FunctionReference *IMultipleViewProviderWrapperConstructor;
+
     Napi::FunctionReference *IRawElementProviderSimpleWrapperConstructor;
 
     // todo: add all the constructors for the providers here.

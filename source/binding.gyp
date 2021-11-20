@@ -15,6 +15,7 @@
             "wrappers/TreeScopeWrapper.cc",
             "wrappers/RectWrapper.cc",
             "wrappers/IUnknownWrapper.cc",
+            # "wrappers/IAccessibleWrapper.cc",
             "wrappers/IUIAutomationElementWrapper.cc" ,
             "wrappers/IUIAutomationWrapper.cc", 
             "wrappers/IUIAutomationConditionWrapper.cc",
@@ -42,7 +43,9 @@
             "providers/IGridItemProviderWrapper.cc",
             "providers/IGridProviderWrapper.cc",
             "providers/IInvokeProviderWrapper.cc",
-            "providers/IItemContainerProviderWrapper.cc"
+            "providers/IItemContainerProviderWrapper.cc",
+            "providers/ILegacyIAccessibleProviderWrapper.cc",
+            "providers/IMultipleViewProviderWrapper.cc",
 
       ],
       "include_dirs": ["<!(node -p \"require('node-addon-api').include_dir\")"],

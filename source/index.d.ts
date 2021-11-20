@@ -93,10 +93,27 @@ export declare interface IInvokeProvider {
 export declare interface IItemContainerProvider {
     findItemByProperty(startAfter: IRawElementProviderSimple, propertyId: AutomationProperties, value: Variant): IRawElementProviderSimple;
 }
-
-export declare interface IAccessible {
+export declare interface IDispatch {
 
 }
+
+// skipping
+// export declare interface IAccessible {
+//     accChild: IDispatch;
+//     accChildCount: number;
+//     accDefaultAction: string;
+//     accDescription: string;
+//     accFocus;
+//     accHelp;
+//     accHelpTopic;
+//     accKeyboardShortcut;
+//     accName;
+//     accParent;
+//     accRole;
+//     accSelection;
+//     accState;
+//     accValue;
+// }
 
 export declare interface SelectionFlags {
     None: 0,
@@ -118,9 +135,9 @@ export declare interface ILegacyIAccessibleProvider {
     role: number;
     state: number;
     value: string;
-    getAccessible(): IAccessible;
+    // skipping: getAccessible(): IAccessible;
     getSelection(): IRawElementProviderSimple[];
-    select(flag: SelectionFlags);
+    select(flag: SelectionFlags): void;
     setValue(value: string): void;
 }
 
