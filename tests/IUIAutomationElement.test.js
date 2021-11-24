@@ -3,7 +3,7 @@ const { Automation, TreeScopes, AutomationProperties, AutomationElementModes, Au
 describe('IUIAutomationElement', () => {
     const automation = new Automation();
     let desktopElement = automation.getRootElement();
-    let winverElement = desktopElement.findFirst(TreeScopes.Subtree, propertyCondition);
+    let winverElement;
 
     test('buildUpdatedCache', () => {
         let cacheRequest = automation.createCacheRequest();
@@ -117,29 +117,29 @@ describe('IUIAutomationElement', () => {
         //     expect(annotationPattern).toBeDefined();
         // });
 
-        test('invokeProvider', () => {
-            const okButtonCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, 'OK');
-            const winverOkButton = winverElement.findFirst(TreeScopes.Subtree, okButtonCondition);
+        // test('invokeProvider', () => {
+        //     const okButtonCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, 'OK');
+        //     const winverOkButton = winverElement.findFirst(TreeScopes.Subtree, okButtonCondition);
 
-            const invokePattern = winverOkButton.getCurrentPattern(AutomationPatterns.InvokePatternId);
-            invokePattern.invoke();
-        });
+        //     const invokePattern = winverOkButton.getCurrentPattern(AutomationPatterns.InvokePatternId);
+        //     invokePattern.invoke();
+        // });
 
-        test('dockProvider', () => {
-            const okButtonCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, 'OK');
-            const winverOkButton = winverElement.findFirst(TreeScopes.Subtree, okButtonCondition);
+        // test('dockProvider', () => {
+        //     const okButtonCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, 'OK');
+        //     const winverOkButton = winverElement.findFirst(TreeScopes.Subtree, okButtonCondition);
 
-            const dockProvider = winverOkButton.getCurrentPattern(AutomationPatterns.DockPatternId);
-            const dockPosition = dockProvider.dockPosition();
+        //     const dockProvider = winverOkButton.getCurrentPattern(AutomationPatterns.DockPatternId);
+        //     const dockPosition = dockProvider.dockPosition();
 
-            expect(dockPosition).toBe(DockPositions.Left);
+        //     expect(dockPosition).toBe(DockPositions.Left);
 
-            dockProvider.setDockPosition(DockPositions.Right);
-        });
+        //     dockProvider.setDockPosition(DockPositions.Right);
+        // });
 
-        test('dragProvider', () => {
+        // test('dragProvider', () => {
 
-        });
+        // });
     })
 
     // skipped

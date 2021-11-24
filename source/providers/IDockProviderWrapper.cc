@@ -6,6 +6,7 @@ Napi::FunctionReference *IDockProviderWrapper::Initialize(Napi::Env env)
 {
     auto classDefinition = {
         InstanceAccessor<&IDockProviderWrapper::GetDockPosition>("dockPosition"),
+        
         InstanceMethod<&IDockProviderWrapper::SetDockPosition>("setDockPosition"),
     };
 

@@ -1,3 +1,4 @@
+#pragma once
 #include "../Shared.h"
 
 class AutomationElementModeWrapper

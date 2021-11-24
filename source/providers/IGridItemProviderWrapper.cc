@@ -13,7 +13,7 @@ Napi::FunctionReference *IGridItemProviderWrapper::Initialize(Napi::Env env)
         InstanceAccessor<&IGridItemProviderWrapper::GetRowSpan>("rowSpan"),
     };
 
-    Napi::Function function = DefineClass(env, "IAnnotationProvider", classDefinition);
+    Napi::Function function = DefineClass(env, "IGridItemProvider", classDefinition);
 
     Napi::FunctionReference *functionReference = new Napi::FunctionReference();
 

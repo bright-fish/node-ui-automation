@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../Shared.h"
 
 class StructureChangedEventHandler : public IUIAutomationStructureChangedEventHandler

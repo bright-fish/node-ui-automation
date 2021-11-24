@@ -32,12 +32,12 @@ export declare interface IAnnotationProvider {
 }
 
 export declare enum DockPositions {
-    Top,
-    Left,
-    Bottom,
-    Right,
-    Fill,
-    None
+    Top = 0,
+    Left = 1,
+    Bottom = 2,
+    Right = 3,
+    Fill = 4,
+    None = 5
 }
 
 export declare interface IDockProvider {
@@ -59,11 +59,10 @@ export declare interface IDropTargetProvider {
 }
 
 export declare enum ExpandCollapseState {
-    // todo: enum pass
-    Collapsed,
-    Expanded,
-    PartiallyExpanded,
-    LeafNode
+    Collapsed = 0,
+    Expanded = 1,
+    PartiallyExpanded = 2,
+    LeafNode = 3
 }
 
 export declare interface IExpandCollapseProvider {
@@ -125,7 +124,6 @@ export declare interface SelectionFlags {
 }
 
 export declare interface ILegacyIAccessibleProvider {
-    doDefaultAction(): void;
     childId: number;
     defaultAction: string;
     description: string;
@@ -136,6 +134,7 @@ export declare interface ILegacyIAccessibleProvider {
     state: number;
     value: string;
     // skipping: getAccessible(): IAccessible;
+    doDefaultAction(): void;
     getSelection(): IRawElementProviderSimple[];
     select(flag: SelectionFlags): void;
     setValue(value: string): void;
@@ -148,12 +147,12 @@ export declare interface IMultipleViewProvider {
     setCurrentView(viewId: number): void;
 }
 
-export declare interface IObjectModelProvider {
-    // todo:  getUnderlyingObjectModel();
-    // this function requires that we return an IUnknown pointer and casting that doesnt really make sense.  
-    // one thought would be to return the underlying pointer as a node buffer.  This would allow someone to get the memory out of it if neccessary.  
-
-}
+// skipping: due to complexity
+// export declare interface IObjectModelProvider {
+// todo:  getUnderlyingObjectModel();
+// this function requires that we return an IUnknown pointer and casting that doesnt really make sense.  
+// one thought would be to return the underlying pointer as a node buffer.  This would allow someone to get the memory out of it if neccessary.  
+// }
 
 // skipping
 // export declare interface IProxyProviderWinEventHandler  {
@@ -201,7 +200,6 @@ export declare interface IRawElementProviderHwndOverride {
 
 }
 
-// todo: figure out values
 export declare enum ProviderOptions {
     ClientSideProvider = 0x1,
     ServerSideProvider = 0x2,
@@ -215,7 +213,7 @@ export declare enum ProviderOptions {
 }
 
 export declare interface IRawElementProviderSimple {
-    hostElementProvider: IRawElementProviderSimple;
+    hostRawElementProvider: IRawElementProviderSimple;
     providerOptions: ProviderOptions;
 
     // todo: this is missing, figure out if feasible.  
@@ -231,7 +229,7 @@ export declare interface IRawElementProviderSimple {
     getPatternProvider(patternId: AutomationPatterns.ItemContainerPatternId): IItemContainerProvider;
     getPatternProvider(patternId: AutomationPatterns.LegacyIAccessiblePatternId): ILegacyIAccessibleProvider;
     getPatternProvider(patternId: AutomationPatterns.MultipleViewPatternId): IMultipleViewProvider;
-    getPatternProvider(patternId: AutomationPatterns.ObjectModelPatternId): IObjectModelProvider; // todo: not implemented due to complexity.
+    // todo: getPatternProvider(patternId: AutomationPatterns.ObjectModelPatternId): IObjectModelProvider; // not implemented due to complexity.
     getPatternProvider(patternId: AutomationPatterns.RangeValuePatternId): IRangeValueProvider;
     getPatternProvider(patternId: AutomationPatterns.ScrollItemPatternId): IScrollItemProvider;
     getPatternProvider(patternId: AutomationPatterns.ScrollPatternId): IScrollProvider;
@@ -283,8 +281,6 @@ export declare interface IScrollItemProvider {
     scrollIntoView(): void;
 }
 
-
-
 export declare interface IScrollProvider {
     horizontallyScrollable: boolean;
     horizontalScrollPercent: number;
@@ -292,14 +288,15 @@ export declare interface IScrollProvider {
     verticallyScrollable: boolean;
     verticalScrollPercent: number;
     verticalViewSize: number;
-    scroll(horizontalAmount: number, verticalAmount: number);
-    setScrollPercent(horizontalPercent: number, verticalPercent: number);
+    scroll(horizontalAmount: number, verticalAmount: number): void;
+    setScrollPercent(horizontalPercent: number, verticalPercent: number): void;
 }
 
 export declare interface ISelectionItemProvider {
-    addToSelection(): void;
     isSelected: boolean;
     selectionContainer: IRawElementProviderSimple;
+
+    addToSelection(): void;
     removeFromSelection(): void;
     select(): void;
 }
@@ -310,16 +307,41 @@ export declare interface ISelectionProvider {
     getSelection(): IRawElementProviderSimple[];
 }
 
-export declare interface ISelectionProvider2 {
+export declare interface ISelectionProvider2 extends ISelectionProvider {
     currentSelectedItem: IRawElementProviderSimple;
     firstSelectedItem: IRawElementProviderSimple;
     itemCount: number;
     lastSelectedItem: IRawElementProviderSimple;
 }
 
-export declare interface AutomationAnnotationTypes {
-    // todo: enum pass
+export declare enum AutomationAnnotationTypes {
+    Unknown = 60000,
+    SpellingError = 60001,
+    GrammarError = 60002,
+    Comment = 60003,
+    FormulaError = 60004,
+    TrackChanges = 60005,
+    Header = 60006,
+    Footer = 60007,
+    Highlighted = 60008,
+    Endnote = 60009,
+    Footnote = 60010,
+    InsertionChange = 60011,
+    DeletionChange = 60012,
+    MoveChange = 60013,
+    FormatChange = 60014,
+    UnsyncedChange = 60015,
+    EditingLockedChange = 60016,
+    ExternalChange = 60017,
+    ConflictingChange = 60018,
+    Author = 60019,
+    AdvancedProofingIssue = 60020,
+    DataValidationError = 60021,
+    CircularReferenceError = 60022,
+    Mathematics = 60023,
+    Sensitive = 60024
 }
+
 export declare interface ISpreadsheetItemProvider {
     formula: string;
     getAnnotationObjects(): IRawElementProviderSimple[];
@@ -330,8 +352,24 @@ export declare interface ISpreadsheetProvider {
     getItemByName(name: string): IRawElementProviderSimple
 }
 
-export declare interface AutomationStyles {
-    // todo: enum pass
+export declare enum AutomationStyles {
+    Custom = 70000,
+    Heading1 = 70001,
+    Heading2 = 70002,
+    Heading3 = 70003,
+    Heading4 = 70004,
+    Heading5 = 70005,
+    Heading6 = 70006,
+    Heading7 = 70007,
+    Heading8 = 70008,
+    Heading9 = 70009,
+    Title = 70010,
+    Subtitle = 70011,
+    Normal = 70012,
+    Emphasis = 70013,
+    Quote = 70014,
+    BulletedList = 70015,
+    NumberedList = 70016
 }
 
 export declare interface IStylesProvider {
@@ -344,20 +382,18 @@ export declare interface IStylesProvider {
     styleName: string;
 }
 
-
-export declare interface AutomationSynchronizedInputTypes {
-    // todo: enum pass
-    KeyUp,
-    KeyDown,
-    LeftMouseUp,
-    LeftMouseDown,
-    RightMouseUp,
-    RightMouseDown
+export declare enum AutomationSynchronizedInputTypes {
+    KeyUp = 0x1,
+    KeyDown = 0x2,
+    LeftMouseUp = 0x4,
+    LeftMouseDown = 0x8,
+    RightMouseUp = 0x10,
+    RightMouseDown = 0x20
 }
 
 export declare interface ISynchronizedInputProvider {
-    cancel();
-    startListening(synchronizedInputType: AutomationSynchronizedInputTypes);
+    cancel(): void;
+    startListening(synchronizedInputType: AutomationSynchronizedInputTypes): void;
 }
 
 export declare interface ITableItemProvider {
@@ -366,10 +402,9 @@ export declare interface ITableItemProvider {
 }
 
 export declare enum AutomationRowOrColumnMajor {
-    // todo: enum pass
-    RowMajor,
-    ColumnMajor,
-    Indeterminate
+    RowMajor = 0,
+    ColumnMajor = 1,
+    Indeterminate = 2
 }
 
 export declare interface ITableProvider {
@@ -385,14 +420,13 @@ export declare interface ITextChildProvider {
 
 export declare interface ITextEditProvider {
     getActiveComposition(): ITextRangeProvider;
-    getC
-    onversionTarget(): ITextRangeProvider;
+    getConversionTarget(): ITextRangeProvider;
 }
+
 export declare enum AutomationSupportedTextSelections {
-    // todo: enum pass
-    None,
-    Single,
-    Multiple
+    None = 0,
+    Single = 1,
+    Multiple = 2
 }
 
 export declare interface ITextProvider {
@@ -404,32 +438,76 @@ export declare interface ITextProvider {
     rangeFromPoint(point: Point): ITextRangeProvider;
 }
 
-
+export declare interface CaretRange {
+    isActive: boolean;
+    value: ITextRangeProvider;
+}
 
 export declare interface ITextProvider2 extends ITextProvider {
-    getCaretRange(): { isActive: boolean, value: ITextRangeProvider };
+    getCaretRange(): CaretRange;
     rangeFromAnnotation(annotationElement: IRawElementProviderSimple): ITextRangeProvider;
 }
 
 export declare enum AutomationTextPatternRangeEndpoint {
-    // todo: enum pass
-    Start,
-    End
+    Start = 0,
+    End = 1
 }
 
 export declare enum TextUnits {
-    // todo: enum pass
-    Character,
-    Format,
-    Word,
-    Line,
-    Paragraph,
-    Page,
-    Document
+    Character = 0,
+    Format = 1,
+    Word = 2,
+    Line = 3,
+    Paragraph = 4,
+    Page = 5,
+    Document = 6
 }
 
 export declare enum AutomationAttributes {
-    // todo: enum pass
+    AnimationStyleAttributeId = 40000,
+    BackgroundColorAttributeId = 40001,
+    BulletStyleAttributeId = 40002,
+    CapStyleAttributeId = 40003,
+    CultureAttributeId = 40004,
+    FontNameAttributeId = 40005,
+    FontSizeAttributeId = 40006,
+    FontWeightAttributeId = 40007,
+    ForegroundColorAttributeId = 40008,
+    HorizontalTextAlignmentAttributeId = 40009,
+    IndentationFirstLineAttributeId = 40010,
+    IndentationLeadingAttributeId = 40011,
+    IndentationTrailingAttributeId = 40012,
+    IsHiddenAttributeId = 40013,
+    IsItalicAttributeId = 40014,
+    IsReadOnlyAttributeId = 40015,
+    IsSubscriptAttributeId = 40016,
+    IsSuperscriptAttributeId = 40017,
+    MarginBottomAttributeId = 40018,
+    MarginLeadingAttributeId = 40019,
+    MarginTopAttributeId = 40020,
+    MarginTrailingAttributeId = 40021,
+    OutlineStylesAttributeId = 40022,
+    OverlineColorAttributeId = 40023,
+    OverlineStyleAttributeId = 40024,
+    StrikethroughColorAttributeId = 40025,
+    StrikethroughStyleAttributeId = 40026,
+    TabsAttributeId = 40027,
+    TextFlowDirectionsAttributeId = 40028,
+    UnderlineColorAttributeId = 40029,
+    UnderlineStyleAttributeId = 40030,
+    AnnotationTypesAttributeId = 40031,
+    AnnotationObjectsAttributeId = 40032,
+    StyleNameAttributeId = 40033,
+    StyleIdAttributeId = 40034,
+    LinkAttributeId = 40035,
+    IsActiveAttributeId = 40036,
+    SelectionActiveEndAttributeId = 40037,
+    CaretPositionAttributeId = 40038,
+    CaretBidiModeAttributeId = 40039,
+    LineSpacingAttributeId = 40040,
+    BeforeParagraphSpacingAttributeId = 40041,
+    AfterParagraphSpacingAttributeId = 40042,
+    SayAsInterpretAsAttributeId = 40043
 }
 
 
@@ -438,7 +516,7 @@ export declare interface ITextRangeProvider {
     clone(): ITextRangeProvider;
     compare(range: ITextRangeProvider): boolean;
     compareEndpoints(endpoint: AutomationTextPatternRangeEndpoint, targeRange: ITextRangeProvider, targetEndpoint: AutomationTextPatternRangeEndpoint): number;
-    expandToEnclosingUnit(textUnit: TextUnits);
+    expandToEnclosingUnit(textUnit: TextUnits): void;
     findAttribute(attributeId: AutomationAttributes, value: Variant, backward: boolean): ITextRangeProvider;
     findText(text: string, backward: boolean, ignoreCase: boolean): ITextRangeProvider;
     getAttributeValue(attributeId: AutomationAttributes): Variant;
@@ -447,23 +525,22 @@ export declare interface ITextRangeProvider {
     getEnclosingElement(): IRawElementProviderSimple;
     getText(maxLength: number): string;
     move(textUnit: TextUnits, count: number): number;
-    moveEndpointByRange(endpoint: AutomationTextPatternRangeEndpoint, targetRange: ITextRangeProvider, targetEndpoint: AutomationTextPatternRangeEndpoint): void;
+    moveEndpointByRange(endpoint: AutomationTextPatternRangeEndpoint, targetRange: ITextRangeProvider, targetEndpoint: AutomationTextPatternRangeEndpoint): number;
     moveEndpointByUnit(endpoint: AutomationTextPatternRangeEndpoint, textUnit: TextUnits, count: number): number;
     removeFromSelection(): void;
     scrollIntoView(alignTop: boolean): void;
     select(): void;
 }
 
-export declare interface ITextRangeProvider2 extends ITextRangeProvider {
-    showContextMenu(): void;
-}
+// skipping for now
+// export declare interface ITextRangeProvider2 extends ITextRangeProvider {
+//     showContextMenu(): void;
+// }
 
 export declare enum ToggleStates {
-    // todo: enum pass
-
-    Off,
-    On,
-    Indeterminate
+    Off = 0,
+    On = 1,
+    Indeterminate = 2
 }
 
 
@@ -480,12 +557,13 @@ export declare interface ITransformProvider {
     resize(width: number, height: number);
     rotate(degrees: number);
 }
+
 export declare enum ZoomUnits {
-    NoAmount,
-    LargeDecrement,
-    SmallDecrement,
-    LargeIncrement,
-    SmallIncrement
+    NoAmount = 0,
+    LargeDecrement = 1,
+    SmallDecrement = 2,
+    LargeIncrement = 3,
+    SmallIncrement = 4
 }
 
 export declare interface ITransformProvider2 extends ITransformProvider {
@@ -508,28 +586,27 @@ export declare interface IVirtualizedItemProvider {
 }
 
 export declare enum WindowInteractionStates {
-    // todo: enum pass
-    Running,
-    Closing,
-    ReadyForUserInteraction,
-    BlockedByModalWindow,
-    NotResponding
+    Running = 0,
+    Closing = 1,
+    ReadyForUserInteraction = 2,
+    BlockedByModalWindow = 3,
+    NotResponding = 4
 }
 
 export declare enum WindowVisualStates {
-    // todo: enum pass
-    Normal,
-    Maximized,
-    Minimized
+    Normal = 0,
+    Maximized = 1,
+    Minimized = 2
 }
 export declare interface IWindowProvider {
-    close(): void;
     canMaximize: boolean;
     canMinimize: boolean;
     isModal: boolean;
     isTopmost: boolean;
     windowInteractionState: WindowInteractionStates;
     windowVisualState: WindowVisualStates;
+
+    close(): void;
     setVisualState(state: WindowVisualStates): void;
     waitForInputIdle(milliseconds: number): boolean;
 }
@@ -560,7 +637,7 @@ export declare interface AutomationElement {
     getCurrentPattern(patternId: AutomationPatterns.ItemContainerPatternId): IItemContainerProvider;
     getCurrentPattern(patternId: AutomationPatterns.LegacyIAccessiblePatternId): ILegacyIAccessibleProvider;
     getCurrentPattern(patternId: AutomationPatterns.MultipleViewPatternId): IMultipleViewProvider;
-    getCurrentPattern(patternId: AutomationPatterns.ObjectModelPatternId): IObjectModelProvider; // todo: not implemented due to complexity.
+    // getCurrentPattern(patternId: AutomationPatterns.ObjectModelPatternId): IObjectModelProvider; // todo: not implemented due to complexity.
     getCurrentPattern(patternId: AutomationPatterns.RangeValuePatternId): IRangeValueProvider;
     getCurrentPattern(patternId: AutomationPatterns.ScrollItemPatternId): IScrollItemProvider;
     getCurrentPattern(patternId: AutomationPatterns.ScrollPatternId): IScrollProvider;
@@ -672,6 +749,7 @@ export declare class AutomationStructurechangedEventHandler {
     constructor(callback: (sender: AutomationElement) => void);
 }
 
+// skipping
 export declare interface AutomationProxyFactorMapping {
     // todo:
 }
@@ -728,7 +806,7 @@ export declare class Automation {
     contentViewCondition: AutomationCondition;
     controlViewWalker: AutomationTreeWalker;
     controlViewCondition: AutomationCondition;
-    proxyFactoryMapping: AutomationProxyFactorMapping;
+    // skipping: proxyFactoryMapping: AutomationProxyFactorMapping;
 }
 
 export declare interface Rect {

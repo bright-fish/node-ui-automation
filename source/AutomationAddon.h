@@ -32,11 +32,34 @@ public:
     Napi::FunctionReference *IItemContainerProviderWrapperConstructor;
     Napi::FunctionReference *ILegacyIAccessibleProviderWrapperConstructor;
     Napi::FunctionReference *IMultipleViewProviderWrapperConstructor;
+    Napi::FunctionReference *IRangeValueProviderWrapperConstructor;
+    Napi::FunctionReference *IScrollItemProviderWrapperConstructor;
+    Napi::FunctionReference *IScrollProviderWrapperConstructor;
+    Napi::FunctionReference *ISelectionItemProviderWrapperConstructor;
+    Napi::FunctionReference *ISelectionProviderWrapperConstructor;
+    Napi::FunctionReference *ISelectionProvider2WrapperConstructor;
+    Napi::FunctionReference *ISpreadsheetProviderWrapperConstructor;
+    Napi::FunctionReference *ISpreadsheetItemProviderWrapperConstructor;
+    Napi::FunctionReference *IStylesProviderWrapperConstructor;
+    Napi::FunctionReference *ISynchronizedInputProviderWrapperConstructor;
+    Napi::FunctionReference *ITableItemProviderWrapperConstructor;
+    Napi::FunctionReference *ITableProviderWrapperConstructor;
+    Napi::FunctionReference *ITextChildProviderWrapperConstructor;
+    Napi::FunctionReference *ITextRangeProviderWrapperConstructor;
+    Napi::FunctionReference *ITextEditProviderWrapperConstructor;
+    Napi::FunctionReference *ITextProviderWrapperConstructor;
+    Napi::FunctionReference *ITextProvider2WrapperConstructor;
+    Napi::FunctionReference *IToggleProviderWrapperConstructor;
+    Napi::FunctionReference *ITransformProviderWrapperConstructor;
+    Napi::FunctionReference *ITransformProvider2WrapperConstructor;
+    Napi::FunctionReference *IValueProviderWrapperConstructor;
+    Napi::FunctionReference *IVirtualizedItemProviderWrapperConstructor;
+    Napi::FunctionReference *IWindowProviderWrapperConstructor;
 
     Napi::FunctionReference *IRawElementProviderSimpleWrapperConstructor;
 
     // todo: add all the constructors for the providers here.
-
+    
     AutomationAddon(Napi::Env env, Napi::Object exports);
     ~AutomationAddon();
 };

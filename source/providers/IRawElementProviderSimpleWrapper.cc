@@ -8,6 +8,7 @@ Napi::FunctionReference *IRawElementProviderSimpleWrapper::Initialize(Napi::Env 
     auto classDefinition = {
         InstanceAccessor<&IRawElementProviderSimpleWrapper::GetHostRawElementProvider>("hostRawElementProvider"),
         InstanceAccessor<&IRawElementProviderSimpleWrapper::GetProviderOptions>("providerOptions"),
+        
         InstanceMethod<&IRawElementProviderSimpleWrapper::GetPatternProvider>("getPatternProvider"),
         InstanceMethod<&IRawElementProviderSimpleWrapper::GetPropertyValue>("getPropertyValue")
     };

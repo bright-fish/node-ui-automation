@@ -9,6 +9,7 @@ Napi::FunctionReference *IDragProviderWrapper::Initialize(Napi::Env env)
         InstanceAccessor<&IDragProviderWrapper::GetDropEffects>("dropEffects"),
         InstanceAccessor<&IDragProviderWrapper::GetDropEffect>("dropEffect"),
         InstanceAccessor<&IDragProviderWrapper::GetIsGrabbed>("isGrabbed"),
+        
         InstanceMethod<&IDragProviderWrapper::GetGrabbedItems>("getGrabbedItems"),
     };
 

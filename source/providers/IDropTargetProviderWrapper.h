@@ -5,7 +5,7 @@ class IDropTargetProviderWrapper : public Napi::ObjectWrap<IDropTargetProviderWr
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IDropTargetProvider *pDropTargetProvider);
+    static Napi::Object New(Napi::Env env, IDropTargetProvider *pIDropTargetProvider);
 
     IDropTargetProviderWrapper(const Napi::CallbackInfo &info);
     ~IDropTargetProviderWrapper();

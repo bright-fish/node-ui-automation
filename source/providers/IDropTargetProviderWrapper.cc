@@ -6,8 +6,8 @@
 Napi::FunctionReference *IDropTargetProviderWrapper::Initialize(Napi::Env env)
 {
     auto classDefinition = {
-        InstanceAccessor<&IDropTargetProviderWrapper::GetDropTargetEffects>("dropTargetEffects"),
         InstanceAccessor<&IDropTargetProviderWrapper::GetDropTargetEffect>("dropTargetEffect"),
+        InstanceAccessor<&IDropTargetProviderWrapper::GetDropTargetEffects>("dropTargetEffects"),
     };
 
     Napi::Function function = DefineClass(env, "IDropTargetProvider", classDefinition);
@@ -36,6 +36,16 @@ IDropTargetProviderWrapper::~IDropTargetProviderWrapper()
     m_pIDropTargetProvider->Release();
 }
 
+Napi::Value IDropTargetProviderWrapper::GetDropTargetEffect(const Napi::CallbackInfo &info)
+{
+    BSTR dropEffect;
+    auto hResult = m_pIDropTargetProvider->get_DropTargetEffect(&dropEffect);
+
+    HandleResult(info, hResult);
+
+    return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(dropEffect));
+}
+
 Napi::Value IDropTargetProviderWrapper::GetDropTargetEffects(const Napi::CallbackInfo &info)
 {
     CComSafeArray<BSTR> dropEffects;
@@ -48,19 +58,9 @@ Napi::Value IDropTargetProviderWrapper::GetDropTargetEffects(const Napi::Callbac
     for (unsigned long i = 0; i < dropEffects.GetCount(); i++)
     {
         auto dropEffect = Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(dropEffects.GetAt(i)));
-        
+
         array.Set(i, dropEffect);
     }
 
     return array;
-}
-
-Napi::Value IDropTargetProviderWrapper::GetDropTargetEffect(const Napi::CallbackInfo &info)
-{
-    BSTR dropEffect;
-    auto hResult = m_pIDropTargetProvider->get_DropTargetEffect(&dropEffect);
-
-    HandleResult(info, hResult);
-
-    return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(dropEffect));
 }

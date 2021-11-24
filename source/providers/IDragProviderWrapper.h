@@ -5,7 +5,7 @@ class IDragProviderWrapper : public Napi::ObjectWrap<IDragProviderWrapper>
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IDragProvider *pDragProvider);
+    static Napi::Object New(Napi::Env env, IDragProvider *pIDragProvider);
 
     IDragProviderWrapper(const Napi::CallbackInfo &info);
     ~IDragProviderWrapper();

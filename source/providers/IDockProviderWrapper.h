@@ -5,7 +5,7 @@ class IDockProviderWrapper : public Napi::ObjectWrap<IDockProviderWrapper>
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IDockProvider *pDockProvider);
+    static Napi::Object New(Napi::Env env, IDockProvider *pIDockProvider);
 
     IDockProviderWrapper(const Napi::CallbackInfo &info);
     ~IDockProviderWrapper();

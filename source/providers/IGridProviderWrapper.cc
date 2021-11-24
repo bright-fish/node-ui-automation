@@ -60,7 +60,6 @@ Napi::Value IGridProviderWrapper::GetRowCount(const Napi::CallbackInfo &info)
 Napi::Value IGridProviderWrapper::GetItem(const Napi::CallbackInfo &info)
 {
     auto row = info[0].ToNumber().Uint32Value();
-    
     auto column = info[1].ToNumber().Uint32Value();
 
     IRawElementProviderSimple *pRawElementProviderSimple;

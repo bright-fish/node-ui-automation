@@ -14,7 +14,6 @@ Napi::FunctionReference *ILegacyIAccessibleProviderWrapper::Initialize(Napi::Env
         InstanceAccessor<&ILegacyIAccessibleProviderWrapper::GetKeyboardShortcut>("keyboardShortcut"),
         InstanceAccessor<&ILegacyIAccessibleProviderWrapper::GetName>("name"),
         InstanceAccessor<&ILegacyIAccessibleProviderWrapper::GetRole>("role"),
-        InstanceAccessor<&ILegacyIAccessibleProviderWrapper::GetSelection>("selection"),
         InstanceAccessor<&ILegacyIAccessibleProviderWrapper::GetState>("state"),
         InstanceAccessor<&ILegacyIAccessibleProviderWrapper::GetValue>("value"),
 

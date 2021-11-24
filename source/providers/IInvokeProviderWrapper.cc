@@ -5,7 +5,7 @@
 Napi::FunctionReference *IInvokeProviderWrapper::Initialize(Napi::Env env)
 {
     auto classDefinition = {
-        InstanceMethod("invoke", &IInvokeProviderWrapper::Invoke),
+        InstanceMethod<&IInvokeProviderWrapper::Invoke>("invoke"),
     };
 
     Napi::Function function = DefineClass(env, "IInvokeProvider", classDefinition);

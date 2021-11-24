@@ -80,59 +80,61 @@ Napi::Value GetPatternProviderByPatternId(const Napi::CallbackInfo &info, IUnkno
     case UIA_InvokePatternId:
         return IInvokeProviderWrapper::New(info.Env(), static_cast<IInvokeProvider *>(pProvider));
     case UIA_ItemContainerPatternId:
-        // return IItemContainerProviderWrapper::New(info.Env(), static_cast<IItemContainerProvider *>(pProvider));
+        return IItemContainerProviderWrapper::New(info.Env(), static_cast<IItemContainerProvider *>(pProvider));
     case UIA_LegacyIAccessiblePatternId:
-        // return ILegacyIAccessibleProviderWrapper::New(info.Env(), static_cast<ILegacyIAccessibleProvider *>(pProvider));
+        return ILegacyIAccessibleProviderWrapper::New(info.Env(), static_cast<ILegacyIAccessibleProvider *>(pProvider));
     case UIA_MultipleViewPatternId:
-        // return IMultipleViewProviderWrapper::New(info.Env(), static_cast<IMultipleViewProvider *>(pProvider));
+        return IMultipleViewProviderWrapper::New(info.Env(), static_cast<IMultipleViewProvider *>(pProvider));
     case UIA_ObjectModelPatternId:
-        // return IObjectModelProviderWrapper::New(info.Env(), static_cast<IObjectModelProvider *>(pProvider));
+        // skipping:  return IObjectModelProviderWrapper::New(info.Env(), static_cast<IObjectModelProvider *>(pProvider));
+        throw Napi::Error::New(info.Env(), "Pattern not implemented.");
     case UIA_RangeValuePatternId:
-        // return IRangeValueProviderWrapper::New(info.Env(), static_cast<IRangeValueProvider *>(pProvider));
+        return IRangeValueProviderWrapper::New(info.Env(), static_cast<IRangeValueProvider *>(pProvider));
     case UIA_ScrollItemPatternId:
-        // return IScrollItemProviderWrapper::New(info.Env(), static_cast<IScrollItemProvider *>(pProvider));
+        return IScrollItemProviderWrapper::New(info.Env(), static_cast<IScrollItemProvider *>(pProvider));
     case UIA_ScrollPatternId:
-        // return IScrollProviderWrapper::New(info.Env(), static_cast<IScrollProvider *>(pProvider));
+        return IScrollProviderWrapper::New(info.Env(), static_cast<IScrollProvider *>(pProvider));
     case UIA_SelectionItemPatternId:
-        // return ISelectionItemProviderWrapper::New(info.Env(), static_cast<ISelectionItemProvider *>(pProvider));
+        return ISelectionItemProviderWrapper::New(info.Env(), static_cast<ISelectionItemProvider *>(pProvider));
     case UIA_SelectionPatternId:
-        // return ISelectionProviderWrapper::New(info.Env(), static_cast<ISelectionProvider *>(pProvider));
+        return ISelectionProviderWrapper::New(info.Env(), static_cast<ISelectionProvider *>(pProvider));
     case UIA_SelectionPattern2Id:
-        // return ISelectionProvider2Wrapper::New(info.Env(), (ISelectionProvider2 *)pProvider);
+        return ISelectionProvider2Wrapper::New(info.Env(), static_cast<ISelectionProvider2 *>(pProvider));
     case UIA_SpreadsheetItemPatternId:
-        // return ISpreadsheetItemProviderWrapper::New(info.Env(), static_cast<ISpreadsheetItemProvider *>(pProvider));
+        return ISpreadsheetItemProviderWrapper::New(info.Env(), static_cast<ISpreadsheetItemProvider *>(pProvider));
     case UIA_SpreadsheetPatternId:
-        // return ISpreadsheetProviderWrapper::New(info.Env(), static_cast<ISpreadsheetProvider *>(pProvider));
+        return ISpreadsheetProviderWrapper::New(info.Env(), static_cast<ISpreadsheetProvider *>(pProvider));
     case UIA_StylesPatternId:
-        // return IStylesProviderWrapper::New(info.Env(), static_cast<IStylesProvider *>(pProvider));
+        return IStylesProviderWrapper::New(info.Env(), static_cast<IStylesProvider *>(pProvider));
     case UIA_SynchronizedInputPatternId:
-        // return ISynchronizedInputProviderWrapper::New(info.Env(), static_cast<ISynchronizedInputProvider *>(pProvider));
+        return ISynchronizedInputProviderWrapper::New(info.Env(), static_cast<ISynchronizedInputProvider *>(pProvider));
     case UIA_TableItemPatternId:
-        // return ITableItemProviderWrapper::New(info.Env(), static_cast<ITableItemProvider *>(pProvider));
+        return ITableItemProviderWrapper::New(info.Env(), static_cast<ITableItemProvider *>(pProvider));
     case UIA_TablePatternId:
-        // return ITableProviderWrapper::New(info.Env(), static_cast<ITableProvider *>(pProvider));
+        return ITableProviderWrapper::New(info.Env(), static_cast<ITableProvider *>(pProvider));
     case UIA_TextChildPatternId:
-        // return ITextChildProviderWrapper::New(info.Env(), static_cast<ITextChildProvider *>(pProvider));
+        return ITextChildProviderWrapper::New(info.Env(), static_cast<ITextChildProvider *>(pProvider));
     case UIA_TextEditPatternId:
-        // return ITextEditProviderWrapper::New(info.Env(), static_cast<ITextEditProvider *>(pProvider));
+        return ITextEditProviderWrapper::New(info.Env(), static_cast<ITextEditProvider *>(pProvider));
     case UIA_TextPatternId:
-        // return ITextProviderWrapper::New(info.Env(), static_cast<ITextProvider *>(pProvider));
+        return ITextProviderWrapper::New(info.Env(), static_cast<ITextProvider *>(pProvider));
     case UIA_TextPattern2Id:
-        // return ITextProvider2Wrapper::New(info.Env(), (ITextProvider2 *)pProvider);
+        return ITextProvider2Wrapper::New(info.Env(), static_cast<ITextProvider2 *>(pProvider));
     case UIA_TogglePatternId:
-        // return IToggleProviderWrapper::New(info.Env(), static_cast<IToggleProvider *>(pProvider));
+        return IToggleProviderWrapper::New(info.Env(), static_cast<IToggleProvider *>(pProvider));
     case UIA_TransformPatternId:
-        // return ITransformProviderWrapper::New(info.Env(), static_cast<ITransformProvider *>(pProvider));
+        return ITransformProviderWrapper::New(info.Env(), static_cast<ITransformProvider *>(pProvider));
     case UIA_TransformPattern2Id:
-        // return ITransformProvider2Wrapper::New(info.Env(), (ITransformProvider2 *)pProvider);
+        return ITransformProvider2Wrapper::New(info.Env(), static_cast<ITransformProvider2 *>(pProvider));
     case UIA_ValuePatternId:
-        // return IValueProviderWrapper::New(info.Env(), static_cast<IValueProvider *>(pProvider));
+        return IValueProviderWrapper::New(info.Env(), static_cast<IValueProvider *>(pProvider));
     case UIA_VirtualizedItemPatternId:
-        // return IVirtualizedItemProviderWrapper::New(info.Env(), static_cast<IVirtualizedItemProvider *>(pProvider));
+        return IVirtualizedItemProviderWrapper::New(info.Env(), static_cast<IVirtualizedItemProvider *>(pProvider));
     case UIA_WindowPatternId:
-        // return IWindowProviderWrapper::New(info.Env(), static_cast<IWindowProvider *>(pProvider));
+        return IWindowProviderWrapper::New(info.Env(), static_cast<IWindowProvider *>(pProvider));
     case UIA_CustomNavigationPatternId:
         // return ICustomNavigationProviderWrapper::New(info.Env(), static_cast<ICustomNavigationProvider *>(pProvider));
+        throw Napi::Error::New(info.Env(), "Pattern not implemented.");
     default:
         throw Napi::Error::New(info.Env(), "Pattern not implemented.");
     }

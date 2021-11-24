@@ -1,3 +1,5 @@
+#pragma once
+
 #include "UIA_EventIdsWrapper.h"
 #include "UIA_PatternIdsWrapper.h"
 #include "UIA_PropertyIdsWrapper.h"

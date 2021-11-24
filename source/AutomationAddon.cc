@@ -32,10 +32,31 @@ AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
     IInvokeProviderWrapperConstructor = IInvokeProviderWrapper::Initialize(env);
     IItemContainerProviderWrapperConstructor = IItemContainerProviderWrapper::Initialize(env);
     IMultipleViewProviderWrapperConstructor = IMultipleViewProviderWrapper::Initialize(env);
+    IRangeValueProviderWrapperConstructor = IRangeValueProviderWrapper::Initialize(env);
+    IScrollItemProviderWrapperConstructor = IScrollItemProviderWrapper::Initialize(env);
+    IScrollProviderWrapperConstructor = IScrollProviderWrapper::Initialize(env);
+    ISelectionItemProviderWrapperConstructor = ISelectionItemProviderWrapper::Initialize(env);
+    ISelectionProviderWrapperConstructor = ISelectionProviderWrapper::Initialize(env);
+    ISelectionProvider2WrapperConstructor = ISelectionProvider2Wrapper::Initialize(env);
+    ISpreadsheetItemProviderWrapperConstructor = ISpreadsheetItemProviderWrapper::Initialize(env);
+    ISpreadsheetProviderWrapperConstructor = ISpreadsheetProviderWrapper::Initialize(env);
+    IStylesProviderWrapperConstructor = IStylesProviderWrapper::Initialize(env);
+    ISynchronizedInputProviderWrapperConstructor = ISynchronizedInputProviderWrapper::Initialize(env);
+    ITableItemProviderWrapperConstructor = ITableItemProviderWrapper::Initialize(env);
+    ITextChildProviderWrapperConstructor = ITextChildProviderWrapper::Initialize(env);
+    ITextEditProviderWrapperConstructor = ITextEditProviderWrapper::Initialize(env);
+    ITextProviderWrapperConstructor = ITextProviderWrapper::Initialize(env);
+    ITextProvider2WrapperConstructor = ITextProvider2Wrapper::Initialize(env);
+    IToggleProviderWrapperConstructor = IToggleProviderWrapper::Initialize(env);
+    ITransformProviderWrapperConstructor = ITransformProviderWrapper::Initialize(env);
+    ITransformProvider2WrapperConstructor = ITransformProviderWrapper::Initialize(env);
+    IValueProviderWrapperConstructor = IValueProviderWrapper::Initialize(env);
+    IVirtualizedItemProviderWrapperConstructor = IVirtualizedItemProviderWrapper::Initialize(env);
+    IWindowProviderWrapperConstructor = IWindowProviderWrapper::Initialize(env);
     
     IRawElementProviderSimpleWrapperConstructor = IRawElementProviderSimpleWrapper::Initialize(env);
+    ITextRangeProviderWrapperConstructor = ITextRangeProviderWrapper::Initialize(env);
 
-    
     auto addonDefinition = {
         InstanceValue("Automation", IUIAutomationWrapperConstructor->Value()),
         InstanceValue("AutomationEventHandler", IUIAutomationEventHandlerWrapperConstructor->Value()),
