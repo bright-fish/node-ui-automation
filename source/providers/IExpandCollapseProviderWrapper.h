@@ -5,7 +5,7 @@ class IExpandCollapseProviderWrapper : public Napi::ObjectWrap<IExpandCollapsePr
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IExpandCollapseProvider *pIExpandCollapseProvider);
+    static Napi::Value New(Napi::Env env, IExpandCollapseProvider *pIExpandCollapseProvider);
 
     IExpandCollapseProviderWrapper(const Napi::CallbackInfo &info);
     ~IExpandCollapseProviderWrapper();

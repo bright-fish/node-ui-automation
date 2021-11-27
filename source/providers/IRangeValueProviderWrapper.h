@@ -5,7 +5,7 @@ class IRangeValueProviderWrapper : public Napi::ObjectWrap<IRangeValueProviderWr
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IRangeValueProvider *pIRangeValueProvider);
+    static Napi::Value New(Napi::Env env, IRangeValueProvider *pIRangeValueProvider);
 
     IRangeValueProviderWrapper(const Napi::CallbackInfo &info);
     ~IRangeValueProviderWrapper();

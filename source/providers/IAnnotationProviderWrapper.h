@@ -5,7 +5,7 @@ class IAnnotationProviderWrapper : public Napi::ObjectWrap<IAnnotationProviderWr
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IAnnotationProvider *pIAnnotationProvider);
+    static Napi::Value New(Napi::Env env, IAnnotationProvider *pIAnnotationProvider);
 
     Napi::Value GetAnnotationTypeId(const Napi::CallbackInfo &info);
     Napi::Value GetAnnotationTypeName(const Napi::CallbackInfo &info);

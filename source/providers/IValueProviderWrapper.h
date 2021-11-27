@@ -5,7 +5,7 @@ class IValueProviderWrapper : public Napi::ObjectWrap<IValueProviderWrapper>
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IValueProvider *pIValueProvider);
+    static Napi::Value New(Napi::Env env, IValueProvider *pIValueProvider);
 
     IValueProviderWrapper(const Napi::CallbackInfo &info);
     ~IValueProviderWrapper();

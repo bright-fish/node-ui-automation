@@ -36,8 +36,13 @@ Napi::FunctionReference *ITextRangeProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object ITextRangeProviderWrapper::New(Napi::Env env, ITextRangeProvider *pITextRangeProvider)
+Napi::Value ITextRangeProviderWrapper::New(Napi::Env env, ITextRangeProvider *pITextRangeProvider)
 {
+    if (pITextRangeProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->ITextRangeProviderWrapperConstructor->New({Napi::External<ITextRangeProvider>::New(env, pITextRangeProvider)});
@@ -247,7 +252,6 @@ Napi::Value ITextRangeProviderWrapper::MoveEndpointByUnit(const Napi::CallbackIn
 
     return Napi::Number::New(info.Env(), output);
 }
-
 
 void ITextRangeProviderWrapper::RemoveFromSelection(const Napi::CallbackInfo &info)
 {

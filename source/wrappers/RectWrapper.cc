@@ -19,8 +19,13 @@ Napi::FunctionReference *RectWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object RectWrapper::New(Napi::Env env, RECT *pRECT)
+Napi::Value RectWrapper::New(Napi::Env env, RECT *pRECT)
 {
+    if (pRECT == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IUIAutomationElementWrapperConstructor->New({Napi::External<RECT>::New(env, pRECT)});

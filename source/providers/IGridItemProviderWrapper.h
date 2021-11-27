@@ -5,7 +5,7 @@ class IGridItemProviderWrapper : public Napi::ObjectWrap<IGridItemProviderWrappe
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IGridItemProvider *pIGridItemProvider);
+    static Napi::Value New(Napi::Env env, IGridItemProvider *pIGridItemProvider);
 
     Napi::Value GetColumn(const Napi::CallbackInfo &info);
     Napi::Value GetColumnSpan(const Napi::CallbackInfo &info);

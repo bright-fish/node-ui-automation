@@ -97,8 +97,13 @@ Napi::FunctionReference *IUIAutomationElementWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object IUIAutomationElementWrapper::New(Napi::Env env, IUIAutomationElement *pElement)
+Napi::Value IUIAutomationElementWrapper::New(Napi::Env env, IUIAutomationElement *pElement)
 {
+    if (pElement == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IUIAutomationElementWrapperConstructor->New({Napi::External<IUIAutomationElement>::New(env, pElement)});

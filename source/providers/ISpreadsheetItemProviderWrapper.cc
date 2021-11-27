@@ -21,11 +21,16 @@ Napi::FunctionReference *ISpreadsheetItemProviderWrapper::Initialize(Napi::Env e
     return functionReference;
 }
 
-Napi::Object ISpreadsheetItemProviderWrapper::New(Napi::Env env, ISpreadsheetItemProvider *pInvokeProvider)
+Napi::Value ISpreadsheetItemProviderWrapper::New(Napi::Env env, ISpreadsheetItemProvider *pISpreadsheetItemProvider)
 {
+    if (pISpreadsheetItemProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->ISpreadsheetItemProviderWrapperConstructor->New({Napi::External<ISpreadsheetItemProvider>::New(env, pInvokeProvider)});
+    return automationAddon->ISpreadsheetItemProviderWrapperConstructor->New({Napi::External<ISpreadsheetItemProvider>::New(env, pISpreadsheetItemProvider)});
 }
 
 ISpreadsheetItemProviderWrapper::ISpreadsheetItemProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<ISpreadsheetItemProviderWrapper>(info)

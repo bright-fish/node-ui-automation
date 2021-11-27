@@ -22,8 +22,13 @@ Napi::FunctionReference *IAnnotationProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object IAnnotationProviderWrapper::New(Napi::Env env, IAnnotationProvider *pAnnotationProvider)
+Napi::Value IAnnotationProviderWrapper::New(Napi::Env env, IAnnotationProvider *pAnnotationProvider)
 {
+    if(pAnnotationProvider == NULL) 
+    { 
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IAnnotationProviderWrapperConstructor->New({Napi::External<IAnnotationProvider>::New(env, pAnnotationProvider)});

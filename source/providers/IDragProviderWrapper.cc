@@ -9,7 +9,7 @@ Napi::FunctionReference *IDragProviderWrapper::Initialize(Napi::Env env)
         InstanceAccessor<&IDragProviderWrapper::GetDropEffects>("dropEffects"),
         InstanceAccessor<&IDragProviderWrapper::GetDropEffect>("dropEffect"),
         InstanceAccessor<&IDragProviderWrapper::GetIsGrabbed>("isGrabbed"),
-        
+
         InstanceMethod<&IDragProviderWrapper::GetGrabbedItems>("getGrabbedItems"),
     };
 
@@ -22,8 +22,12 @@ Napi::FunctionReference *IDragProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object IDragProviderWrapper::New(Napi::Env env, IDragProvider *pIDragProvider)
+Napi::Value IDragProviderWrapper::New(Napi::Env env, IDragProvider *pIDragProvider)
 {
+    if (pIDragProvider == NULL)
+    {
+        return env.Null();
+    }
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IDragProviderWrapperConstructor->New({Napi::External<IDragProvider>::New(env, pIDragProvider)});
@@ -51,7 +55,7 @@ Napi::Value IDragProviderWrapper::GetDropEffects(const Napi::CallbackInfo &info)
     for (unsigned long i = 0; i < dropEffects.GetCount(); i++)
     {
         auto dropEffect = Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(dropEffects.GetAt(i)));
-        
+
         array.Set(i, dropEffect);
     }
 

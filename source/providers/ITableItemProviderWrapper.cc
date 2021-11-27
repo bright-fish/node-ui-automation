@@ -20,11 +20,16 @@ Napi::FunctionReference *ITableItemProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object ITableItemProviderWrapper::New(Napi::Env env, ITableItemProvider *pInvokeProvider)
+Napi::Value ITableItemProviderWrapper::New(Napi::Env env, ITableItemProvider *pITableItemProvider)
 {
+    if (pITableItemProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->ITableItemProviderWrapperConstructor->New({Napi::External<ITableItemProvider>::New(env, pInvokeProvider)});
+    return automationAddon->ITableItemProviderWrapperConstructor->New({Napi::External<ITableItemProvider>::New(env, pITableItemProvider)});
 }
 
 ITableItemProviderWrapper::ITableItemProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<ITableItemProviderWrapper>(info)

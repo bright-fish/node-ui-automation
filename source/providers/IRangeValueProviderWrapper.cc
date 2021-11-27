@@ -25,8 +25,13 @@ Napi::FunctionReference *IRangeValueProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object IRangeValueProviderWrapper::New(Napi::Env env, IRangeValueProvider *pIRangeValueProvider)
+Napi::Value IRangeValueProviderWrapper::New(Napi::Env env, IRangeValueProvider *pIRangeValueProvider)
 {
+    if (pIRangeValueProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IRangeValueProviderWrapperConstructor->New({Napi::External<IRangeValueProvider>::New(env, pIRangeValueProvider)});

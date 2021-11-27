@@ -17,8 +17,13 @@ Napi::FunctionReference *IUIAutomationElementArrayWrapper::Initialize(Napi::Env 
     return functionReference;
 }
 
-Napi::Object IUIAutomationElementArrayWrapper::New(Napi::Env env, IUIAutomationElementArray *pElementArray)
+Napi::Value IUIAutomationElementArrayWrapper::New(Napi::Env env, IUIAutomationElementArray *pElementArray)
 {
+    if (pElementArray == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IUIAutomationElementArrayWrapperConstructor->New({Napi::External<IUIAutomationElementArray>::New(env, pElementArray)});
@@ -32,10 +37,9 @@ IUIAutomationElementArrayWrapper::IUIAutomationElementArrayWrapper(const Napi::C
     }
 
     m_pElementArray = info[0].As<Napi::External<IUIAutomationElementArray>>().Data();
-
 }
 
-IUIAutomationElementArrayWrapper::~IUIAutomationElementArrayWrapper() 
+IUIAutomationElementArrayWrapper::~IUIAutomationElementArrayWrapper()
 {
     m_pElementArray.Release();
 }

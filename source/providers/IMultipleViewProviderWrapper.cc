@@ -7,7 +7,7 @@ Napi::FunctionReference *IMultipleViewProviderWrapper::Initialize(Napi::Env env)
 {
     auto classDefinition = {
         InstanceAccessor<&IMultipleViewProviderWrapper::GetCurrentView>("currentView"),
-        
+
         InstanceMethod<&IMultipleViewProviderWrapper::GetSupportedViews>("getSupportedViews"),
         InstanceMethod<&IMultipleViewProviderWrapper::GetViewName>("getViewName"),
         InstanceMethod<&IMultipleViewProviderWrapper::SetCurrentView>("setCurrentView"),
@@ -22,8 +22,13 @@ Napi::FunctionReference *IMultipleViewProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object IMultipleViewProviderWrapper::New(Napi::Env env, IMultipleViewProvider *pIMultipleViewProvider)
+Napi::Value IMultipleViewProviderWrapper::New(Napi::Env env, IMultipleViewProvider *pIMultipleViewProvider)
 {
+    if (pIMultipleViewProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IMultipleViewProviderWrapperConstructor->New({Napi::External<IMultipleViewProvider>::New(env, pIMultipleViewProvider)});

@@ -19,11 +19,16 @@ Napi::FunctionReference *ISynchronizedInputProviderWrapper::Initialize(Napi::Env
     return functionReference;
 }
 
-Napi::Object ISynchronizedInputProviderWrapper::New(Napi::Env env, ISynchronizedInputProvider *pInvokeProvider)
+Napi::Value ISynchronizedInputProviderWrapper::New(Napi::Env env, ISynchronizedInputProvider *pISynchronizedInputProvider)
 {
+    if (pISynchronizedInputProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->ISynchronizedInputProviderWrapperConstructor->New({Napi::External<ISynchronizedInputProvider>::New(env, pInvokeProvider)});
+    return automationAddon->ISynchronizedInputProviderWrapperConstructor->New({Napi::External<ISynchronizedInputProvider>::New(env, pISynchronizedInputProvider)});
 }
 
 ISynchronizedInputProviderWrapper::ISynchronizedInputProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<ISynchronizedInputProviderWrapper>(info)
@@ -46,7 +51,7 @@ void ISynchronizedInputProviderWrapper::Cancel(const Napi::CallbackInfo &info)
 void ISynchronizedInputProviderWrapper::StartListening(const Napi::CallbackInfo &info)
 {
     SynchronizedInputType synchronizedInputType = static_cast<SynchronizedInputType>(info[0].ToNumber().Int32Value());
-    
+
     auto hResult = m_pISynchronizedInputProvider->StartListening(synchronizedInputType);
 
     HandleResult(info, hResult);

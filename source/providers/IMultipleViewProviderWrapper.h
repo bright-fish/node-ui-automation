@@ -5,7 +5,7 @@ class IMultipleViewProviderWrapper : public Napi::ObjectWrap<IMultipleViewProvid
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IMultipleViewProvider *pIMultipleViewProvider);
+    static Napi::Value New(Napi::Env env, IMultipleViewProvider *pIMultipleViewProvider);
 
     IMultipleViewProviderWrapper(const Napi::CallbackInfo &info);
     ~IMultipleViewProviderWrapper();

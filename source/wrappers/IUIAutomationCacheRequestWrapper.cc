@@ -23,8 +23,13 @@ Napi::FunctionReference *IUIAutomationCacheRequestWrapper::Initialize(Napi::Env 
     return functionReference;
 }
 
-Napi::Object IUIAutomationCacheRequestWrapper::New(Napi::Env env, IUIAutomationCacheRequest *pCacheRequest)
+Napi::Value IUIAutomationCacheRequestWrapper::New(Napi::Env env, IUIAutomationCacheRequest *pCacheRequest)
 {
+    if (pCacheRequest == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IUIAutomationCacheRequestWrapperConstructor->New({Napi::External<IUIAutomationCacheRequest>::New(env, pCacheRequest)});

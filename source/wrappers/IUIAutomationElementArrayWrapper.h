@@ -6,7 +6,7 @@ class IUIAutomationElementArrayWrapper : public Napi::ObjectWrap<IUIAutomationEl
 {
 public:
   static Napi::FunctionReference *Initialize(Napi::Env env);
-  static Napi::Object New(Napi::Env env, IUIAutomationElementArray * pElementArray);
+  static Napi::Value New(Napi::Env env, IUIAutomationElementArray * pElementArray);
 
   ATL::CComPtr<IUIAutomationElementArray> m_pElementArray;
 

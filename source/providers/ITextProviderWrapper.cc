@@ -25,11 +25,16 @@ Napi::FunctionReference *ITextProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object ITextProviderWrapper::New(Napi::Env env, ITextProvider *pInvokeProvider)
+Napi::Value ITextProviderWrapper::New(Napi::Env env, ITextProvider *pITextProvider)
 {
+    if (pITextProvider == NULL)
+    {
+        return env.Null();
+    }
+    
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->ITextProviderWrapperConstructor->New({Napi::External<ITextProvider>::New(env, pInvokeProvider)});
+    return automationAddon->ITextProviderWrapperConstructor->New({Napi::External<ITextProvider>::New(env, pITextProvider)});
 }
 
 ITextProviderWrapper::ITextProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<ITextProviderWrapper>(info)
@@ -130,7 +135,7 @@ Napi::Value ITextProviderWrapper::RangeFromPoint(const Napi::CallbackInfo &info)
     UiaPoint uiaPoint;
     uiaPoint.x = point.Get("x").ToNumber();
     uiaPoint.y = point.Get("y").ToNumber();
-    
+
     ITextRangeProvider *textRangeProvider;
     auto hResult = m_pITextProvider->RangeFromPoint(uiaPoint, &textRangeProvider);
 
@@ -138,4 +143,3 @@ Napi::Value ITextProviderWrapper::RangeFromPoint(const Napi::CallbackInfo &info)
 
     return ITextRangeProviderWrapper::New(info.Env(), textRangeProvider);
 }
-

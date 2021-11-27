@@ -5,7 +5,7 @@ class ISynchronizedInputProviderWrapper : public Napi::ObjectWrap<ISynchronizedI
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, ISynchronizedInputProvider *pISynchronizedInputProvider);
+    static Napi::Value New(Napi::Env env, ISynchronizedInputProvider *pISynchronizedInputProvider);
 
     ISynchronizedInputProviderWrapper(const Napi::CallbackInfo &info);
     ~ISynchronizedInputProviderWrapper();

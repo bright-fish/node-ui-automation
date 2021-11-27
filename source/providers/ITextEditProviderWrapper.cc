@@ -20,11 +20,16 @@ Napi::FunctionReference *ITextEditProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object ITextEditProviderWrapper::New(Napi::Env env, ITextEditProvider *pInvokeProvider)
+Napi::Value ITextEditProviderWrapper::New(Napi::Env env, ITextEditProvider *pITextEditProvider)
 {
+    if (pITextEditProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->ITextEditProviderWrapperConstructor->New({Napi::External<ITextEditProvider>::New(env, pInvokeProvider)});
+    return automationAddon->ITextEditProviderWrapperConstructor->New({Napi::External<ITextEditProvider>::New(env, pITextEditProvider)});
 }
 
 ITextEditProviderWrapper::ITextEditProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<ITextEditProviderWrapper>(info)

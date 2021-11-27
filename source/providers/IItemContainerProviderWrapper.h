@@ -5,7 +5,7 @@ class IItemContainerProviderWrapper : public Napi::ObjectWrap<IItemContainerProv
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IItemContainerProvider *pIItemContainerProvider);
+    static Napi::Value New(Napi::Env env, IItemContainerProvider *pIItemContainerProvider);
 
     IItemContainerProviderWrapper(const Napi::CallbackInfo &info);
     ~IItemContainerProviderWrapper();

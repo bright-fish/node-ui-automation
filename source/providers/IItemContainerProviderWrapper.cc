@@ -18,11 +18,16 @@ Napi::FunctionReference *IItemContainerProviderWrapper::Initialize(Napi::Env env
     return functionReference;
 }
 
-Napi::Object IItemContainerProviderWrapper::New(Napi::Env env, IItemContainerProvider *pInvokeProvider)
+Napi::Value IItemContainerProviderWrapper::New(Napi::Env env, IItemContainerProvider *pItemContainerProvider)
 {
+    if (pItemContainerProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->IItemContainerProviderWrapperConstructor->New({Napi::External<IItemContainerProvider>::New(env, pInvokeProvider)});
+    return automationAddon->IItemContainerProviderWrapperConstructor->New({Napi::External<IItemContainerProvider>::New(env, pItemContainerProvider)});
 }
 
 IItemContainerProviderWrapper::IItemContainerProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IItemContainerProviderWrapper>(info)

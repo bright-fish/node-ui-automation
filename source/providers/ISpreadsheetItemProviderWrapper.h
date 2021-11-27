@@ -5,7 +5,7 @@ class ISpreadsheetItemProviderWrapper : public Napi::ObjectWrap<ISpreadsheetItem
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, ISpreadsheetItemProvider *pISpreadsheetItemProvider);
+    static Napi::Value New(Napi::Env env, ISpreadsheetItemProvider *pISpreadsheetItemProvider);
 
     ISpreadsheetItemProviderWrapper(const Napi::CallbackInfo &info);
     ~ISpreadsheetItemProviderWrapper();

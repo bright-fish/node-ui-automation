@@ -17,8 +17,13 @@ Napi::FunctionReference *IInvokeProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object IInvokeProviderWrapper::New(Napi::Env env, IInvokeProvider *pInvokeProvider)
+Napi::Value IInvokeProviderWrapper::New(Napi::Env env, IInvokeProvider *pInvokeProvider)
 {
+    if (pInvokeProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IInvokeProviderWrapperConstructor->New({Napi::External<IInvokeProvider>::New(env, pInvokeProvider)});

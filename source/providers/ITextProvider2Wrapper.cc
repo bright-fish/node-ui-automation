@@ -28,11 +28,16 @@ Napi::FunctionReference *ITextProvider2Wrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object ITextProvider2Wrapper::New(Napi::Env env, ITextProvider2 *pInvokeProvider)
+Napi::Value ITextProvider2Wrapper::New(Napi::Env env, ITextProvider2 *pITextProvider2)
 {
+    if (pITextProvider2 == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->ITextProvider2WrapperConstructor->New({Napi::External<ITextProvider2>::New(env, pInvokeProvider)});
+    return automationAddon->ITextProvider2WrapperConstructor->New({Napi::External<ITextProvider2>::New(env, pITextProvider2)});
 }
 
 ITextProvider2Wrapper::ITextProvider2Wrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<ITextProvider2Wrapper>(info)
@@ -146,7 +151,7 @@ Napi::Value ITextProvider2Wrapper::GetCaretRange(const Napi::CallbackInfo &info)
 {
     ITextRangeProvider *textRangeProvider;
     BOOL isActive;
-    
+
     auto hResult = m_pITextProvider2->GetCaretRange(&isActive, &textRangeProvider);
 
     HandleResult(info, hResult);

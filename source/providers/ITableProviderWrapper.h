@@ -5,7 +5,7 @@ class ITableProviderWrapper : public Napi::ObjectWrap<ITableProviderWrapper>
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, ITableProvider *pITableProvider);
+    static Napi::Value New(Napi::Env env, ITableProvider *pITableProvider);
 
     ITableProviderWrapper(const Napi::CallbackInfo &info);
     ~ITableProviderWrapper();

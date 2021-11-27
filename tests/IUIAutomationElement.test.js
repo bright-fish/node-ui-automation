@@ -1,9 +1,18 @@
 const { Automation, TreeScopes, PropertyIds, ElementModes, PatternIds, DockPositions } = require('microsoft-ui-automation');
+const { AboutWindowsApplication } = require('./Shared');
 
 describe('IUIAutomationElement', () => {
+    const aboutWindowsApplication = new AboutWindowsApplication();
+    aboutWindowsApplication.open();
+
     const automation = new Automation();
-    let desktopElement = automation.getRootElement();
-    let winverElement;
+    const desktopElement = automation.getRootElement();
+    const winverNamePropertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
+    const winverElement = desktopElement.findFirst(TreeScopes.Subtree, winverNamePropertyCondition);
+
+    afterAll(() => {
+        aboutWindowsApplication.close();
+    })
 
     test('buildUpdatedCache', () => {
         let cacheRequest = automation.createCacheRequest();
@@ -14,8 +23,6 @@ describe('IUIAutomationElement', () => {
     });
 
     test('findAll', () => {
-        const winverNamePropertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
-
         const elements = desktopElement.findAll(TreeScopes.Subtree, winverNamePropertyCondition);
 
         const winverElement = elements.getElement(0);
@@ -37,7 +44,7 @@ describe('IUIAutomationElement', () => {
     test('findFirst', () => {
         const propertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
 
-        winverElement = desktopElement.findFirst(TreeScopes.Subtree, propertyCondition);
+        const winverElement = desktopElement.findFirst(TreeScopes.Subtree, propertyCondition);
 
         expect(winverElement).not.toBeNull();
     });
@@ -47,7 +54,7 @@ describe('IUIAutomationElement', () => {
 
         const cacheRequest = automation.createCacheRequest();
 
-        winverElement = desktopElement.findFirstBuildCache(TreeScopes.Subtree, propertyCondition, cacheRequest);
+        const winverElement = desktopElement.findFirstBuildCache(TreeScopes.Subtree, propertyCondition, cacheRequest);
 
         expect(winverElement).not.toBeNull();
     });
@@ -128,12 +135,12 @@ describe('IUIAutomationElement', () => {
         //     invokePattern.invoke();
         // });
 
-        test('dockProvider', () => {
-            const dockProvider = winverElement.getCurrentPattern(PatternIds.DockPatternId);
-            const dockPosition = dockProvider.setDockPosition(DockPositions.Right);
+        // test('dockProvider', () => {
+        //     const dockProvider = winverElement.getCurrentPattern(PatternIds.DockPatternId);
+        //     const dockPosition = dockProvider.setDockPosition(DockPositions.Right);
 
-            expect(dockPosition).toBe(DockPositions.Right);
-        });
+        //     expect(dockPosition).toBe(DockPositions.Right);
+        // });
 
         // test('dragProvider', () => {
 

@@ -2,16 +2,14 @@
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
 
-
 Napi::FunctionReference *IRawElementProviderSimpleWrapper::Initialize(Napi::Env env)
 {
     auto classDefinition = {
         InstanceAccessor<&IRawElementProviderSimpleWrapper::GetHostRawElementProvider>("hostRawElementProvider"),
         InstanceAccessor<&IRawElementProviderSimpleWrapper::GetProviderOptions>("providerOptions"),
-        
+
         InstanceMethod<&IRawElementProviderSimpleWrapper::GetPatternProvider>("getPatternProvider"),
-        InstanceMethod<&IRawElementProviderSimpleWrapper::GetPropertyValue>("getPropertyValue")
-    };
+        InstanceMethod<&IRawElementProviderSimpleWrapper::GetPropertyValue>("getPropertyValue")};
 
     Napi::Function function = DefineClass(env, "IRawElementProviderSimple", classDefinition);
 
@@ -22,8 +20,13 @@ Napi::FunctionReference *IRawElementProviderSimpleWrapper::Initialize(Napi::Env 
     return functionReference;
 }
 
-Napi::Object IRawElementProviderSimpleWrapper::New(Napi::Env env, IRawElementProviderSimple *pRawElementProviderSimple)
+Napi::Value IRawElementProviderSimpleWrapper::New(Napi::Env env, IRawElementProviderSimple *pRawElementProviderSimple)
 {
+    if (pRawElementProviderSimple == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IRawElementProviderSimpleWrapperConstructor->New({Napi::External<IRawElementProviderSimple>::New(env, pRawElementProviderSimple)});

@@ -6,7 +6,7 @@ class IUIAutomationCacheRequestWrapper : public Napi::ObjectWrap<IUIAutomationCa
 {
 public:
   static Napi::FunctionReference *Initialize(Napi::Env env);
-  static Napi::Object New(Napi::Env env, IUIAutomationCacheRequest *pCacheRequest);
+  static Napi::Value New(Napi::Env env, IUIAutomationCacheRequest *pCacheRequest);
 
   ATL::CComPtr<IUIAutomationCacheRequest> m_pCacheRequest;
 

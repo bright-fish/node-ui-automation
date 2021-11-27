@@ -7,7 +7,7 @@ Napi::FunctionReference *IToggleProviderWrapper::Initialize(Napi::Env env)
 {
     auto classDefinition = {
         InstanceAccessor<&IToggleProviderWrapper::GetToggleState>("toggleState"),
-        
+
         InstanceMethod<&IToggleProviderWrapper::Toggle>("toggle"),
     };
 
@@ -20,11 +20,16 @@ Napi::FunctionReference *IToggleProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object IToggleProviderWrapper::New(Napi::Env env, IToggleProvider *pInvokeProvider)
+Napi::Value IToggleProviderWrapper::New(Napi::Env env, IToggleProvider *pIToggleProvider)
 {
+    if (pIToggleProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->IToggleProviderWrapperConstructor->New({Napi::External<IToggleProvider>::New(env, pInvokeProvider)});
+    return automationAddon->IToggleProviderWrapperConstructor->New({Napi::External<IToggleProvider>::New(env, pIToggleProvider)});
 }
 
 IToggleProviderWrapper::IToggleProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IToggleProviderWrapper>(info)

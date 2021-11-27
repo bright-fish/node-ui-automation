@@ -6,7 +6,7 @@ class IUIAutomationTreeWalkerWrapper : public Napi::ObjectWrap<IUIAutomationTree
 {
 public:
   static Napi::FunctionReference *Initialize(Napi::Env env);
-  static Napi::Object New(Napi::Env env, IUIAutomationTreeWalker *pTreeWalker);
+  static Napi::Value New(Napi::Env env, IUIAutomationTreeWalker *pTreeWalker);
 
   ATL::CComPtr<IUIAutomationTreeWalker> m_pTreeWalker;
 

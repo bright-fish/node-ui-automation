@@ -5,7 +5,7 @@ class ISelectionItemProviderWrapper : public Napi::ObjectWrap<ISelectionItemProv
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, ISelectionItemProvider *pISelectionItemProvider);
+    static Napi::Value New(Napi::Env env, ISelectionItemProvider *pISelectionItemProvider);
 
     ISelectionItemProviderWrapper(const Napi::CallbackInfo &info);
     ~ISelectionItemProviderWrapper();

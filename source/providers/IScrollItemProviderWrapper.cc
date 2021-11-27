@@ -17,11 +17,16 @@ Napi::FunctionReference *IScrollItemProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object IScrollItemProviderWrapper::New(Napi::Env env, IScrollItemProvider *pInvokeProvider)
+Napi::Value IScrollItemProviderWrapper::New(Napi::Env env, IScrollItemProvider *pIScrollItemProvider)
 {
+    if (pIScrollItemProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->IScrollItemProviderWrapperConstructor->New({Napi::External<IScrollItemProvider>::New(env, pInvokeProvider)});
+    return automationAddon->IScrollItemProviderWrapperConstructor->New({Napi::External<IScrollItemProvider>::New(env, pIScrollItemProvider)});
 }
 
 IScrollItemProviderWrapper::IScrollItemProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IScrollItemProviderWrapper>(info)

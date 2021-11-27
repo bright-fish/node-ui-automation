@@ -6,7 +6,7 @@ class IUnknownWrapper : public Napi::ObjectWrap<IUnknownWrapper>
 {
 public:
   static Napi::FunctionReference *Initialize(Napi::Env env);
-  static Napi::Object New(Napi::Env env, IUnknown *pUnknown);
+  static Napi::Value New(Napi::Env env, IUnknown *pUnknown);
 
   IUnknown *m_pIUnknown;
 

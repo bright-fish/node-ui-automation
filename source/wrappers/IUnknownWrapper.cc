@@ -12,8 +12,13 @@ Napi::FunctionReference *IUnknownWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object IUnknownWrapper::New(Napi::Env env, IUnknown *pUnknown)
+Napi::Value IUnknownWrapper::New(Napi::Env env, IUnknown *pUnknown)
 {
+    if (pUnknown == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IUnknownWrapperConstructor->New({Napi::External<IUnknown>::New(env, pUnknown)});

@@ -5,7 +5,7 @@ class ITextProvider2Wrapper : public Napi::ObjectWrap<ITextProvider2Wrapper>
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, ITextProvider2 *pITextProvider2);
+    static Napi::Value New(Napi::Env env, ITextProvider2 *pITextProvider2);
 
     ITextProvider2Wrapper(const Napi::CallbackInfo &info);
     ~ITextProvider2Wrapper();

@@ -19,8 +19,13 @@ Napi::FunctionReference *IDropTargetProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object IDropTargetProviderWrapper::New(Napi::Env env, IDropTargetProvider *pIDropTargetProvider)
+Napi::Value IDropTargetProviderWrapper::New(Napi::Env env, IDropTargetProvider *pIDropTargetProvider)
 {
+    if (pIDropTargetProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IDropTargetProviderWrapperConstructor->New({Napi::External<IDropTargetProvider>::New(env, pIDropTargetProvider)});

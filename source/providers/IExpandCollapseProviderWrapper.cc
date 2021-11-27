@@ -20,8 +20,13 @@ Napi::FunctionReference *IExpandCollapseProviderWrapper::Initialize(Napi::Env en
     return functionReference;
 }
 
-Napi::Object IExpandCollapseProviderWrapper::New(Napi::Env env, IExpandCollapseProvider *pIExpandCollapseProvider)
+Napi::Value IExpandCollapseProviderWrapper::New(Napi::Env env, IExpandCollapseProvider *pIExpandCollapseProvider)
 {
+    if (pIExpandCollapseProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IExpandCollapseProviderWrapperConstructor->New({Napi::External<IExpandCollapseProvider>::New(env, pIExpandCollapseProvider)});

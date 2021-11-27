@@ -6,7 +6,7 @@ Napi::FunctionReference *IDockProviderWrapper::Initialize(Napi::Env env)
 {
     auto classDefinition = {
         InstanceAccessor<&IDockProviderWrapper::GetDockPosition>("dockPosition"),
-        
+
         InstanceMethod<&IDockProviderWrapper::SetDockPosition>("setDockPosition"),
     };
 
@@ -19,8 +19,13 @@ Napi::FunctionReference *IDockProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object IDockProviderWrapper::New(Napi::Env env, IDockProvider *pDockProvider)
+Napi::Value IDockProviderWrapper::New(Napi::Env env, IDockProvider *pDockProvider)
 {
+    if (pDockProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IDockProviderWrapperConstructor->New({Napi::External<IDockProvider>::New(env, pDockProvider)});

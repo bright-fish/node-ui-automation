@@ -9,7 +9,7 @@ Napi::FunctionReference *IVirtualizedItemProviderWrapper::Initialize(Napi::Env e
     };
 
     Napi::Function function = DefineClass(env, "IVirtualizedItemProvider", classDefinition);
-    
+
     Napi::FunctionReference *functionReference = new Napi::FunctionReference();
 
     *functionReference = Napi::Persistent(function);
@@ -17,11 +17,16 @@ Napi::FunctionReference *IVirtualizedItemProviderWrapper::Initialize(Napi::Env e
     return functionReference;
 }
 
-Napi::Object IVirtualizedItemProviderWrapper::New(Napi::Env env, IVirtualizedItemProvider *pInvokeProvider)
+Napi::Value IVirtualizedItemProviderWrapper::New(Napi::Env env, IVirtualizedItemProvider *pIVirtualizedItemProvider)
 {
+    if (pIVirtualizedItemProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->IVirtualizedItemProviderWrapperConstructor->New({Napi::External<IVirtualizedItemProvider>::New(env, pInvokeProvider)});
+    return automationAddon->IVirtualizedItemProviderWrapperConstructor->New({Napi::External<IVirtualizedItemProvider>::New(env, pIVirtualizedItemProvider)});
 }
 
 IVirtualizedItemProviderWrapper::IVirtualizedItemProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IVirtualizedItemProviderWrapper>(info)

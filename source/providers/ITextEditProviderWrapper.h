@@ -6,7 +6,7 @@ class ITextEditProviderWrapper : public Napi::ObjectWrap<ITextEditProviderWrappe
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, ITextEditProvider *pITextEditProvider);
+    static Napi::Value New(Napi::Env env, ITextEditProvider *pITextEditProvider);
 
     ITextEditProviderWrapper(const Napi::CallbackInfo &info);
     ~ITextEditProviderWrapper();

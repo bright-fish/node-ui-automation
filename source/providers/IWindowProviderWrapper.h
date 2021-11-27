@@ -5,7 +5,7 @@ class IWindowProviderWrapper : public Napi::ObjectWrap<IWindowProviderWrapper>
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IWindowProvider *pIWindowProvider);
+    static Napi::Value New(Napi::Env env, IWindowProvider *pIWindowProvider);
 
     IWindowProviderWrapper(const Napi::CallbackInfo &info);
     ~IWindowProviderWrapper();

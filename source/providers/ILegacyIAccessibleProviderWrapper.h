@@ -5,7 +5,7 @@ class ILegacyIAccessibleProviderWrapper : public Napi::ObjectWrap<ILegacyIAccess
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, ILegacyIAccessibleProvider *pILegacyIAccessibleProvider);
+    static Napi::Value New(Napi::Env env, ILegacyIAccessibleProvider *pILegacyIAccessibleProvider);
 
     Napi::Value GetChildId(const Napi::CallbackInfo &info);
     Napi::Value GetDefaultAction(const Napi::CallbackInfo &info);

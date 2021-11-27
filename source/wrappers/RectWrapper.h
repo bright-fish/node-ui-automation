@@ -6,7 +6,7 @@ class RectWrapper : public Napi::ObjectWrap<RectWrapper>
 {
 public:
   static Napi::FunctionReference *Initialize(Napi::Env env);
-  static Napi::Object New(Napi::Env env, RECT *rect);
+  static Napi::Value New(Napi::Env env, RECT *rect);
 
   RECT m_pRECT;
 

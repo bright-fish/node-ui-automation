@@ -28,11 +28,16 @@ Napi::FunctionReference *IWindowProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object IWindowProviderWrapper::New(Napi::Env env, IWindowProvider *pInvokeProvider)
+Napi::Value IWindowProviderWrapper::New(Napi::Env env, IWindowProvider *pIWindowProvider)
 {
+    if (pIWindowProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->IWindowProviderWrapperConstructor->New({Napi::External<IWindowProvider>::New(env, pInvokeProvider)});
+    return automationAddon->IWindowProviderWrapperConstructor->New({Napi::External<IWindowProvider>::New(env, pIWindowProvider)});
 }
 
 IWindowProviderWrapper::IWindowProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IWindowProviderWrapper>(info)

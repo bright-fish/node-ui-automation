@@ -33,8 +33,13 @@ Napi::FunctionReference *ILegacyIAccessibleProviderWrapper::Initialize(Napi::Env
     return functionReference;
 }
 
-Napi::Object ILegacyIAccessibleProviderWrapper::New(Napi::Env env, ILegacyIAccessibleProvider *pILegacyIAccessibleProvider)
+Napi::Value ILegacyIAccessibleProviderWrapper::New(Napi::Env env, ILegacyIAccessibleProvider *pILegacyIAccessibleProvider)
 {
+    if (pILegacyIAccessibleProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->ILegacyIAccessibleProviderWrapperConstructor->New({Napi::External<ILegacyIAccessibleProvider>::New(env, pILegacyIAccessibleProvider)});

@@ -20,11 +20,16 @@ Napi::FunctionReference *ITextChildProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object ITextChildProviderWrapper::New(Napi::Env env, ITextChildProvider *pInvokeProvider)
+Napi::Value ITextChildProviderWrapper::New(Napi::Env env, ITextChildProvider *pTextChildProvider)
 {
+    if (pTextChildProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->ITextChildProviderWrapperConstructor->New({Napi::External<ITextChildProvider>::New(env, pInvokeProvider)});
+    return automationAddon->ITextChildProviderWrapperConstructor->New({Napi::External<ITextChildProvider>::New(env, pTextChildProvider)});
 }
 
 ITextChildProviderWrapper::ITextChildProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<ITextChildProviderWrapper>(info)

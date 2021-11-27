@@ -6,7 +6,7 @@ class ITextChildProviderWrapper : public Napi::ObjectWrap<ITextChildProviderWrap
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, ITextChildProvider *pITextChildProvider);
+    static Napi::Value New(Napi::Env env, ITextChildProvider *pITextChildProvider);
 
     ITextChildProviderWrapper(const Napi::CallbackInfo &info);
     ~ITextChildProviderWrapper();

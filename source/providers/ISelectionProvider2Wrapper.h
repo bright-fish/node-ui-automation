@@ -5,7 +5,7 @@ class ISelectionProvider2Wrapper : public Napi::ObjectWrap<ISelectionProvider2Wr
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, ISelectionProvider2 *pISelectionProvider2);
+    static Napi::Value New(Napi::Env env, ISelectionProvider2 *pISelectionProvider2);
 
     ISelectionProvider2Wrapper(const Napi::CallbackInfo &info);
     ~ISelectionProvider2Wrapper();

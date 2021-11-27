@@ -7,7 +7,7 @@ Napi::FunctionReference *ITableProviderWrapper::Initialize(Napi::Env env)
 {
     auto classDefinition = {
         InstanceAccessor<&ITableProviderWrapper::GetRowOrColumnMajor>("rowOrColumnMajor"),
-        
+
         InstanceMethod<&ITableProviderWrapper::GetColumnHeaders>("getColumnHeaders"),
         InstanceMethod<&ITableProviderWrapper::GetRowHeaders>("getRowHeaders"),
     };
@@ -21,11 +21,16 @@ Napi::FunctionReference *ITableProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object ITableProviderWrapper::New(Napi::Env env, ITableProvider *pInvokeProvider)
+Napi::Value ITableProviderWrapper::New(Napi::Env env, ITableProvider *pITableProvider)
 {
+    if (pITableProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->ITableProviderWrapperConstructor->New({Napi::External<ITableProvider>::New(env, pInvokeProvider)});
+    return automationAddon->ITableProviderWrapperConstructor->New({Napi::External<ITableProvider>::New(env, pITableProvider)});
 }
 
 ITableProviderWrapper::ITableProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<ITableProviderWrapper>(info)
@@ -37,7 +42,6 @@ ITableProviderWrapper::~ITableProviderWrapper()
 {
     m_pITableProvider->Release();
 }
-
 
 Napi::Value ITableProviderWrapper::GetRowOrColumnMajor(const Napi::CallbackInfo &info)
 {

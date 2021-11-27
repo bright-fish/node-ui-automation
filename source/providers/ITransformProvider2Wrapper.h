@@ -5,7 +5,7 @@ class ITransformProvider2Wrapper : public Napi::ObjectWrap<ITransformProvider2Wr
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, ITransformProvider2 *pITransformProvider2);
+    static Napi::Value New(Napi::Env env, ITransformProvider2 *pITransformProvider2);
 
     ITransformProvider2Wrapper(const Napi::CallbackInfo &info);
     ~ITransformProvider2Wrapper();

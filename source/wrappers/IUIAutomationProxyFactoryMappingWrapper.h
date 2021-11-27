@@ -6,7 +6,7 @@ class IUIAutomationProxyFactoryMappingWrapper : public Napi::ObjectWrap<IUIAutom
 {
 public:
   static Napi::FunctionReference *Initialize(Napi::Env env);
-  static Napi::Object New(Napi::Env env, IUIAutomationProxyFactoryMapping *pProxyFactoryMapping);
+  static Napi::Value New(Napi::Env env, IUIAutomationProxyFactoryMapping *pProxyFactoryMapping);
 
   IUIAutomationProxyFactoryMapping *m_pProxyFactoryMapping;
 

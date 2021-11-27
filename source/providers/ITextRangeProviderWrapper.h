@@ -5,7 +5,7 @@ class ITextRangeProviderWrapper : public Napi::ObjectWrap<ITextRangeProviderWrap
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, ITextRangeProvider *pITextRangeProvider);
+    static Napi::Value New(Napi::Env env, ITextRangeProvider *pITextRangeProvider);
 
     void AddToSelection(const Napi::CallbackInfo &info);
     Napi::Value Clone(const Napi::CallbackInfo &info);

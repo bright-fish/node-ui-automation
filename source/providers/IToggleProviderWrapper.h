@@ -5,7 +5,7 @@ class IToggleProviderWrapper : public Napi::ObjectWrap<IToggleProviderWrapper>
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IToggleProvider *pIToggleProvider);
+    static Napi::Value New(Napi::Env env, IToggleProvider *pIToggleProvider);
 
     IToggleProviderWrapper(const Napi::CallbackInfo &info);
     ~IToggleProviderWrapper();

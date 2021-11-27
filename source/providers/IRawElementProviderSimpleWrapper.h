@@ -5,7 +5,7 @@ class IRawElementProviderSimpleWrapper : public Napi::ObjectWrap<IRawElementProv
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IRawElementProviderSimple *pIRawElementProviderSimple);
+    static Napi::Value New(Napi::Env env, IRawElementProviderSimple *pIRawElementProviderSimple);
 
     IRawElementProviderSimpleWrapper(const Napi::CallbackInfo &info);
     ~IRawElementProviderSimpleWrapper();

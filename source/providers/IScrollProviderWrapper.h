@@ -5,7 +5,7 @@ class IScrollProviderWrapper : public Napi::ObjectWrap<IScrollProviderWrapper>
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IScrollProvider *pIScrollProvider);
+    static Napi::Value New(Napi::Env env, IScrollProvider *pIScrollProvider);
 
     IScrollProviderWrapper(const Napi::CallbackInfo &info);
     ~IScrollProviderWrapper();

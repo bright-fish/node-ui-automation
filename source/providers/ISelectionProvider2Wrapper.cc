@@ -25,11 +25,16 @@ Napi::FunctionReference *ISelectionProvider2Wrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object ISelectionProvider2Wrapper::New(Napi::Env env, ISelectionProvider2 *pInvokeProvider)
+Napi::Value ISelectionProvider2Wrapper::New(Napi::Env env, ISelectionProvider2 *pISelectionProvider)
 {
+    if (pISelectionProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->ISelectionProvider2WrapperConstructor->New({Napi::External<ISelectionProvider2>::New(env, pInvokeProvider)});
+    return automationAddon->ISelectionProvider2WrapperConstructor->New({Napi::External<ISelectionProvider2>::New(env, pISelectionProvider)});
 }
 
 ISelectionProvider2Wrapper::ISelectionProvider2Wrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<ISelectionProvider2Wrapper>(info)

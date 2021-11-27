@@ -12,8 +12,13 @@ Napi::FunctionReference *IUIAutomationConditionWrapper::Initialize(Napi::Env env
     return functionReference;
 }
 
-Napi::Object IUIAutomationConditionWrapper::New(Napi::Env env, IUIAutomationCondition *pCondition)
+Napi::Value IUIAutomationConditionWrapper::New(Napi::Env env, IUIAutomationCondition *pCondition)
 {
+    if (pCondition == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IUIAutomationConditionWrapperConstructor->New({Napi::External<IUIAutomationCondition>::New(env, pCondition)});

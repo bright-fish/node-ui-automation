@@ -28,8 +28,13 @@ Napi::FunctionReference *IUIAutomationTreeWalkerWrapper::Initialize(Napi::Env en
     return constructor;
 }
 
-Napi::Object IUIAutomationTreeWalkerWrapper::New(Napi::Env env, IUIAutomationTreeWalker *pTreeWalker)
+Napi::Value IUIAutomationTreeWalkerWrapper::New(Napi::Env env, IUIAutomationTreeWalker *pTreeWalker)
 {
+    if (pTreeWalker == NULL)
+    {
+        return env.Null();
+    }
+
     auto pAutomationAddon = env.GetInstanceData<AutomationAddon>();
 
     return pAutomationAddon->IUIAutomationTreeWalkerWrapperConstructor->New({Napi::External<IUIAutomationTreeWalker>::New(env, pTreeWalker)});

@@ -21,11 +21,16 @@ Napi::FunctionReference *IValueProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object IValueProviderWrapper::New(Napi::Env env, IValueProvider *pInvokeProvider)
+Napi::Value IValueProviderWrapper::New(Napi::Env env, IValueProvider *pIValueProvider)
 {
+    if (pIValueProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->IValueProviderWrapperConstructor->New({Napi::External<IValueProvider>::New(env, pInvokeProvider)});
+    return automationAddon->IValueProviderWrapperConstructor->New({Napi::External<IValueProvider>::New(env, pIValueProvider)});
 }
 
 IValueProviderWrapper::IValueProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IValueProviderWrapper>(info)

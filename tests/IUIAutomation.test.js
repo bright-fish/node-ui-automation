@@ -10,8 +10,17 @@ const {
     PatternIds
 } = require('microsoft-ui-automation');
 
+const { AboutWindowsApplication } = require('./Shared');
+
 describe('IUIAutomation', () => {
+    const aboutWindowsApplication = new AboutWindowsApplication();
+    aboutWindowsApplication.open();
+
     let automation = new Automation();
+
+    afterAll(() => { 
+        aboutWindowsApplication.close();
+    });
 
     describe('contentViewCondition', () => {
         test('returns', () => {
@@ -135,7 +144,7 @@ describe('IUIAutomation', () => {
                 done();
             });
 
-            automation.addPropertyChangedEventHandler(desktopElement, TreeScopes.Subtree, null, propertyChangedEventHandler, [UIA_ToggleToggleStatePropertyId]);
+            automation.addPropertyChangedEventHandler(desktopElement, TreeScopes.Subtree, null, propertyChangedEventHandler, [PropertyIds.ToggleToggleStatePropertyId]);
         }, 300000);
     });
 
@@ -219,7 +228,7 @@ describe('IUIAutomation', () => {
         test('returns', () => {
             const cacheRequest = automation.createCacheRequest();
 
-            expect(cacheRequest).not.toBeNull();
+            expect(cacheRequest).toBeDefined();
         });
     });
 

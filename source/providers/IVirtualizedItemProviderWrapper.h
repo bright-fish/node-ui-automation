@@ -5,7 +5,7 @@ class IVirtualizedItemProviderWrapper : public Napi::ObjectWrap<IVirtualizedItem
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IVirtualizedItemProvider *pIVirtualizedItemProvider);
+    static Napi::Value New(Napi::Env env, IVirtualizedItemProvider *pIVirtualizedItemProvider);
 
     IVirtualizedItemProviderWrapper(const Napi::CallbackInfo &info);
     ~IVirtualizedItemProviderWrapper();

@@ -6,7 +6,7 @@ class IStylesProviderWrapper : public Napi::ObjectWrap<IStylesProviderWrapper>
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IStylesProvider *pIStylesProvider);
+    static Napi::Value New(Napi::Env env, IStylesProvider *pIStylesProvider);
 
     Napi::Value GetExtendedProperties(const Napi::CallbackInfo &info);
     Napi::Value GetFillColor(const Napi::CallbackInfo &info);

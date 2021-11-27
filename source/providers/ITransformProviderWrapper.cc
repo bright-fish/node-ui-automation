@@ -25,11 +25,16 @@ Napi::FunctionReference *ITransformProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object ITransformProviderWrapper::New(Napi::Env env, ITransformProvider *pInvokeProvider)
+Napi::Value ITransformProviderWrapper::New(Napi::Env env, ITransformProvider *pITransformProvider)
 {
+    if (pITransformProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->ITransformProviderWrapperConstructor->New({Napi::External<ITransformProvider>::New(env, pInvokeProvider)});
+    return automationAddon->ITransformProviderWrapperConstructor->New({Napi::External<ITransformProvider>::New(env, pITransformProvider)});
 }
 
 ITransformProviderWrapper::ITransformProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<ITransformProviderWrapper>(info)

@@ -22,8 +22,13 @@ Napi::FunctionReference *IGridItemProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object IGridItemProviderWrapper::New(Napi::Env env, IGridItemProvider *pIGridItemProvider)
+Napi::Value IGridItemProviderWrapper::New(Napi::Env env, IGridItemProvider *pIGridItemProvider)
 {
+    if (pIGridItemProvider == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IGridItemProviderWrapperConstructor->New({Napi::External<IGridItemProvider>::New(env, pIGridItemProvider)});

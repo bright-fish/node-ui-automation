@@ -23,11 +23,16 @@ Napi::FunctionReference *IStylesProviderWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object IStylesProviderWrapper::New(Napi::Env env, IStylesProvider *pAnnotationProvider)
+Napi::Value IStylesProviderWrapper::New(Napi::Env env, IStylesProvider *pIStylesProvider)
 {
+    if (pIStylesProvider == NULL)
+    {
+        return env.Null();
+    }
+    
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->IStylesProviderWrapperConstructor->New({Napi::External<IStylesProvider>::New(env, pAnnotationProvider)});
+    return automationAddon->IStylesProviderWrapperConstructor->New({Napi::External<IStylesProvider>::New(env, pIStylesProvider)});
 }
 
 IStylesProviderWrapper::IStylesProviderWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IStylesProviderWrapper>(info)

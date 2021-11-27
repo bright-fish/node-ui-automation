@@ -32,11 +32,16 @@ Napi::FunctionReference *ITransformProvider2Wrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Object ITransformProvider2Wrapper::New(Napi::Env env, ITransformProvider2 *pInvokeProvider)
+Napi::Value ITransformProvider2Wrapper::New(Napi::Env env, ITransformProvider2 *pITransformProvider2)
 {
+    if (pITransformProvider2 == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->ITransformProvider2WrapperConstructor->New({Napi::External<ITransformProvider2>::New(env, pInvokeProvider)});
+    return automationAddon->ITransformProvider2WrapperConstructor->New({Napi::External<ITransformProvider2>::New(env, pITransformProvider2)});
 }
 
 ITransformProvider2Wrapper::ITransformProvider2Wrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<ITransformProvider2Wrapper>(info)
@@ -124,7 +129,6 @@ Napi::Value ITransformProvider2Wrapper::GetZoomMinimum(const Napi::CallbackInfo 
 
     return Napi::Boolean::New(info.Env(), zoomMinimum);
 }
-
 
 void ITransformProvider2Wrapper::Move(const Napi::CallbackInfo &info)
 {

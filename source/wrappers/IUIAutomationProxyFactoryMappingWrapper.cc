@@ -12,8 +12,13 @@ Napi::FunctionReference *IUIAutomationProxyFactoryMappingWrapper::Initialize(Nap
     return functionReference;
 }
 
-Napi::Object IUIAutomationProxyFactoryMappingWrapper::New(Napi::Env env, IUIAutomationProxyFactoryMapping *pProxyFactoryMapping)
+Napi::Value IUIAutomationProxyFactoryMappingWrapper::New(Napi::Env env, IUIAutomationProxyFactoryMapping *pProxyFactoryMapping)
 {
+    if (pProxyFactoryMapping == NULL)
+    {
+        return env.Null();
+    }
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IUIAutomationProxyFactoryMappingWrapperConstructor->New({Napi::External<IUIAutomationProxyFactoryMapping>::New(env, pProxyFactoryMapping)});
@@ -29,7 +34,7 @@ IUIAutomationProxyFactoryMappingWrapper::IUIAutomationProxyFactoryMappingWrapper
     m_pProxyFactoryMapping = info[0].As<Napi::External<IUIAutomationProxyFactoryMapping>>().Data();
 }
 
-IUIAutomationProxyFactoryMappingWrapper::~IUIAutomationProxyFactoryMappingWrapper() 
+IUIAutomationProxyFactoryMappingWrapper::~IUIAutomationProxyFactoryMappingWrapper()
 {
     m_pProxyFactoryMapping->Release();
 }

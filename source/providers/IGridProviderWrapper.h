@@ -5,7 +5,7 @@ class IGridProviderWrapper : public Napi::ObjectWrap<IGridProviderWrapper>
 {
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
-    static Napi::Object New(Napi::Env env, IGridProvider *pIGridProvider);
+    static Napi::Value New(Napi::Env env, IGridProvider *pIGridProvider);
 
     IGridProviderWrapper(const Napi::CallbackInfo &info);
     ~IGridProviderWrapper();
