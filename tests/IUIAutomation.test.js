@@ -4,10 +4,10 @@ const {
     AutomationFocusChangedEventHandler,
     AutomationPropertyChangedEventHandler,
     AutomationStructureChangedEventHandler,
-    AutomationProperties,
-    AutomationEvents,
+    PropertyIds,
+    EventIds,
     TreeScopes,
-    AutomationPatterns
+    PatternIds
 } = require('microsoft-ui-automation');
 
 describe('IUIAutomation', () => {
@@ -86,17 +86,17 @@ describe('IUIAutomation', () => {
 
             const desktopElement = automation.getRootElement();
 
-            const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+            const winverNamePropertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
 
             const winverElement = desktopElement.findFirst(TreeScopes.Subtree, winverNamePropertyCondition);
 
-            const propertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "Microsoft Software License Terms");
+            const propertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "Microsoft Software License Terms");
 
             const cacheRequest = automation.createCacheRequest();
 
             const termsLink = winverElement.findFirst(TreeScopes.Subtree, propertyCondition);
 
-            automation.addAutomationEventHandler(AutomationEvents.Window_WindowOpenedEventId, desktopElement, TreeScopes.Subtree, cacheRequest, eventHandler);
+            automation.addAutomationEventHandler(EventIds.Window_WindowOpenedEventId, desktopElement, TreeScopes.Subtree, cacheRequest, eventHandler);
         }, 300000);
     });
 
@@ -123,7 +123,7 @@ describe('IUIAutomation', () => {
 
             const desktopElement = automation.getRootElement();
 
-            const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+            const winverNamePropertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
 
             const winverElement = desktopElement.findFirst(TreeScopes.Subtree, winverNamePropertyCondition);
 
@@ -151,7 +151,7 @@ describe('IUIAutomation', () => {
 
             const desktopElement = automation.getRootElement();
 
-            const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "tests");
+            const winverNamePropertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "tests");
 
             const winverElement = desktopElement.findFirst(TreeScopes.Subtree, winverNamePropertyCondition);
 
@@ -177,7 +177,7 @@ describe('IUIAutomation', () => {
         test('returns', () => {
             const desktopElement = automation.getRootElement();
 
-            const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+            const winverNamePropertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
 
             const winverElementOne = desktopElement.findFirst(TreeScopes.Subtree, winverNamePropertyCondition);
 
@@ -196,8 +196,8 @@ describe('IUIAutomation', () => {
 
     describe('createAndCondition', () => {
         test('returns', () => {
-            const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
-            const winverAutomationIdPropertyCondition = automation.createPropertyCondition(AutomationProperties.AutomationIdPropertyId, '13095');
+            const winverNamePropertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
+            const winverAutomationIdPropertyCondition = automation.createPropertyCondition(PropertyIds.AutomationIdPropertyId, '13095');
 
             const andCondition = automation.createAndCondition(winverNamePropertyCondition, winverAutomationIdPropertyCondition);
 
@@ -233,7 +233,7 @@ describe('IUIAutomation', () => {
 
     describe('createNotCondition', () => {
         test('returns', () => {
-            const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+            const winverNamePropertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
 
             const notCondition = automation.createNotCondition(winverNamePropertyCondition);
 
@@ -243,8 +243,8 @@ describe('IUIAutomation', () => {
 
     describe('createOrCondition', () => {
         test('returns', () => {
-            const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
-            const winverAutomationIdPropertyCondition = automation.createPropertyCondition(AutomationProperties.AutomationIdPropertyId, '13095');
+            const winverNamePropertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
+            const winverAutomationIdPropertyCondition = automation.createPropertyCondition(PropertyIds.AutomationIdPropertyId, '13095');
 
             const orCondition = automation.createOrCondition(winverNamePropertyCondition, winverAutomationIdPropertyCondition);
 
@@ -264,7 +264,7 @@ describe('IUIAutomation', () => {
 
     describe('createPropertyCondition', () => {
         test('returns', () => {
-            const propertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+            const propertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
 
             expect(propertyCondition).not.toBeNull();
         });
@@ -282,7 +282,7 @@ describe('IUIAutomation', () => {
 
     describe('createTreeWalker', () => {
         test('returns', () => {
-            const propertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+            const propertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
 
             const treeWalker = automation.createTreeWalker(propertyCondition);
 
@@ -356,7 +356,7 @@ describe('IUIAutomation', () => {
 
     describe('getPatternProgrammaticName', () => {
         test('returns', () => {
-            const patternName = automation.getPatternProgrammaticName(AutomationPatterns.DragPatternId);
+            const patternName = automation.getPatternProgrammaticName(PatternIds.DragPatternId);
 
             expect(patternName).toBe('DragPattern');
         });
@@ -364,7 +364,7 @@ describe('IUIAutomation', () => {
 
     describe('getPropertyProgrammaticName', () => {
         test('returns', () => {
-            const propertyName = automation.getPropertyProgrammaticName(AutomationProperties.NamePropertyId);
+            const propertyName = automation.getPropertyProgrammaticName(PropertyIds.NamePropertyId);
 
             expect(propertyName).toBe('Name');
         });

@@ -1,4 +1,4 @@
-const { Automation, AutomationProperties, TreeScopes } = require('microsoft-ui-automation');
+const { Automation, PropertyIds, TreeScopes } = require('microsoft-ui-automation');
 
 describe('IUIAutomationTreeWalker', () => {
     let automation = null;
@@ -11,7 +11,7 @@ describe('IUIAutomationTreeWalker', () => {
 
         desktopElement = automation.getRootElement();
 
-        const propertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+        const propertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
 
         winverElement = desktopElement.findFirst(TreeScopes.Subtree, propertyCondition);
     });

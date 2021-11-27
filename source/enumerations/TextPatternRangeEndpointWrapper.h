@@ -2,7 +2,7 @@
 
 #include "../Shared.h"
 
-class UIA_PatternIdsWrapper
+class TextPatternRangeEndpointWrapper
 {
 public:
   static Napi::Object New(Napi::Env env);

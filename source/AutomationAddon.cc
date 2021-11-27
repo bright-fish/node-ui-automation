@@ -6,7 +6,9 @@ AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
 
     if (FAILED(hResult))
     {
-        _com_raise_error(hResult);
+        auto error = _com_error(hResult);
+
+        throw Napi::Error::New(env, error.ErrorMessage());
     }
 
     IUnknownWrapperConstructor = IUnknownWrapper::Initialize(env);
@@ -53,7 +55,7 @@ AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
     IValueProviderWrapperConstructor = IValueProviderWrapper::Initialize(env);
     IVirtualizedItemProviderWrapperConstructor = IVirtualizedItemProviderWrapper::Initialize(env);
     IWindowProviderWrapperConstructor = IWindowProviderWrapper::Initialize(env);
-    
+
     IRawElementProviderSimpleWrapperConstructor = IRawElementProviderSimpleWrapper::Initialize(env);
     ITextRangeProviderWrapperConstructor = ITextRangeProviderWrapper::Initialize(env);
 
@@ -63,11 +65,29 @@ AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
         InstanceValue("AutomationFocusChangedEventHandler", IUIAutomationFocusChangedEventHandlerWrapperConstructor->Value()),
         InstanceValue("AutomationPropertyChangedEventHandler", IUIAutomationPropertyChangedEventHandlerWrapperConstructor->Value()),
         InstanceValue("AutomationStructureChangedEventHandler", IUIAutomationStructureChangedEventHandlerWrapperConstructor->Value()),
-        InstanceValue("TreeScopes", TreeScopeWrapper::New(env)),
-        InstanceValue("AutomationElementModes", AutomationElementModeWrapper::New(env)),
-        InstanceValue("AutomationProperties", UIA_PropertyIdsWrapper::New(env)),
-        InstanceValue("AutomationEvents", UIA_EventIdsWrapper::New(env)),
-        InstanceValue("AutomationPatterns", UIA_PatternIdsWrapper::New(env)),
+
+        InstanceValue("AnnotationTypeIds", AnnotationTypeIdsWrapper::New(env)),
+        InstanceValue("AttributeIds", AttributeIdsWrapper::New(env)),
+        InstanceValue("ControlTypeIds", ControlTypeIdsWrapper::New(env)),
+        InstanceValue("DockPositions", DockPositionsWrapper::New(env)),
+        InstanceValue("ElementModes", ElementModesWrapper::New(env)),
+        InstanceValue("EventIds", EventIdsWrapper::New(env)),
+        InstanceValue("ExpandCollapseStates", ExpandCollapseStatesWrapper::New(env)),
+        InstanceValue("OrientationTypes", OrientationTypesWrapper::New(env)),
+        InstanceValue("PatternIds", PatternIdsWrapper::New(env)),
+        InstanceValue("PropertyIds", PropertyIdsWrapper::New(env)),
+        InstanceValue("ProviderOptions", ProviderOptionsWrapper::New(env)),
+        InstanceValue("RowOrColumnMajor", RowOrColumnMajorWrapper::New(env)),
+        InstanceValue("StyleIds", StyleIdsWrapper::New(env)),
+        InstanceValue("SupportedTextSelections", SupportedTextSelectionsWrapper::New(env)),
+        InstanceValue("SynchronizedInputTypes", SynchronizedInputTypesWrapper::New(env)),
+        InstanceValue("TextPatternRangeEndpoints", TextPatternRangeEndpointWrapper::New(env)),
+        InstanceValue("TextUnits", TextUnitsWrapper::New(env)),
+        InstanceValue("ToggleStates", ToggleStatesWrapper::New(env)),
+        InstanceValue("TreeScopes", TreeScopesWrapper::New(env)),
+        InstanceValue("WindowInteractionStates", WindowInteractionStatesWrapper::New(env)),
+        InstanceValue("WindowVisualStates", WindowVisualStatesWrapper::New(env)),
+        InstanceValue("ZoomUnits", ZoomUnitsWrapper::New(env)),
     };
 
     DefineAddon(exports, addonDefinition);

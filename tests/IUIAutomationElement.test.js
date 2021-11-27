@@ -1,4 +1,4 @@
-const { Automation, TreeScopes, AutomationProperties, AutomationElementModes, AutomationPatterns, DockPositions } = require('microsoft-ui-automation');
+const { Automation, TreeScopes, PropertyIds, ElementModes, PatternIds, DockPositions } = require('microsoft-ui-automation');
 
 describe('IUIAutomationElement', () => {
     const automation = new Automation();
@@ -14,7 +14,7 @@ describe('IUIAutomationElement', () => {
     });
 
     test('findAll', () => {
-        const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+        const winverNamePropertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
 
         const elements = desktopElement.findAll(TreeScopes.Subtree, winverNamePropertyCondition);
 
@@ -25,7 +25,7 @@ describe('IUIAutomationElement', () => {
 
 
     test('findAllBuildCache', () => {
-        const winverNamePropertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+        const winverNamePropertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
 
         let cacheRequest = automation.createCacheRequest();
 
@@ -35,7 +35,7 @@ describe('IUIAutomationElement', () => {
     });
 
     test('findFirst', () => {
-        const propertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+        const propertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
 
         winverElement = desktopElement.findFirst(TreeScopes.Subtree, propertyCondition);
 
@@ -43,7 +43,7 @@ describe('IUIAutomationElement', () => {
     });
 
     test('findFirstBuildCache', () => {
-        const propertyCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, "About Windows");
+        const propertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
 
         const cacheRequest = automation.createCacheRequest();
 
@@ -72,15 +72,15 @@ describe('IUIAutomationElement', () => {
     test('getCachedPropertyValue', () => {
         let cacheRequest = automation.createCacheRequest();
 
-        cacheRequest.automationElementMode = AutomationElementModes.None;
+        cacheRequest.automationElementMode = ElementModes.None;
 
         cacheRequest.treeFilter = automation.rawViewCondition;
 
-        cacheRequest.addProperty(AutomationProperties.NamePropertyId);
+        cacheRequest.addProperty(PropertyIds.NamePropertyId);
 
         winverCachedElement = winverElement.buildUpdatedCache(cacheRequest);
 
-        const value = winverCachedElement.getCachedPropertyValue(AutomationProperties.NamePropertyId);
+        const value = winverCachedElement.getCachedPropertyValue(PropertyIds.NamePropertyId);
 
         expect(value).toBe('About Windows');
     });
@@ -88,15 +88,15 @@ describe('IUIAutomationElement', () => {
     test('getCachedPropertyValueEx', () => {
         let cacheRequest = automation.createCacheRequest();
 
-        cacheRequest.automationElementMode = AutomationElementModes.None;
+        cacheRequest.automationElementMode = ElementModes.None;
 
         cacheRequest.treeFilter = automation.rawViewCondition;
 
-        cacheRequest.addProperty(AutomationProperties.NamePropertyId);
+        cacheRequest.addProperty(PropertyIds.NamePropertyId);
 
         winverCachedElement = winverElement.buildUpdatedCache(cacheRequest);
 
-        const value = winverCachedElement.getCachedPropertyValueEx(AutomationProperties.NamePropertyId, true);
+        const value = winverCachedElement.getCachedPropertyValueEx(PropertyIds.NamePropertyId, true);
 
         expect(value).toBe('About Windows');
     });
@@ -107,7 +107,10 @@ describe('IUIAutomationElement', () => {
         expect(isClickable).toBe(false);
     });
 
-    describe('getCurrentPattern', () => {
+    fdescribe('getCurrentPattern', () => {
+        let propertyCondition = automation.createPropertyCondition(PropertyIds.NamePropertyId, "About Windows");
+        let winverElement = desktopElement.findFirst(TreeScopes.Subtree, propertyCondition);
+
         // todo: find somewhere in some application where this exists.
         // test('annotationProvider', () => {
         //     const okButtonCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, 'OK');
@@ -125,17 +128,12 @@ describe('IUIAutomationElement', () => {
         //     invokePattern.invoke();
         // });
 
-        // test('dockProvider', () => {
-        //     const okButtonCondition = automation.createPropertyCondition(AutomationProperties.NamePropertyId, 'OK');
-        //     const winverOkButton = winverElement.findFirst(TreeScopes.Subtree, okButtonCondition);
+        test('dockProvider', () => {
+            const dockProvider = winverElement.getCurrentPattern(PatternIds.DockPatternId);
+            const dockPosition = dockProvider.setDockPosition(DockPositions.Right);
 
-        //     const dockProvider = winverOkButton.getCurrentPattern(AutomationPatterns.DockPatternId);
-        //     const dockPosition = dockProvider.dockPosition();
-
-        //     expect(dockPosition).toBe(DockPositions.Left);
-
-        //     dockProvider.setDockPosition(DockPositions.Right);
-        // });
+            expect(dockPosition).toBe(DockPositions.Right);
+        });
 
         // test('dragProvider', () => {
 
@@ -146,13 +144,13 @@ describe('IUIAutomationElement', () => {
     test.todo('getCurrentPatternAs');
 
     test('getCurrentPropertyValue', () => {
-        const value = winverElement.getCurrentPropertyValue(AutomationProperties.NamePropertyId);
+        const value = winverElement.getCurrentPropertyValue(PropertyIds.NamePropertyId);
 
         expect(value).toBe('About Windows');
     });
 
     test('getCurrentPropertyValueEx', () => {
-        const value = winverElement.getCurrentPropertyValueEx(AutomationProperties.NamePropertyId, true);
+        const value = winverElement.getCurrentPropertyValueEx(PropertyIds.NamePropertyId, true);
 
         expect(value).toBe('About Windows');
     });

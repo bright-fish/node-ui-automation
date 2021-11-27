@@ -1,7 +1,7 @@
 #include "IAccessibleWrapper.h"
 #include "../AutomationAddon.h"
 
-// skipping for now.  complexity is high.  And current value appears to be low.  
+// skipping for now.  complexity is high and current value appears to be low.  
 // m_pIAccessible->get_accChild;
 // m_pIAccessible->get_accChildCount;
 // m_pIAccessible->get_accDefaultAction;

@@ -1,12 +1,6 @@
 #pragma once
 
-#include "UIA_EventIdsWrapper.h"
-#include "UIA_PatternIdsWrapper.h"
-#include "UIA_PropertyIdsWrapper.h"
-#include "AutomationElementModeWrapper.h"
-#include "TreeScopeWrapper.h"
 #include "RectWrapper.h"
-
 #include "IUnknownWrapper.h"
 #include "IAccessibleWrapper.h"
 #include "IUIAutomationWrapper.h"

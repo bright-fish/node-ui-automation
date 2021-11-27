@@ -16,6 +16,7 @@ Napi::FunctionReference *IUIAutomationElementWrapper::Initialize(Napi::Env env)
         InstanceMethod<&IUIAutomationElementWrapper::GetCachedPropertyValue>("getCachedPropertyValue"),
         InstanceMethod<&IUIAutomationElementWrapper::GetCachedPropertyValueEx>("getCachedPropertyValueEx"),
         InstanceMethod<&IUIAutomationElementWrapper::GetClickablePoint>("getClickablePoint"),
+        InstanceMethod<&IUIAutomationElementWrapper::GetCurrentPattern>("getCurrentPattern"),
         InstanceMethod<&IUIAutomationElementWrapper::GetCurrentPropertyValue>("getCurrentPropertyValue"),
         InstanceMethod<&IUIAutomationElementWrapper::GetCurrentPropertyValueEx>("getCurrentPropertyValueEx"),
         InstanceMethod<&IUIAutomationElementWrapper::SetFocus>("setFocus"),

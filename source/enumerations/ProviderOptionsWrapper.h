@@ -2,7 +2,7 @@
 
 #include "../Shared.h"
 
-class UIA_PropertyIdsWrapper
+class ProviderOptionsWrapper
 {
 public:
   static Napi::Object New(Napi::Env env);

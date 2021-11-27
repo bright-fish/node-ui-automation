@@ -2,7 +2,7 @@
 
 #include "../Shared.h"
 
-class TreeScopeWrapper
+class PatternIdsWrapper
 {
 public:
   static Napi::Object New(Napi::Env env);
