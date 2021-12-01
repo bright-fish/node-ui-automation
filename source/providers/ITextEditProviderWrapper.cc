@@ -7,8 +7,8 @@
 Napi::FunctionReference *ITextEditProviderWrapper::Initialize(Napi::Env env)
 {
     auto classDefinition = {
-        InstanceAccessor<&ITextEditProviderWrapper::GetActiveComposition>("getActiveComponsition"),
-        InstanceAccessor<&ITextEditProviderWrapper::GetConversionTarget>("getConversionTarget"),
+        InstanceMethod<&ITextEditProviderWrapper::GetActiveComposition>("getActiveComposition"),
+        InstanceMethod<&ITextEditProviderWrapper::GetConversionTarget>("getConversionTarget"),
     };
 
     Napi::Function function = DefineClass(env, "ITextEditProvider", classDefinition);
