@@ -777,7 +777,7 @@ export declare class Automation {
     addAutomationEventHandler(eventId: EventIds, element: AutomationElement, treeScope: TreeScopes, cacheRequest: AutomationCacheRequest, eventHandler: AutomationEventHandler): void;
     addFocusChangedEventHandler(cacheRequest: AutomationCacheRequest, eventHandler: AutomationFocusChangedEventHandler): void;
     addPropertyChangedEventHandler(element: AutomationElement, treeScope: TreeScopes, cacheRequest: AutomationCacheRequest, eventHandler: AutomationPropertyChangedEventHandler): void;
-    addStructureChangedEventHandler(element: AutomationElement, treeScope: TreeScopes, cacheRequest: AutomationCacheRequest, eventHandler: AutomationStructurechangedEventHandler): void;
+    addStructureChangedEventHandler(element: AutomationElement, treeScope: TreeScopes, cacheRequest: AutomationCacheRequest, eventHandler: AutomationStructureChangedEventHandler): void;
     checkNotSupported(variant: Variant): boolean;
     compareElements(elementOne: AutomationElement, elementTwo: AutomationElement): boolean;
     createAndCondition(conditionOne: AutomationCondition, conditionTwo: AutomationCondition): AutomationCondition;
@@ -799,7 +799,7 @@ export declare class Automation {
     removeAutomationEventHandler(eventId: EventIds, element: AutomationElement, eventHandler: AutomationEventHandler): void;
     removeFocusChangedEventHandler(eventHandler: AutomationFocusChangedEventHandler): void;
     removePropertyChangedEventHandler(element: AutomationElement, eventHandler: AutomationPropertyChangedEventHandler): void;
-    removeStructureChangedEventHandler(element: AutomationElement, eventHandler: AutomationStructurechangedEventHandler): void;
+    removeStructureChangedEventHandler(element: AutomationElement, eventHandler: AutomationStructureChangedEventHandler): void;
 
     rawViewWalker: AutomationTreeWalker;
     rawViewCondition: AutomationCondition;
