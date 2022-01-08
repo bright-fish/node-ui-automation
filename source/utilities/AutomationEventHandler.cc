@@ -72,4 +72,3 @@ HRESULT STDMETHODCALLTYPE AutomationEventHandler::HandleAutomationEvent(IUIAutom
 
     return S_OK;
 }
-

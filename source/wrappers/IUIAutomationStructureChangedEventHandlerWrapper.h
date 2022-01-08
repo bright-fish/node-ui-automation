@@ -8,9 +8,9 @@ class IUIAutomationStructureChangedEventHandlerWrapper : public Napi::ObjectWrap
 public:
     static Napi::FunctionReference *Initialize(Napi::Env env);
 
-    IUIAutomationStructureChangedEventHandler* m_pStructureChangedEventHandler;
+    IUIAutomationStructureChangedEventHandler *m_pStructureChangedEventHandler;
     Napi::ThreadSafeFunction m_automationCallback;
-    
+
     void HandleAutomationEvent(IUIAutomationElement *pSender, EVENTID eventID);
 
     IUIAutomationStructureChangedEventHandlerWrapper(const Napi::CallbackInfo &info);

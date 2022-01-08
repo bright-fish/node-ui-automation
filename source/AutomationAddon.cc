@@ -13,6 +13,7 @@ AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
 
     IUnknownWrapperConstructor = IUnknownWrapper::Initialize(env);
     IUIAutomationWrapperConstructor = IUIAutomationWrapper::Initialize(env);
+    RECTWrapperConstructor = RectWrapper::Initialize(env);
     IUIAutomationTreeWalkerWrapperConstructor = IUIAutomationTreeWalkerWrapper::Initialize(env);
     IUIAutomationConditionWrapperConstructor = IUIAutomationConditionWrapper::Initialize(env);
     IUIAutomationElementWrapperConstructor = IUIAutomationElementWrapper::Initialize(env);
@@ -24,40 +25,39 @@ AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
     IUIAutomationPropertyChangedEventHandlerWrapperConstructor = IUIAutomationPropertyChangedEventHandlerWrapper::Initialize(env);
     IUIAutomationStructureChangedEventHandlerWrapperConstructor = IUIAutomationStructureChangedEventHandlerWrapper::Initialize(env);
 
-    IAnnotationProviderWrapperConstructor = IAnnotationProviderWrapper::Initialize(env);
-    IDockProviderWrapperConstructor = IDockProviderWrapper::Initialize(env);
-    IDragProviderWrapperConstructor = IDragProviderWrapper::Initialize(env);
-    IDropTargetProviderWrapperConstructor = IDropTargetProviderWrapper::Initialize(env);
-    IExpandCollapseProviderWrapperConstructor = IExpandCollapseProviderWrapper::Initialize(env);
-    IGridItemProviderWrapperConstructor = IGridItemProviderWrapper::Initialize(env);
-    IGridProviderWrapperConstructor = IGridProviderWrapper::Initialize(env);
-    IInvokeProviderWrapperConstructor = IInvokeProviderWrapper::Initialize(env);
-    IItemContainerProviderWrapperConstructor = IItemContainerProviderWrapper::Initialize(env);
-    IMultipleViewProviderWrapperConstructor = IMultipleViewProviderWrapper::Initialize(env);
-    IRangeValueProviderWrapperConstructor = IRangeValueProviderWrapper::Initialize(env);
-    IScrollItemProviderWrapperConstructor = IScrollItemProviderWrapper::Initialize(env);
-    IScrollProviderWrapperConstructor = IScrollProviderWrapper::Initialize(env);
-    ISelectionItemProviderWrapperConstructor = ISelectionItemProviderWrapper::Initialize(env);
-    ISelectionProviderWrapperConstructor = ISelectionProviderWrapper::Initialize(env);
-    ISelectionProvider2WrapperConstructor = ISelectionProvider2Wrapper::Initialize(env);
-    ISpreadsheetItemProviderWrapperConstructor = ISpreadsheetItemProviderWrapper::Initialize(env);
-    ISpreadsheetProviderWrapperConstructor = ISpreadsheetProviderWrapper::Initialize(env);
-    IStylesProviderWrapperConstructor = IStylesProviderWrapper::Initialize(env);
-    ISynchronizedInputProviderWrapperConstructor = ISynchronizedInputProviderWrapper::Initialize(env);
-    ITableItemProviderWrapperConstructor = ITableItemProviderWrapper::Initialize(env);
-    ITextChildProviderWrapperConstructor = ITextChildProviderWrapper::Initialize(env);
-    ITextEditProviderWrapperConstructor = ITextEditProviderWrapper::Initialize(env);
-    ITextProviderWrapperConstructor = ITextProviderWrapper::Initialize(env);
-    ITextProvider2WrapperConstructor = ITextProvider2Wrapper::Initialize(env);
-    IToggleProviderWrapperConstructor = IToggleProviderWrapper::Initialize(env);
-    ITransformProviderWrapperConstructor = ITransformProviderWrapper::Initialize(env);
-    ITransformProvider2WrapperConstructor = ITransformProviderWrapper::Initialize(env);
-    IValueProviderWrapperConstructor = IValueProviderWrapper::Initialize(env);
-    IVirtualizedItemProviderWrapperConstructor = IVirtualizedItemProviderWrapper::Initialize(env);
-    IWindowProviderWrapperConstructor = IWindowProviderWrapper::Initialize(env);
+    IUIAutomationAnnotationPatternWrapperConstructor = IUIAutomationAnnotationPatternWrapper::Initialize(env);
+    IUIAutomationDockPatternWrapperConstructor = IUIAutomationDockPatternWrapper::Initialize(env);
+    IUIAutomationDragPatternWrapperConstructor = IUIAutomationDragPatternWrapper::Initialize(env);
+    IUIAutomationDropTargetPatternWrapperConstructor = IUIAutomationDropTargetPatternWrapper::Initialize(env);
+    IUIAutomationExpandCollapsePatternWrapperConstructor = IUIAutomationExpandCollapsePatternWrapper::Initialize(env);
+    IUIAutomationGridItemPatternWrapperConstructor = IUIAutomationGridItemPatternWrapper::Initialize(env);
+    IUIAutomationGridPatternWrapperConstructor = IUIAutomationGridPatternWrapper::Initialize(env);
+    IUIAutomationInvokePatternWrapperConstructor = IUIAutomationInvokePatternWrapper::Initialize(env);
+    IUIAutomationItemContainerPatternWrapperConstructor = IUIAutomationItemContainerPatternWrapper::Initialize(env);
+    IUIAutomationMultipleViewPatternWrapperConstructor = IUIAutomationMultipleViewPatternWrapper::Initialize(env);
+    IUIAutomationRangeValuePatternWrapperConstructor = IUIAutomationRangeValuePatternWrapper::Initialize(env);
+    IUIAutomationScrollItemPatternWrapperConstructor = IUIAutomationScrollItemPatternWrapper::Initialize(env);
+    IUIAutomationScrollPatternWrapperConstructor = IUIAutomationScrollPatternWrapper::Initialize(env);
+    IUIAutomationSelectionItemPatternWrapperConstructor = IUIAutomationSelectionItemPatternWrapper::Initialize(env);
+    IUIAutomationSelectionPatternWrapperConstructor = IUIAutomationSelectionPatternWrapper::Initialize(env);
+    ISelectionProvider2WrapperConstructor = IUIAutomationSelectionPattern2Wrapper::Initialize(env);
+    IUIAutomationSpreadsheetItemPatternWrapperConstructor = IUIAutomationSpreadsheetItemPatternWrapper::Initialize(env);
+    IUIAutomationSpreadsheetPatternWrapperConstructor = IUIAutomationSpreadsheetPatternWrapper::Initialize(env);
+    IUIAutomationStylesPatternWrapperConstructor = IUIAutomationStylesPatternWrapper::Initialize(env);
+    IUIAutomationSynchronizedInputPatternWrapperConstructor = IUIAutomationSynchronizedInputPatternWrapper::Initialize(env);
+    IUIAutomationTableItemPatternWrapperConstructor = IUIAutomationTableItemPatternWrapper::Initialize(env);
+    IUIAutomationTextChildPatternWrapperConstructor = IUIAutomationTextChildPatternWrapper::Initialize(env);
+    IUIAutomationTextEditPatternWrapperConstructor = IUIAutomationTextEditPatternWrapper::Initialize(env);
+    IUIAutomationTextPatternWrapperConstructor = IUIAutomationTextPatternWrapper::Initialize(env);
+    ITextProvider2WrapperConstructor = IUIAutomationTextPattern2Wrapper::Initialize(env);
+    IUIAutomationTogglePatternWrapperConstructor = IUIAutomationTogglePatternWrapper::Initialize(env);
+    IUIAutomationTransformPatternWrapperConstructor = IUIAutomationTransformPatternWrapper::Initialize(env);
+    ITransformProvider2WrapperConstructor = IUIAutomationTransformPatternWrapper::Initialize(env);
+    IUIAutomationValuePatternWrapperConstructor = IUIAutomationValuePatternWrapper::Initialize(env);
+    IUIAutomationVirtualizedItemPatternWrapperConstructor = IUIAutomationVirtualizedItemPatternWrapper::Initialize(env);
+    IUIAutomationWindowPatternWrapperConstructor = IUIAutomationWindowPatternWrapper::Initialize(env);
 
-    IRawElementProviderSimpleWrapperConstructor = IRawElementProviderSimpleWrapper::Initialize(env);
-    ITextRangeProviderWrapperConstructor = ITextRangeProviderWrapper::Initialize(env);
+    IUIAutomationTextRangePatternWrapperConstructor = IUIAutomationTextRangeWrapper::Initialize(env);
 
     auto addonDefinition = {
         InstanceValue("Automation", IUIAutomationWrapperConstructor->Value()),
@@ -79,6 +79,7 @@ AutomationAddon::AutomationAddon(Napi::Env env, Napi::Object exports)
         InstanceValue("ProviderOptions", ProviderOptionsWrapper::New(env)),
         InstanceValue("RowOrColumnMajor", RowOrColumnMajorWrapper::New(env)),
         InstanceValue("StyleIds", StyleIdsWrapper::New(env)),
+        InstanceValue("ScrollAmounts", ScrollAmountsWrapper::New(env)),
         InstanceValue("SupportedTextSelections", SupportedTextSelectionsWrapper::New(env)),
         InstanceValue("SynchronizedInputTypes", SynchronizedInputTypesWrapper::New(env)),
         InstanceValue("TextPatternRangeEndpoints", TextPatternRangeEndpointWrapper::New(env)),

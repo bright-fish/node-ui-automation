@@ -55,8 +55,6 @@ HRESULT STDMETHODCALLTYPE PropertyChangedEventHandler::QueryInterface(REFIID rii
 
 HRESULT PropertyChangedEventHandler::HandlePropertyChangedEvent(IUIAutomationElement *sender, PROPERTYID propertyId, VARIANT newValue)
 {
-    sender->AddRef();
-
     auto *automationEvent = new PropertyChangedEvent();
     automationEvent->pSender = sender;
     automationEvent->propertyId = propertyId;
@@ -67,7 +65,7 @@ HRESULT PropertyChangedEventHandler::HandlePropertyChangedEvent(IUIAutomationEle
         function.Call({
             IUIAutomationElementWrapper::New(env, event->pSender),
             Napi::Number::New(env, event->propertyId),
-            FromVariant(env, event->newValue)
+            FromVariant(env, event->newValue),
         });
 
         delete event;

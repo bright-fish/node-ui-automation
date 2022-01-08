@@ -55,7 +55,7 @@ Napi::FunctionReference *IUIAutomationWrapper::Initialize(Napi::Env env)
 
 IUIAutomationWrapper::IUIAutomationWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<IUIAutomationWrapper>(info)
 {
-    auto hResult = m_pAutomation.CoCreateInstance(CLSID_CUIAutomation, NULL, CLSCTX_INPROC_SERVER);
+    auto hResult = m_pAutomation.CoCreateInstance(CLSID_CUIAutomation8, NULL, CLSCTX_INPROC_SERVER);
 
     HandleResult(info, hResult);
 }
@@ -495,7 +495,7 @@ Napi::Value IUIAutomationWrapper::GetPropertyProgrammaticName(const Napi::Callba
 
 Napi::Value IUIAutomationWrapper::GetRootElement(const Napi::CallbackInfo &info)
 {
-    IUIAutomationElement *pRootElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> pRootElement = NULL;
     HRESULT hResult = m_pAutomation->GetRootElement(&pRootElement);
 
     HandleResult(info, hResult);
@@ -507,7 +507,7 @@ Napi::Value IUIAutomationWrapper::GetRootElementBuildCache(const Napi::CallbackI
 {
     auto cacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[0].ToObject());
 
-    IUIAutomationElement *pRootElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> pRootElement;
     HRESULT hResult = m_pAutomation->GetRootElementBuildCache(cacheRequestWrapper->m_pCacheRequest, &pRootElement);
 
     HandleResult(info, hResult);

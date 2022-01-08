@@ -11,6 +11,7 @@
 #include "ProviderOptionsWrapper.h"
 #include "RowOrColumnMajorWrapper.h"
 #include "StyleIdsWrapper.h"
+#include "ScrollAmountsWrapper.h"
 #include "SupportedTextSelectionsWrapper.h"
 #include "SynchronizedInputTypesWrapper.h"
 #include "TextPatternRangeEndpointWrapper.h"

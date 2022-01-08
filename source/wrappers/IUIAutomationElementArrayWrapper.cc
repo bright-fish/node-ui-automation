@@ -53,7 +53,7 @@ Napi::Value IUIAutomationElementArrayWrapper::GetElement(const Napi::CallbackInf
         return number.Env().Null();
     }
 
-    IUIAutomationElement *pElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> pElement = NULL;
     auto hResult = m_pElementArray->GetElement(number.Int32Value(), &pElement);
 
     HandleResult(info, hResult);

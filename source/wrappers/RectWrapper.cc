@@ -28,7 +28,7 @@ Napi::Value RectWrapper::New(Napi::Env env, RECT *pRECT)
 
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
-    return automationAddon->IUIAutomationElementWrapperConstructor->New({Napi::External<RECT>::New(env, pRECT)});
+    return automationAddon->RECTWrapperConstructor->New({Napi::External<RECT>::New(env, pRECT)});
 }
 
 RectWrapper::RectWrapper(const Napi::CallbackInfo &info) : Napi::ObjectWrap<RectWrapper>(info)

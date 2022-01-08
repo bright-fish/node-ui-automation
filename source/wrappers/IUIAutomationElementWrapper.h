@@ -6,7 +6,7 @@ class IUIAutomationElementWrapper : public Napi::ObjectWrap<IUIAutomationElement
 {
 public:
   static Napi::FunctionReference *Initialize(Napi::Env env);
-  static Napi::Value New(Napi::Env env, IUIAutomationElement *pElement);
+  static Napi::Value New(Napi::Env env, ATL::CComPtr<IUIAutomationElement> pElement);
 
   ATL::CComPtr<IUIAutomationElement> m_pElement;
 
@@ -19,6 +19,7 @@ public:
   Napi::Value FindFirst(const Napi::CallbackInfo &info);
   Napi::Value FindFirstBuildCache(const Napi::CallbackInfo &info);
   Napi::Value GetCachedChildren(const Napi::CallbackInfo &info);
+  Napi::Value GetCachedPattern(const Napi::CallbackInfo &info);
   Napi::Value GetCachedParent(const Napi::CallbackInfo &info);
   Napi::Value GetCachedPropertyValue(const Napi::CallbackInfo &info);
   Napi::Value GetCachedPropertyValueEx(const Napi::CallbackInfo &info);

@@ -2,7 +2,7 @@
 
 struct PropertyChangedEvent
 {
-    IUIAutomationElement *pSender;
+    ATL::CComPtr<IUIAutomationElement> pSender;
     PROPERTYID propertyId;
     VARIANT newValue;
 };

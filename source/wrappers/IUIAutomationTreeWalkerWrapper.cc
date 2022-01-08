@@ -56,7 +56,7 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetFirstChildElement(const Napi::Cal
 {
     auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
 
-    IUIAutomationElement *pFirstChildElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> pFirstChildElement;
     HRESULT hResult = m_pTreeWalker->GetFirstChildElement(pElementWrapper->m_pElement, &pFirstChildElement);
 
     HandleResult(info, hResult);
@@ -71,7 +71,7 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetFirstChildElementBuildCache(const
     auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
     auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[1].ToObject());
 
-    IUIAutomationElement *pFirstChildElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> pFirstChildElement;
     HRESULT hResult = m_pTreeWalker->GetFirstChildElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &pFirstChildElement);
 
     HandleResult(info, hResult);
@@ -85,7 +85,7 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetLastChildElement(const Napi::Call
 {
     auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
 
-    IUIAutomationElement *pLastChildElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> pLastChildElement;
     HRESULT hResult = m_pTreeWalker->GetLastChildElement(pElementWrapper->m_pElement, &pLastChildElement);
 
     HandleResult(info, hResult);
@@ -100,7 +100,7 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetLastChildElementBuildCache(const 
     auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
     auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[1].ToObject());
 
-    IUIAutomationElement *pLastChildElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> pLastChildElement;
     HRESULT hResult = m_pTreeWalker->GetLastChildElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &pLastChildElement);
 
     HandleResult(info, hResult);
@@ -114,7 +114,7 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetNextSiblingElement(const Napi::Ca
 {
     auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
 
-    IUIAutomationElement *pNextSiblingElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> pNextSiblingElement;
     HRESULT hResult = m_pTreeWalker->GetNextSiblingElement(pElementWrapper->m_pElement, &pNextSiblingElement);
 
     HandleResult(info, hResult);
@@ -129,7 +129,7 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetNextSiblingElementBuildCache(cons
     auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
     auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[1].ToObject());
 
-    IUIAutomationElement *pNextSiblingElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> pNextSiblingElement = NULL;
     HRESULT hResult = m_pTreeWalker->GetNextSiblingElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &pNextSiblingElement);
 
     HandleResult(info, hResult);
@@ -143,7 +143,7 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetParentElement(const Napi::Callbac
 {
     auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
 
-    IUIAutomationElement *pParentElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> pParentElement;
     HRESULT hResult = m_pTreeWalker->GetParentElement(pElementWrapper->m_pElement, &pParentElement);
 
     HandleResult(info, hResult);
@@ -158,7 +158,7 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetParentElementBuildCache(const Nap
     auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
     auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[1].ToObject());
 
-    IUIAutomationElement *parentElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> parentElement = NULL;
     HRESULT hResult = m_pTreeWalker->GetParentElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &parentElement);
 
     HandleResult(info, hResult);
@@ -172,7 +172,7 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetPreviousSiblingElement(const Napi
 {
     auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
 
-    IUIAutomationElement *pPreviousSiblingElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> pPreviousSiblingElement;
     HRESULT hResult = m_pTreeWalker->GetPreviousSiblingElement(pElementWrapper->m_pElement, &pPreviousSiblingElement);
 
     HandleResult(info, hResult);
@@ -187,7 +187,7 @@ Napi::Value IUIAutomationTreeWalkerWrapper::GetPreviousSiblingElementBuildCache(
     auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
     auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[1].ToObject());
 
-    IUIAutomationElement *previousSiblingElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> previousSiblingElement = NULL;
     HRESULT hResult = m_pTreeWalker->GetPreviousSiblingElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &previousSiblingElement);
 
     HandleResult(info, hResult);
@@ -201,7 +201,7 @@ Napi::Value IUIAutomationTreeWalkerWrapper::NormalizeElement(const Napi::Callbac
 {
     auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
 
-    IUIAutomationElement *pNormalizedElemment = NULL;
+    ATL::CComPtr<IUIAutomationElement> pNormalizedElemment;
     HRESULT hResult = m_pTreeWalker->NormalizeElement(pElementWrapper->m_pElement, &pNormalizedElemment);
 
     HandleResult(info, hResult);
@@ -216,7 +216,7 @@ Napi::Value IUIAutomationTreeWalkerWrapper::NormalizeElementBuildCache(const Nap
     auto pElementWrapper = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
     auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[1].ToObject());
 
-    IUIAutomationElement *pNormalizedElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> pNormalizedElement;
     HRESULT hResult = m_pTreeWalker->GetPreviousSiblingElementBuildCache(pElementWrapper->m_pElement, pCacheRequestWrapper->m_pCacheRequest, &pNormalizedElement);
 
     HandleResult(info, hResult);

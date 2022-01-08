@@ -1,6 +1,6 @@
 #include "Functions.h"
 #include "../Shared.h"
-#include "../providers/Providers.h"
+#include "../patterns/Patterns.h"
 
 void HandleResult(const Napi::CallbackInfo &info, HRESULT hResult)
 {
@@ -48,6 +48,8 @@ Napi::Value FromVariant(Napi::Env env, VARIANT variant)
 {
     switch (variant.vt)
     {
+    case VT_NULL:
+        return env.Null();
     case VT_I4:
         return Napi::Number::New(env, variant.iVal);
     case VT_EMPTY:
@@ -64,76 +66,76 @@ Napi::Value GetPatternProviderByPatternId(const Napi::CallbackInfo &info, IUnkno
     switch (patternId)
     {
     case UIA_AnnotationPatternId:
-        return IAnnotationProviderWrapper::New(info.Env(), static_cast<IAnnotationProvider *>(pProvider));
+        return IUIAutomationAnnotationPatternWrapper::New(info.Env(), static_cast<IUIAutomationAnnotationPattern *>(pProvider));
     case UIA_DockPatternId:
-        return IDockProviderWrapper::New(info.Env(), static_cast<IDockProvider *>(pProvider));
+        return IUIAutomationDockPatternWrapper::New(info.Env(), static_cast<IUIAutomationDockPattern *>(pProvider));
     case UIA_DragPatternId:
-        return IDragProviderWrapper::New(info.Env(), static_cast<IDragProvider *>(pProvider));
+        return IUIAutomationDragPatternWrapper::New(info.Env(), static_cast<IUIAutomationDragPattern *>(pProvider));
     case UIA_DropTargetPatternId:
-        return IDropTargetProviderWrapper::New(info.Env(), static_cast<IDropTargetProvider *>(pProvider));
+        return IUIAutomationDropTargetPatternWrapper::New(info.Env(), static_cast<IUIAutomationDropTargetPattern *>(pProvider));
     case UIA_ExpandCollapsePatternId:
-        return IExpandCollapseProviderWrapper::New(info.Env(), static_cast<IExpandCollapseProvider *>(pProvider));
+        return IUIAutomationExpandCollapsePatternWrapper::New(info.Env(), static_cast<IUIAutomationExpandCollapsePattern *>(pProvider));
     case UIA_GridItemPatternId:
-        return IGridItemProviderWrapper::New(info.Env(), static_cast<IGridItemProvider *>(pProvider));
+        return IUIAutomationGridItemPatternWrapper::New(info.Env(), static_cast<IUIAutomationGridItemPattern *>(pProvider));
     case UIA_GridPatternId:
-        return IGridProviderWrapper::New(info.Env(), static_cast<IGridProvider *>(pProvider));
+        return IUIAutomationGridPatternWrapper::New(info.Env(), static_cast<IUIAutomationGridPattern *>(pProvider));
     case UIA_InvokePatternId:
-        return IInvokeProviderWrapper::New(info.Env(), static_cast<IInvokeProvider *>(pProvider));
+        return IUIAutomationInvokePatternWrapper::New(info.Env(), static_cast<IUIAutomationInvokePattern *>(pProvider));
     case UIA_ItemContainerPatternId:
-        return IItemContainerProviderWrapper::New(info.Env(), static_cast<IItemContainerProvider *>(pProvider));
+        return IUIAutomationItemContainerPatternWrapper::New(info.Env(), static_cast<IUIAutomationItemContainerPattern *>(pProvider));
     case UIA_LegacyIAccessiblePatternId:
-        return ILegacyIAccessibleProviderWrapper::New(info.Env(), static_cast<ILegacyIAccessibleProvider *>(pProvider));
+        return IUIAutomationLegacyIAccessiblePatternWrapper::New(info.Env(), static_cast<IUIAutomationLegacyIAccessiblePattern *>(pProvider));
     case UIA_MultipleViewPatternId:
-        return IMultipleViewProviderWrapper::New(info.Env(), static_cast<IMultipleViewProvider *>(pProvider));
+        return IUIAutomationMultipleViewPatternWrapper::New(info.Env(), static_cast<IUIAutomationMultipleViewPattern *>(pProvider));
     case UIA_ObjectModelPatternId:
-        // skipping:  return IObjectModelProviderWrapper::New(info.Env(), static_cast<IObjectModelProvider *>(pProvider));
+        // skipping:  return IUIAutomationObjectModelPatternWrapper::New(info.Env(), static_cast<IUIAutomationObjectModelPattern *>(pProvider));
         throw Napi::Error::New(info.Env(), "Pattern not implemented.");
     case UIA_RangeValuePatternId:
-        return IRangeValueProviderWrapper::New(info.Env(), static_cast<IRangeValueProvider *>(pProvider));
+        return IUIAutomationRangeValuePatternWrapper::New(info.Env(), static_cast<IUIAutomationRangeValuePattern *>(pProvider));
     case UIA_ScrollItemPatternId:
-        return IScrollItemProviderWrapper::New(info.Env(), static_cast<IScrollItemProvider *>(pProvider));
+        return IUIAutomationScrollItemPatternWrapper::New(info.Env(), static_cast<IUIAutomationScrollItemPattern *>(pProvider));
     case UIA_ScrollPatternId:
-        return IScrollProviderWrapper::New(info.Env(), static_cast<IScrollProvider *>(pProvider));
+        return IUIAutomationScrollPatternWrapper::New(info.Env(), static_cast<IUIAutomationScrollPattern *>(pProvider));
     case UIA_SelectionItemPatternId:
-        return ISelectionItemProviderWrapper::New(info.Env(), static_cast<ISelectionItemProvider *>(pProvider));
+        return IUIAutomationSelectionItemPatternWrapper::New(info.Env(), static_cast<IUIAutomationSelectionItemPattern *>(pProvider));
     case UIA_SelectionPatternId:
-        return ISelectionProviderWrapper::New(info.Env(), static_cast<ISelectionProvider *>(pProvider));
+        return IUIAutomationSelectionPatternWrapper::New(info.Env(), static_cast<IUIAutomationSelectionPattern *>(pProvider));
     case UIA_SelectionPattern2Id:
-        return ISelectionProvider2Wrapper::New(info.Env(), static_cast<ISelectionProvider2 *>(pProvider));
+        return IUIAutomationSelectionPattern2Wrapper::New(info.Env(), static_cast<IUIAutomationSelectionPattern2 *>(pProvider));
     case UIA_SpreadsheetItemPatternId:
-        return ISpreadsheetItemProviderWrapper::New(info.Env(), static_cast<ISpreadsheetItemProvider *>(pProvider));
+        return IUIAutomationSpreadsheetItemPatternWrapper::New(info.Env(), static_cast<IUIAutomationSpreadsheetItemPattern *>(pProvider));
     case UIA_SpreadsheetPatternId:
-        return ISpreadsheetProviderWrapper::New(info.Env(), static_cast<ISpreadsheetProvider *>(pProvider));
+        return IUIAutomationSpreadsheetPatternWrapper::New(info.Env(), static_cast<IUIAutomationSpreadsheetPattern *>(pProvider));
     case UIA_StylesPatternId:
-        return IStylesProviderWrapper::New(info.Env(), static_cast<IStylesProvider *>(pProvider));
+        return IUIAutomationStylesPatternWrapper::New(info.Env(), static_cast<IUIAutomationStylesPattern *>(pProvider));
     case UIA_SynchronizedInputPatternId:
-        return ISynchronizedInputProviderWrapper::New(info.Env(), static_cast<ISynchronizedInputProvider *>(pProvider));
+        return IUIAutomationSynchronizedInputPatternWrapper::New(info.Env(), static_cast<IUIAutomationSynchronizedInputPattern *>(pProvider));
     case UIA_TableItemPatternId:
-        return ITableItemProviderWrapper::New(info.Env(), static_cast<ITableItemProvider *>(pProvider));
+        return IUIAutomationTableItemPatternWrapper::New(info.Env(), static_cast<IUIAutomationTableItemPattern *>(pProvider));
     case UIA_TablePatternId:
-        return ITableProviderWrapper::New(info.Env(), static_cast<ITableProvider *>(pProvider));
+        return IUIAutomationTablePatternWrapper::New(info.Env(), static_cast<IUIAutomationTablePattern *>(pProvider));
     case UIA_TextChildPatternId:
-        return ITextChildProviderWrapper::New(info.Env(), static_cast<ITextChildProvider *>(pProvider));
+        return IUIAutomationTextChildPatternWrapper::New(info.Env(), static_cast<IUIAutomationTextChildPattern *>(pProvider));
     case UIA_TextEditPatternId:
-        return ITextEditProviderWrapper::New(info.Env(), static_cast<ITextEditProvider *>(pProvider));
+        return IUIAutomationTextEditPatternWrapper::New(info.Env(), static_cast<IUIAutomationTextEditPattern *>(pProvider));
     case UIA_TextPatternId:
-        return ITextProviderWrapper::New(info.Env(), static_cast<ITextProvider *>(pProvider));
+        return IUIAutomationTextPatternWrapper::New(info.Env(), static_cast<IUIAutomationTextPattern *>(pProvider));
     case UIA_TextPattern2Id:
-        return ITextProvider2Wrapper::New(info.Env(), static_cast<ITextProvider2 *>(pProvider));
+        return IUIAutomationTextPattern2Wrapper::New(info.Env(), static_cast<IUIAutomationTextPattern2 *>(pProvider));
     case UIA_TogglePatternId:
-        return IToggleProviderWrapper::New(info.Env(), static_cast<IToggleProvider *>(pProvider));
+        return IUIAutomationTogglePatternWrapper::New(info.Env(), static_cast<IUIAutomationTogglePattern *>(pProvider));
     case UIA_TransformPatternId:
-        return ITransformProviderWrapper::New(info.Env(), static_cast<ITransformProvider *>(pProvider));
+        return IUIAutomationTransformPatternWrapper::New(info.Env(), static_cast<IUIAutomationTransformPattern *>(pProvider));
     case UIA_TransformPattern2Id:
-        return ITransformProvider2Wrapper::New(info.Env(), static_cast<ITransformProvider2 *>(pProvider));
+        return IUIAutomationTransformPattern2Wrapper::New(info.Env(), static_cast<IUIAutomationTransformPattern2 *>(pProvider));
     case UIA_ValuePatternId:
-        return IValueProviderWrapper::New(info.Env(), static_cast<IValueProvider *>(pProvider));
+        return IUIAutomationValuePatternWrapper::New(info.Env(), static_cast<IUIAutomationValuePattern *>(pProvider));
     case UIA_VirtualizedItemPatternId:
-        return IVirtualizedItemProviderWrapper::New(info.Env(), static_cast<IVirtualizedItemProvider *>(pProvider));
+        return IUIAutomationVirtualizedItemPatternWrapper::New(info.Env(), static_cast<IUIAutomationVirtualizedItemPattern *>(pProvider));
     case UIA_WindowPatternId:
-        return IWindowProviderWrapper::New(info.Env(), static_cast<IWindowProvider *>(pProvider));
+        return IUIAutomationWindowPatternWrapper::New(info.Env(), static_cast<IUIAutomationWindowPattern *>(pProvider));
     case UIA_CustomNavigationPatternId:
-        // return ICustomNavigationProviderWrapper::New(info.Env(), static_cast<ICustomNavigationProvider *>(pProvider));
+        // return IUIAutomationCustomNavigationPatternWrapper::New(info.Env(), static_cast<IUIAutomationCustomNavigationPattern *>(pProvider));
         throw Napi::Error::New(info.Env(), "Pattern not implemented.");
     default:
         throw Napi::Error::New(info.Env(), "Pattern not implemented.");

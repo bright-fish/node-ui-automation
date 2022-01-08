@@ -52,12 +52,14 @@ HRESULT STDMETHODCALLTYPE FocusChangedEventHandler::QueryInterface(REFIID riid, 
 HRESULT STDMETHODCALLTYPE FocusChangedEventHandler::HandleFocusChangedEvent(IUIAutomationElement *pSender)
 {
     pSender->AddRef();
-    
+
     auto internalCallback = [](Napi::Env env, Napi::Function function, IUIAutomationElement *pElement)
     {
         function.Call({
             IUIAutomationElementWrapper::New(env, pElement),
         });
+
+        pElement->Release();
     };
 
     auto status = m_threadSafeFunction.BlockingCall(pSender, internalCallback);

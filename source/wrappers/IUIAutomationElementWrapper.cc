@@ -1,7 +1,7 @@
 #include "Wrappers.h"
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
-#include "../providers/Providers.h"
+#include "../patterns/Patterns.h"
 
 Napi::FunctionReference *IUIAutomationElementWrapper::Initialize(Napi::Env env)
 {
@@ -13,6 +13,7 @@ Napi::FunctionReference *IUIAutomationElementWrapper::Initialize(Napi::Env env)
         InstanceMethod<&IUIAutomationElementWrapper::FindFirstBuildCache>("findFirstBuildCache"),
         InstanceMethod<&IUIAutomationElementWrapper::GetCachedChildren>("getCachedChildren"),
         InstanceMethod<&IUIAutomationElementWrapper::GetCachedParent>("getCachedParent"),
+        InstanceMethod<&IUIAutomationElementWrapper::GetCachedPattern>("getCachedPattern"),
         InstanceMethod<&IUIAutomationElementWrapper::GetCachedPropertyValue>("getCachedPropertyValue"),
         InstanceMethod<&IUIAutomationElementWrapper::GetCachedPropertyValueEx>("getCachedPropertyValueEx"),
         InstanceMethod<&IUIAutomationElementWrapper::GetClickablePoint>("getClickablePoint"),
@@ -97,7 +98,7 @@ Napi::FunctionReference *IUIAutomationElementWrapper::Initialize(Napi::Env env)
     return functionReference;
 }
 
-Napi::Value IUIAutomationElementWrapper::New(Napi::Env env, IUIAutomationElement *pElement)
+Napi::Value IUIAutomationElementWrapper::New(Napi::Env env, ATL::CComPtr<IUIAutomationElement> pElement)
 {
     if (pElement == NULL)
     {
@@ -128,7 +129,7 @@ Napi::Value IUIAutomationElementWrapper::BuildUpdatedCache(const Napi::CallbackI
 {
     auto cacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[0].ToObject());
 
-    IUIAutomationElement *pElement;
+    ATL::CComPtr<IUIAutomationElement> pElement;
     auto hResult = m_pElement->BuildUpdatedCache(cacheRequestWrapper->m_pCacheRequest, &pElement);
 
     HandleResult(info, hResult);
@@ -142,7 +143,7 @@ Napi::Value IUIAutomationElementWrapper::FindAll(const Napi::CallbackInfo &info)
 
     auto pConditionWrapper = Napi::ObjectWrap<IUIAutomationConditionWrapper>::Unwrap(info[1].ToObject());
 
-    IUIAutomationElementArray *pFoundElements;
+    ATL::CComPtr<IUIAutomationElementArray> pFoundElements;
     HRESULT hResult = m_pElement->FindAll(treeScope, pConditionWrapper->m_pCondition, &pFoundElements);
 
     HandleResult(info, hResult);
@@ -158,7 +159,7 @@ Napi::Value IUIAutomationElementWrapper::FindAllBuildCache(const Napi::CallbackI
 
     auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[2].ToObject());
 
-    IUIAutomationElementArray *pFoundElements;
+    ATL::CComPtr<IUIAutomationElementArray> pFoundElements;
     HRESULT hResult = m_pElement->FindAllBuildCache(treeScope, pConditionWrapper->m_pCondition, pCacheRequestWrapper->m_pCacheRequest, &pFoundElements);
 
     HandleResult(info, hResult);
@@ -172,7 +173,7 @@ Napi::Value IUIAutomationElementWrapper::FindFirst(const Napi::CallbackInfo &inf
 
     auto pConditionWrapper = Napi::ObjectWrap<IUIAutomationConditionWrapper>::Unwrap(info[1].ToObject());
 
-    IUIAutomationElement *pFoundElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> pFoundElement;
     HRESULT hResult = m_pElement->FindFirst(treeScope, pConditionWrapper->m_pCondition, &pFoundElement);
 
     HandleResult(info, hResult);
@@ -190,7 +191,7 @@ Napi::Value IUIAutomationElementWrapper::FindFirstBuildCache(const Napi::Callbac
 
     auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[2].ToObject());
 
-    IUIAutomationElement *pFoundElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> pFoundElement;
     HRESULT hResult = m_pElement->FindFirstBuildCache(treeScope, pConditionWrapper->m_pCondition, pCacheRequestWrapper->m_pCacheRequest, &pFoundElement);
 
     HandleResult(info, hResult);
@@ -200,7 +201,7 @@ Napi::Value IUIAutomationElementWrapper::FindFirstBuildCache(const Napi::Callbac
 
 Napi::Value IUIAutomationElementWrapper::GetCachedChildren(const Napi::CallbackInfo &info)
 {
-    IUIAutomationElementArray *pElementArray = NULL;
+    ATL::CComPtr<IUIAutomationElementArray> pElementArray;
     HRESULT hResult = m_pElement->GetCachedChildren(&pElementArray);
 
     HandleResult(info, hResult);
@@ -208,9 +209,22 @@ Napi::Value IUIAutomationElementWrapper::GetCachedChildren(const Napi::CallbackI
     return IUIAutomationElementArrayWrapper::New(info.Env(), pElementArray);
 }
 
+Napi::Value IUIAutomationElementWrapper::GetCachedPattern(const Napi::CallbackInfo &info)
+{
+    ATL::CComPtr<IUnknown> pProvider;
+
+    auto patternId = static_cast<PATTERNID>(info[0].ToNumber().Int32Value());
+
+    auto hResult = m_pElement->GetCachedPattern(patternId, &pProvider);
+
+    HandleResult(info, hResult);
+
+    return GetPatternProviderByPatternId(info, pProvider, patternId);
+}
+
 Napi::Value IUIAutomationElementWrapper::GetCachedParent(const Napi::CallbackInfo &info)
 {
-    IUIAutomationElement *pElement = NULL;
+    ATL::CComPtr<IUIAutomationElement> pElement = NULL;
     HRESULT hResult = m_pElement->GetCachedParent(&pElement);
 
     HandleResult(info, hResult);
@@ -246,18 +260,23 @@ Napi::Value IUIAutomationElementWrapper::GetCachedPropertyValueEx(const Napi::Ca
 
 Napi::Value IUIAutomationElementWrapper::GetClickablePoint(const Napi::CallbackInfo &info)
 {
-    auto pointObject = info[0].ToObject();
-
     POINT point;
-    point.x = pointObject.Get("x").ToNumber().Uint32Value();
-    point.y = pointObject.Get("y").ToNumber().Uint32Value();
-
     BOOL gotClickable;
     HRESULT hResult = m_pElement->GetClickablePoint(&point, &gotClickable);
 
     HandleResult(info, hResult);
 
-    return Napi::Boolean::New(info.Env(), gotClickable);
+    if (!gotClickable)
+    {
+        return info.Env().Null();
+    }
+
+    auto pointObject = Napi::Object::New(info.Env());
+    
+    pointObject.Set("x", point.x);
+    pointObject.Set("y", point.y);
+
+    return pointObject;
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentPropertyValue(const Napi::CallbackInfo &info)
@@ -579,7 +598,7 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentItemType(const Napi::Callback
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentLabeledBy(const Napi::CallbackInfo &info)
 {
-    IUIAutomationElement *element;
+    ATL::CComPtr<IUIAutomationElement> element;
 
     auto hResult = m_pElement->get_CurrentLabeledBy(&element);
 
@@ -626,7 +645,7 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentPattern(const Napi::CallbackI
 {
     IUnknown *pProvider;
 
-    auto patternId = static_cast<PATTERNID>(info[0].ToNumber().Int32Value());
+    auto patternId = info[0].ToNumber().Int64Value();
 
     auto hResult = m_pElement->GetCurrentPattern(patternId, &pProvider);
 
@@ -1001,7 +1020,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedItemType(const Napi::CallbackI
 
 Napi::Value IUIAutomationElementWrapper::GetCachedLabeledBy(const Napi::CallbackInfo &info)
 {
-    IUIAutomationElement *element;
+    ATL::CComPtr<IUIAutomationElement> element;
 
     auto hResult = m_pElement->get_CachedLabeledBy(&element);
 
