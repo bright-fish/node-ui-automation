@@ -96,7 +96,7 @@ Napi::Value IUIAutomationGridPatternWrapper::GetItem(const Napi::CallbackInfo &i
     auto row = info[0].ToNumber().Uint32Value();
     auto column = info[1].ToNumber().Uint32Value();
 
-    ATL::CComPtr<IUIAutomationElement> item;
+    ATL::CComPtr<IUIAutomationElement> item = NULL;
 
     auto hResult = m_gridPattern->GetItem(row, column, &item);
 

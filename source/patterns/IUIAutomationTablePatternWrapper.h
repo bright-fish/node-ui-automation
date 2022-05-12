@@ -19,5 +19,5 @@ public:
     Napi::Value GetCurrentRowHeaders(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationTablePattern> m_tablePattern;
+    ATL::CComPtr<IUIAutomationTablePattern> m_tablePattern = NULL;
 };

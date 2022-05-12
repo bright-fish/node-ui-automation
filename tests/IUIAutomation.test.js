@@ -18,7 +18,7 @@ describe('IUIAutomation', () => {
 
     let automation = new Automation();
 
-    afterAll(() => { 
+    afterAll(() => {
         aboutWindowsApplication.close();
     });
 
@@ -154,7 +154,7 @@ describe('IUIAutomation', () => {
     });
 
     // todo: figure out way to test this.
-    xdescribe('addStructureChangedEventHandler', () => {
+    describe.skip('addStructureChangedEventHandler', () => {
         test('returns', (done) => {
             expect.assertions(1);
 
@@ -437,7 +437,7 @@ describe('IUIAutomation', () => {
     describe('removePropertyChangedEventHandler', () => {
         test.todo('returns');
     });
-    
+
     // skipping: test included in above
     describe('removeStructureChangedEventHandler', () => {
         test.todo('returns');

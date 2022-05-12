@@ -66,7 +66,6 @@ Napi::Value IUIAutomationSelectionPatternWrapper::GetCachedIsSelectionRequired(c
     return Napi::Boolean::New(info.Env(), isSelectionRequired);
 }
 
-
 Napi::Value IUIAutomationSelectionPatternWrapper::GetCurrentCanSelectMultiple(const Napi::CallbackInfo &info)
 {
     BOOL canSelectMultiple;
@@ -87,11 +86,10 @@ Napi::Value IUIAutomationSelectionPatternWrapper::GetCurrentIsSelectionRequired(
     return Napi::Boolean::New(info.Env(), isSelectionRequired);
 }
 
-
 Napi::Value IUIAutomationSelectionPatternWrapper::GetCachedSelection(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElementArray> selection;
-    
+    ATL::CComPtr<IUIAutomationElementArray> selection = NULL;
+
     auto hResult = m_selectionPattern->GetCachedSelection(&selection);
 
     HandleResult(info, hResult);
@@ -106,7 +104,7 @@ Napi::Value IUIAutomationSelectionPatternWrapper::GetCachedSelection(const Napi:
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element;
+        ATL::CComPtr<IUIAutomationElement> element = NULL;
 
         hResult = selection->GetElement(i, &element);
 
@@ -120,7 +118,7 @@ Napi::Value IUIAutomationSelectionPatternWrapper::GetCachedSelection(const Napi:
 
 Napi::Value IUIAutomationSelectionPatternWrapper::GetCurrentSelection(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElementArray> selection;
+    ATL::CComPtr<IUIAutomationElementArray> selection = NULL;
     auto hResult = m_selectionPattern->GetCurrentSelection(&selection);
 
     HandleResult(info, hResult);
@@ -135,7 +133,7 @@ Napi::Value IUIAutomationSelectionPatternWrapper::GetCurrentSelection(const Napi
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element;
+        ATL::CComPtr<IUIAutomationElement> element = NULL;
 
         hResult = selection->GetElement(i, &element);
 

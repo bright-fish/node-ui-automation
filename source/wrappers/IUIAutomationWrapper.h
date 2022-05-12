@@ -49,5 +49,5 @@ public:
   Napi::Value GetReservedNotSupportedValue(const Napi::CallbackInfo &info);
 
 private:
-  ATL::CComPtr<IUIAutomation> m_pAutomation;
+  ATL::CComPtr<IUIAutomation> m_pAutomation = NULL;
 };

@@ -17,5 +17,5 @@ public:
     void Expand(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationExpandCollapsePattern> m_expandCollapsePattern;
+    ATL::CComPtr<IUIAutomationExpandCollapsePattern> m_expandCollapsePattern = NULL;
 };

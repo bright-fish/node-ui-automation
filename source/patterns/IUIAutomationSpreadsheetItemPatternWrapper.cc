@@ -71,7 +71,7 @@ Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCurrentFormula(const 
 
 Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCachedAnnotationObjects(const Napi::CallbackInfo &info)
 {
-    CComPtr<IUIAutomationElementArray> annotationObjects;
+    CComPtr<IUIAutomationElementArray> annotationObjects = NULL;
 
     auto hResult = m_spreadsheetItemPattern->GetCachedAnnotationObjects(&annotationObjects);
 
@@ -85,7 +85,7 @@ Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCachedAnnotationObjec
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element;
+        ATL::CComPtr<IUIAutomationElement> element = NULL;
 
         hResult = annotationObjects->GetElement(i, &element);
 
@@ -121,7 +121,7 @@ Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCachedAnnotationTypes
 
 Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCurrentAnnotationObjects(const Napi::CallbackInfo &info)
 {
-    CComPtr<IUIAutomationElementArray> annotationObjects;
+    CComPtr<IUIAutomationElementArray> annotationObjects = NULL;
 
     auto hResult = m_spreadsheetItemPattern->GetCurrentAnnotationObjects(&annotationObjects);
 
@@ -135,7 +135,7 @@ Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCurrentAnnotationObje
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element;
+        ATL::CComPtr<IUIAutomationElement> element = NULL;
 
         hResult = annotationObjects->GetElement(i, &element);
 

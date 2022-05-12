@@ -22,5 +22,5 @@ public:
     Napi::Value GetConversionTarget(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationTextEditPattern> m_textEditPattern;
+    ATL::CComPtr<IUIAutomationTextEditPattern> m_textEditPattern = NULL;
 };

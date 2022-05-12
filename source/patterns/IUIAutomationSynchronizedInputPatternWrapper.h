@@ -12,7 +12,7 @@ public:
 
     void Cancel(const Napi::CallbackInfo &info);
     void StartListening(const Napi::CallbackInfo &info);
-    
+
 private:
-    ATL::CComPtr<IUIAutomationSynchronizedInputPattern> m_synchronizedInputPattern;
+    ATL::CComPtr<IUIAutomationSynchronizedInputPattern> m_synchronizedInputPattern = NULL;
 };

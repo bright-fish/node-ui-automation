@@ -92,7 +92,7 @@ Napi::Value IUIAutomationAnnotationPatternWrapper::GetCachedDateTime(const Napi:
 
 Napi::Value IUIAutomationAnnotationPatternWrapper::GetCachedTarget(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> pTarget;
+    ATL::CComPtr<IUIAutomationElement> pTarget = NULL;
     auto hResult = m_annotationProvider->get_CachedTarget(&pTarget);
 
     HandleResult(info, hResult);
@@ -143,7 +143,7 @@ Napi::Value IUIAutomationAnnotationPatternWrapper::GetCurrentDateTime(const Napi
 
 Napi::Value IUIAutomationAnnotationPatternWrapper::GetCurrentTarget(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> pTarget;
+    ATL::CComPtr<IUIAutomationElement> pTarget = NULL;
     auto hResult = m_annotationProvider->get_CurrentTarget(&pTarget);
 
     HandleResult(info, hResult);

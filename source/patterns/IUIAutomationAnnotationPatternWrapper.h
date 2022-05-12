@@ -23,5 +23,5 @@ public:
     Napi::Value GetCurrentTarget(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationAnnotationPattern> m_annotationProvider;
+    ATL::CComPtr<IUIAutomationAnnotationPattern> m_annotationProvider = NULL;
 };

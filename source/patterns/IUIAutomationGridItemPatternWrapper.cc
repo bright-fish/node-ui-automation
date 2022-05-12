@@ -72,7 +72,7 @@ Napi::Value IUIAutomationGridItemPatternWrapper::GetCachedColumnSpan(const Napi:
 
 Napi::Value IUIAutomationGridItemPatternWrapper::GetCachedContainingGrid(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> containingGrid;
+    ATL::CComPtr<IUIAutomationElement> containingGrid = NULL;
     auto hResult = m_gridItemPattern->get_CachedContainingGrid(&containingGrid);
 
     HandleResult(info, hResult);
@@ -125,7 +125,7 @@ Napi::Value IUIAutomationGridItemPatternWrapper::GetCurrentColumnSpan(const Napi
 
 Napi::Value IUIAutomationGridItemPatternWrapper::GetCurrentContainingGrid(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> containingGrid;
+    ATL::CComPtr<IUIAutomationElement> containingGrid = NULL;
 
     auto hResult = m_gridItemPattern->get_CurrentContainingGrid(&containingGrid);
 

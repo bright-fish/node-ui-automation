@@ -28,5 +28,5 @@ public:
     void SetScrollPercent(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationScrollPattern> m_scrollPattern;
+    ATL::CComPtr<IUIAutomationScrollPattern> m_scrollPattern = NULL;
 };

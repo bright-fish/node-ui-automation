@@ -15,5 +15,5 @@ public:
     Napi::Value GetTextRange(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationTextChildPattern> m_textChildPattern;
+    ATL::CComPtr<IUIAutomationTextChildPattern> m_textChildPattern = NULL;
 };

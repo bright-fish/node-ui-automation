@@ -19,5 +19,5 @@ public:
     Napi::Value GetCurrentAnnotationTypes(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationSpreadsheetItemPattern> m_spreadsheetItemPattern;
+    ATL::CComPtr<IUIAutomationSpreadsheetItemPattern> m_spreadsheetItemPattern = NULL;
 };

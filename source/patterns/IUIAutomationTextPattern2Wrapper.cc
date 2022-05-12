@@ -72,7 +72,7 @@ Napi::Value IUIAutomationTextPattern2Wrapper::GetSupportedTextSelection(const Na
 
 Napi::Value IUIAutomationTextPattern2Wrapper::GetSelection(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationTextRangeArray> textRangeArray;
+    ATL::CComPtr<IUIAutomationTextRangeArray> textRangeArray = NULL;
 
     auto hResult = m_pITextProvider2->GetSelection(&textRangeArray);
 
@@ -88,7 +88,7 @@ Napi::Value IUIAutomationTextPattern2Wrapper::GetSelection(const Napi::CallbackI
 
     for (int i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationTextRange> textRange;
+        ATL::CComPtr<IUIAutomationTextRange> textRange = NULL;
         hResult = textRangeArray->GetElement(i, &textRange);
 
         HandleResult(info, hResult);
@@ -101,7 +101,7 @@ Napi::Value IUIAutomationTextPattern2Wrapper::GetSelection(const Napi::CallbackI
 
 Napi::Value IUIAutomationTextPattern2Wrapper::GetVisibleRanges(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationTextRangeArray> textRangeArray;
+    ATL::CComPtr<IUIAutomationTextRangeArray> textRangeArray = NULL;
 
     auto hResult = m_pITextProvider2->GetVisibleRanges(&textRangeArray);
 
@@ -117,7 +117,7 @@ Napi::Value IUIAutomationTextPattern2Wrapper::GetVisibleRanges(const Napi::Callb
 
     for (int i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationTextRange> textRange;
+        ATL::CComPtr<IUIAutomationTextRange> textRange = NULL;
         hResult = textRangeArray->GetElement(i, &textRange);
 
         HandleResult(info, hResult);
@@ -132,7 +132,7 @@ Napi::Value IUIAutomationTextPattern2Wrapper::RangeFromChild(const Napi::Callbac
 {
     auto child = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
 
-    ATL::CComPtr<IUIAutomationTextRange> textRange;
+    ATL::CComPtr<IUIAutomationTextRange> textRange = NULL;
 
     auto hResult = m_pITextProvider2->RangeFromChild(child->m_pElement, &textRange);
 
@@ -149,7 +149,7 @@ Napi::Value IUIAutomationTextPattern2Wrapper::RangeFromPoint(const Napi::Callbac
     point.x = input.Get("x").ToNumber().Int32Value();
     point.y = input.Get("y").ToNumber().Int32Value();
 
-    ATL::CComPtr<IUIAutomationTextRange> textRange;
+    ATL::CComPtr<IUIAutomationTextRange> textRange = NULL;
 
     auto hResult = m_pITextProvider2->RangeFromPoint(point, &textRange);
 
@@ -160,7 +160,7 @@ Napi::Value IUIAutomationTextPattern2Wrapper::RangeFromPoint(const Napi::Callbac
 
 Napi::Value IUIAutomationTextPattern2Wrapper::GetCaretRange(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationTextRange> textRange;
+    ATL::CComPtr<IUIAutomationTextRange> textRange = NULL;
     BOOL isActive;
 
     auto hResult = m_pITextProvider2->GetCaretRange(&isActive, &textRange);
@@ -178,7 +178,7 @@ Napi::Value IUIAutomationTextPattern2Wrapper::RangeFromAnnotation(const Napi::Ca
 {
     auto annotationElement = IUIAutomationElementWrapper::Unwrap(info[0].ToObject());
 
-    CComPtr<IUIAutomationTextRange> textRangeProvider;
+    CComPtr<IUIAutomationTextRange> textRangeProvider = NULL;
     auto hResult = m_pITextProvider2->RangeFromAnnotation(annotationElement->m_pElement, &textRangeProvider);
 
     HandleResult(info, hResult);

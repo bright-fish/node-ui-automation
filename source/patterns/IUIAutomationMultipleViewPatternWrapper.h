@@ -20,5 +20,5 @@ public:
     void SetCurrentView(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationMultipleViewPattern> m_multipleViewPattern;
+    ATL::CComPtr<IUIAutomationMultipleViewPattern> m_multipleViewPattern = NULL;
 };

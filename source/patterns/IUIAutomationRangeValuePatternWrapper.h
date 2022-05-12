@@ -27,5 +27,5 @@ public:
     void SetValue(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationRangeValuePattern> m_rangeValuePattern;
+    ATL::CComPtr<IUIAutomationRangeValuePattern> m_rangeValuePattern = NULL;
 };

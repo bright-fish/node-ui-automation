@@ -23,5 +23,5 @@ public:
     void Rotate(const Napi::CallbackInfo &info);
     
 private:
-    ATL::CComPtr<IUIAutomationTransformPattern> m_tranformPattern;
+    ATL::CComPtr<IUIAutomationTransformPattern> m_tranformPattern = NULL;
 };

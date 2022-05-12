@@ -19,6 +19,16 @@
             ],
             "outputCapture": "std",
             "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Demo",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "outputCapture": "std",
+            "program": "${workspaceRoot}/index.js",
         }
     ]
 }

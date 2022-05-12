@@ -67,7 +67,7 @@ void IUIAutomationTextRangeWrapper::AddToSelection(const Napi::CallbackInfo &inf
 
 Napi::Value IUIAutomationTextRangeWrapper::Clone(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationTextRange> clonedTextRangeProvider;
+    ATL::CComPtr<IUIAutomationTextRange> clonedTextRangeProvider = NULL;
     auto hResult = m_textRange->Clone(&clonedTextRangeProvider);
 
     HandleResult(info, hResult);
@@ -118,7 +118,7 @@ Napi::Value IUIAutomationTextRangeWrapper::FindAttribute(const Napi::CallbackInf
     auto variant = ToVariant(info.Env(), info[1]);
     auto backward = info[2].ToBoolean().Value();
 
-    ATL::CComPtr<IUIAutomationTextRange> outputTextRange;
+    ATL::CComPtr<IUIAutomationTextRange> outputTextRange = NULL;
     auto hResult = m_textRange->FindAttribute(textAttributeId, variant, backward, &outputTextRange);
 
     HandleResult(info, hResult);
@@ -132,7 +132,7 @@ Napi::Value IUIAutomationTextRangeWrapper::FindText(const Napi::CallbackInfo &in
     auto backward = info[1].ToBoolean().Value();
     auto ignoreCase = info[2].ToBoolean().Value();
 
-    ATL::CComPtr<IUIAutomationTextRange> outputTextRange;
+    ATL::CComPtr<IUIAutomationTextRange> outputTextRange = NULL;
     auto hResult = m_textRange->FindText(text, backward, ignoreCase, &outputTextRange);
 
     HandleResult(info, hResult);
@@ -173,7 +173,7 @@ Napi::Value IUIAutomationTextRangeWrapper::GetBoundingRectangles(const Napi::Cal
 
 Napi::Value IUIAutomationTextRangeWrapper::GetChildren(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElementArray> children;
+    ATL::CComPtr<IUIAutomationElementArray> children = NULL;
 
     auto hResult = m_textRange->GetChildren(&children);
 
@@ -187,7 +187,7 @@ Napi::Value IUIAutomationTextRangeWrapper::GetChildren(const Napi::CallbackInfo 
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element;
+        ATL::CComPtr<IUIAutomationElement> element = NULL;
 
         auto variant = children->GetElement(i, &element);
 
@@ -199,7 +199,7 @@ Napi::Value IUIAutomationTextRangeWrapper::GetChildren(const Napi::CallbackInfo 
 
 Napi::Value IUIAutomationTextRangeWrapper::GetEnclosingElement(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> enclosingElement;
+    ATL::CComPtr<IUIAutomationElement> enclosingElement = NULL;
     auto hResult = m_textRange->GetEnclosingElement(&enclosingElement);
 
     HandleResult(info, hResult);

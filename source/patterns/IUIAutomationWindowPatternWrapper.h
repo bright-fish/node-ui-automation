@@ -29,5 +29,5 @@ public:
     Napi::Value WaitForInputIdle(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationWindowPattern> m_windowPattern;
+    ATL::CComPtr<IUIAutomationWindowPattern> m_windowPattern = NULL;
 };

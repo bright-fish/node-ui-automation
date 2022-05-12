@@ -23,5 +23,5 @@ public:
     ~IUIAutomationGridItemPatternWrapper();
 
 private:
-    ATL::CComPtr<IUIAutomationGridItemPattern> m_gridItemPattern;
+    ATL::CComPtr<IUIAutomationGridItemPattern> m_gridItemPattern = NULL;
 };

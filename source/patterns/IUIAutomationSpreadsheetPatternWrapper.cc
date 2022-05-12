@@ -45,7 +45,7 @@ Napi::Value IUIAutomationSpreadsheetPatternWrapper::GetItemByName(const Napi::Ca
 {
     CComBSTR name = _com_util::ConvertStringToBSTR(info[0].ToString().Utf8Value().c_str());
 
-    ATL::CComPtr<IUIAutomationElement> pItem;
+    ATL::CComPtr<IUIAutomationElement> pItem = NULL;
     
     auto hResult = m_spreadsheetPattern->GetItemByName(name, &pItem);
 

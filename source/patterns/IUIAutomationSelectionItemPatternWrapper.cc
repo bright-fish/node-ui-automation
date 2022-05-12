@@ -59,7 +59,7 @@ Napi::Value IUIAutomationSelectionItemPatternWrapper::GetCachedIsSelected(const 
 
 Napi::Value IUIAutomationSelectionItemPatternWrapper::GetCachedSelectionContainer(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> pSelectionContainer;
+    ATL::CComPtr<IUIAutomationElement> pSelectionContainer = NULL;
     auto hResult = m_selectionItemPattern->get_CachedSelectionContainer(&pSelectionContainer);
 
     HandleResult(info, hResult);
@@ -80,7 +80,7 @@ Napi::Value IUIAutomationSelectionItemPatternWrapper::GetCurrentIsSelected(const
 
 Napi::Value IUIAutomationSelectionItemPatternWrapper::GetCurrentSelectionContainer(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> pSelectionContainer;
+    ATL::CComPtr<IUIAutomationElement> pSelectionContainer = NULL;
     auto hResult = m_selectionItemPattern->get_CurrentSelectionContainer(&pSelectionContainer);
 
     HandleResult(info, hResult);

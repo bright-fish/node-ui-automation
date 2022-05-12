@@ -267,7 +267,7 @@ Napi::Value IUIAutomationLegacyIAccessiblePatternWrapper::GetCachedSelection(con
 {
     // todo: Verify this functions correctly.  Most likely it does not.
 
-    ATL::CComPtr<IUIAutomationElementArray> cachedSelection;
+    ATL::CComPtr<IUIAutomationElementArray> cachedSelection = NULL;
 
     auto hResult = m_legacyIAccessiblePattern->GetCachedSelection(&cachedSelection);
 
@@ -283,7 +283,7 @@ Napi::Value IUIAutomationLegacyIAccessiblePatternWrapper::GetCachedSelection(con
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element;
+        ATL::CComPtr<IUIAutomationElement> element = NULL;
 
         hResult = cachedSelection->GetElement(i, &element);
 
@@ -297,7 +297,7 @@ Napi::Value IUIAutomationLegacyIAccessiblePatternWrapper::GetCachedSelection(con
 
 Napi::Value IUIAutomationLegacyIAccessiblePatternWrapper::GetCurrentSelection(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElementArray> currentSelection;
+    ATL::CComPtr<IUIAutomationElementArray> currentSelection = NULL;
 
     auto hResult = m_legacyIAccessiblePattern->GetCurrentSelection(&currentSelection);
 
@@ -313,7 +313,7 @@ Napi::Value IUIAutomationLegacyIAccessiblePatternWrapper::GetCurrentSelection(co
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element;
+        ATL::CComPtr<IUIAutomationElement> element = NULL;
 
         hResult = currentSelection->GetElement(i, &element);
 

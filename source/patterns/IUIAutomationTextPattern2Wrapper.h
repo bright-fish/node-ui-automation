@@ -21,5 +21,5 @@ public:
     Napi::Value RangeFromAnnotation(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationTextPattern2> m_pITextProvider2;
+    ATL::CComPtr<IUIAutomationTextPattern2> m_pITextProvider2 = NULL;
 };

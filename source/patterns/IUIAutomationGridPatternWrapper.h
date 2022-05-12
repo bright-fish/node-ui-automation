@@ -18,5 +18,5 @@ public:
     Napi::Value GetItem(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationGridPattern> m_gridPattern;
+    ATL::CComPtr<IUIAutomationGridPattern> m_gridPattern = NULL;
 };

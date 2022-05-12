@@ -17,5 +17,5 @@ public:
     Napi::Value GetCurrentRowHeaderItems(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationTableItemPattern> m_tableItemPattern;
+    ATL::CComPtr<IUIAutomationTableItemPattern> m_tableItemPattern = NULL;
 };

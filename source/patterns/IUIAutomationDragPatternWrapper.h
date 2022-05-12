@@ -21,5 +21,5 @@ public:
     Napi::Value GetCurrentGrabbedItems(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationDragPattern> m_dragPattern;
+    ATL::CComPtr<IUIAutomationDragPattern> m_dragPattern = NULL;
 };

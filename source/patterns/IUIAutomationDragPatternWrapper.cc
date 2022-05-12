@@ -131,7 +131,7 @@ Napi::Value IUIAutomationDragPatternWrapper::GetCurrentIsGrabbed(const Napi::Cal
 
 Napi::Value IUIAutomationDragPatternWrapper::GetCachedGrabbedItems(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElementArray> grabbedItems;
+    ATL::CComPtr<IUIAutomationElementArray> grabbedItems = NULL;
     auto hResult = m_dragPattern->GetCachedGrabbedItems(&grabbedItems);
 
     HandleResult(info, hResult);
@@ -141,7 +141,7 @@ Napi::Value IUIAutomationDragPatternWrapper::GetCachedGrabbedItems(const Napi::C
 
 Napi::Value IUIAutomationDragPatternWrapper::GetCurrentGrabbedItems(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElementArray> grabbedItems;
+    ATL::CComPtr<IUIAutomationElementArray> grabbedItems = NULL;
     auto hResult = m_dragPattern->GetCurrentGrabbedItems(&grabbedItems);
 
     HandleResult(info, hResult);

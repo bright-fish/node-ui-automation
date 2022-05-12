@@ -12,5 +12,5 @@ public:
 
     void Invoke(const Napi::CallbackInfo &info);
 private:
-    ATL::CComPtr<IUIAutomationInvokePattern> m_invokePattern;
+    ATL::CComPtr<IUIAutomationInvokePattern> m_invokePattern = NULL;
 };

@@ -21,7 +21,7 @@ export declare interface Point {
     y: number;
 }
 
-export declare type Variant = string | number | null;
+export declare type Variant = string | number | boolean | null;
 
 export declare interface IAnnotationPattern {
     cachedAnnotationTypeId: string;
@@ -663,7 +663,7 @@ export declare interface IWindowPattern {
 
 export declare interface AutomationElement {
     buildUpdatedCache(cacheRequest: AutomationCacheRequest): AutomationElement;
-    findAll(treeScope: TreeScopes, condition: AutomationCondition): AutomationElementArray;
+    findAll(treeScope: TreeScopes, condition: AutomationCondition): AutomationElement[];
     findAllBuildCache(treeScope: TreeScopes, cacheRequest: AutomationCacheRequest, condition: AutomationCondition): AutomationElementArray;
     findFirst(treeScope: TreeScopes, condition: AutomationCondition): AutomationElement;
     findFirstBuildCache(treeScope: TreeScopes, condition: AutomationCondition, cacheRequest: AutomationCacheRequest): AutomationElement;

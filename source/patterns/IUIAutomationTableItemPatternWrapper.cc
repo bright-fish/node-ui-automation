@@ -45,7 +45,7 @@ IUIAutomationTableItemPatternWrapper::~IUIAutomationTableItemPatternWrapper()
 
 Napi::Value IUIAutomationTableItemPatternWrapper::GetCachedColumnHeaderItems(const Napi::CallbackInfo &info)
 {
-    CComPtr<IUIAutomationElementArray> columnHeaderItems;
+    CComPtr<IUIAutomationElementArray> columnHeaderItems = NULL;
 
     auto hResult = m_tableItemPattern->GetCachedColumnHeaderItems(&columnHeaderItems);
 
@@ -61,7 +61,7 @@ Napi::Value IUIAutomationTableItemPatternWrapper::GetCachedColumnHeaderItems(con
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element;
+        ATL::CComPtr<IUIAutomationElement> element = NULL;
         auto variant = columnHeaderItems->GetElement(i, &element);
 
         auto columnHeaderItemWrapper = IUIAutomationElementWrapper::New(info.Env(), element);
@@ -74,7 +74,7 @@ Napi::Value IUIAutomationTableItemPatternWrapper::GetCachedColumnHeaderItems(con
 
 Napi::Value IUIAutomationTableItemPatternWrapper::GetCachedRowHeaderItems(const Napi::CallbackInfo &info)
 {
-    CComPtr<IUIAutomationElementArray> rowHeaderItems;
+    CComPtr<IUIAutomationElementArray> rowHeaderItems = NULL;
 
     auto hResult = m_tableItemPattern->GetCachedRowHeaderItems(&rowHeaderItems);
 
@@ -90,7 +90,7 @@ Napi::Value IUIAutomationTableItemPatternWrapper::GetCachedRowHeaderItems(const 
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element;
+        ATL::CComPtr<IUIAutomationElement> element = NULL;
         auto variant = rowHeaderItems->GetElement(i, &element);
 
         auto rowHeaderItemWrapper = IUIAutomationElementWrapper::New(info.Env(), element);
@@ -103,7 +103,7 @@ Napi::Value IUIAutomationTableItemPatternWrapper::GetCachedRowHeaderItems(const 
 
 Napi::Value IUIAutomationTableItemPatternWrapper::GetCurrentColumnHeaderItems(const Napi::CallbackInfo &info)
 {
-    CComPtr<IUIAutomationElementArray> columnHeaderItems;
+    CComPtr<IUIAutomationElementArray> columnHeaderItems = NULL;
 
     auto hResult = m_tableItemPattern->GetCurrentColumnHeaderItems(&columnHeaderItems);
 
@@ -119,7 +119,7 @@ Napi::Value IUIAutomationTableItemPatternWrapper::GetCurrentColumnHeaderItems(co
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element;
+        ATL::CComPtr<IUIAutomationElement> element = NULL;
         auto variant = columnHeaderItems->GetElement(i, &element);
 
         auto columnHeaderItemWrapper = IUIAutomationElementWrapper::New(info.Env(), element);
@@ -132,7 +132,7 @@ Napi::Value IUIAutomationTableItemPatternWrapper::GetCurrentColumnHeaderItems(co
 
 Napi::Value IUIAutomationTableItemPatternWrapper::GetCurrentRowHeaderItems(const Napi::CallbackInfo &info)
 {
-    CComPtr<IUIAutomationElementArray> rowHeaderItems;
+    CComPtr<IUIAutomationElementArray> rowHeaderItems = NULL;
 
     auto hResult = m_tableItemPattern->GetCurrentRowHeaderItems(&rowHeaderItems);
 
@@ -148,7 +148,7 @@ Napi::Value IUIAutomationTableItemPatternWrapper::GetCurrentRowHeaderItems(const
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element;
+        ATL::CComPtr<IUIAutomationElement> element = NULL;
         auto variant = rowHeaderItems->GetElement(i, &element);
 
         auto rowHeaderItemWrapper = IUIAutomationElementWrapper::New(info.Env(), element);

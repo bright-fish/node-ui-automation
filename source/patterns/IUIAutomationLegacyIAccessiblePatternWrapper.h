@@ -40,5 +40,5 @@ public:
     void SetValue(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationLegacyIAccessiblePattern> m_legacyIAccessiblePattern;
+    ATL::CComPtr<IUIAutomationLegacyIAccessiblePattern> m_legacyIAccessiblePattern = NULL;
 };

@@ -54,7 +54,7 @@ HRESULT STDMETHODCALLTYPE StructureChangedEventHandler::QueryInterface(REFIID ri
 
 struct StructureChangedEvent
 {
-    ATL::CComPtr<IUIAutomationElement> m_pSender;
+    ATL::CComPtr<IUIAutomationElement> m_pSender = NULL;
     StructureChangeType m_eChangeType;
     SAFEARRAY *m_pRuntimeId;
 };

@@ -16,5 +16,5 @@ public:
     void Toggle(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationTogglePattern> m_togglePattern;
+    ATL::CComPtr<IUIAutomationTogglePattern> m_togglePattern = NULL;
 };

@@ -129,7 +129,7 @@ Napi::Value IUIAutomationElementWrapper::BuildUpdatedCache(const Napi::CallbackI
 {
     auto cacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[0].ToObject());
 
-    ATL::CComPtr<IUIAutomationElement> pElement;
+    ATL::CComPtr<IUIAutomationElement> pElement = NULL;
     auto hResult = m_pElement->BuildUpdatedCache(cacheRequestWrapper->m_pCacheRequest, &pElement);
 
     HandleResult(info, hResult);
@@ -143,12 +143,32 @@ Napi::Value IUIAutomationElementWrapper::FindAll(const Napi::CallbackInfo &info)
 
     auto pConditionWrapper = Napi::ObjectWrap<IUIAutomationConditionWrapper>::Unwrap(info[1].ToObject());
 
-    ATL::CComPtr<IUIAutomationElementArray> pFoundElements;
+    ATL::CComPtr<IUIAutomationElementArray> pFoundElements = NULL;
     HRESULT hResult = m_pElement->FindAll(treeScope, pConditionWrapper->m_pCondition, &pFoundElements);
 
     HandleResult(info, hResult);
 
-    return IUIAutomationElementArrayWrapper::New(info.Env(), pFoundElements);
+    int iLength = 0;
+    hResult = pFoundElements->get_Length(&iLength);
+
+    HandleResult(info, hResult);
+
+    Napi::Array output = Napi::Array::New(info.Env());
+
+    for (int i = 0; i < iLength; i++)
+    {
+        ATL::CComPtr<IUIAutomationElement> pAutomationElement = NULL;
+
+        hResult = pFoundElements->GetElement(i, &pAutomationElement);
+
+        HandleResult(info, hResult);
+
+        auto elementWrapper = IUIAutomationElementWrapper::New(info.Env(), pAutomationElement);
+
+        output.Set(i, elementWrapper);
+    }
+
+    return output;
 }
 
 Napi::Value IUIAutomationElementWrapper::FindAllBuildCache(const Napi::CallbackInfo &info)
@@ -159,7 +179,7 @@ Napi::Value IUIAutomationElementWrapper::FindAllBuildCache(const Napi::CallbackI
 
     auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[2].ToObject());
 
-    ATL::CComPtr<IUIAutomationElementArray> pFoundElements;
+    ATL::CComPtr<IUIAutomationElementArray> pFoundElements = NULL;
     HRESULT hResult = m_pElement->FindAllBuildCache(treeScope, pConditionWrapper->m_pCondition, pCacheRequestWrapper->m_pCacheRequest, &pFoundElements);
 
     HandleResult(info, hResult);
@@ -173,7 +193,7 @@ Napi::Value IUIAutomationElementWrapper::FindFirst(const Napi::CallbackInfo &inf
 
     auto pConditionWrapper = Napi::ObjectWrap<IUIAutomationConditionWrapper>::Unwrap(info[1].ToObject());
 
-    ATL::CComPtr<IUIAutomationElement> pFoundElement;
+    ATL::CComPtr<IUIAutomationElement> pFoundElement = NULL;
     HRESULT hResult = m_pElement->FindFirst(treeScope, pConditionWrapper->m_pCondition, &pFoundElement);
 
     HandleResult(info, hResult);
@@ -191,7 +211,7 @@ Napi::Value IUIAutomationElementWrapper::FindFirstBuildCache(const Napi::Callbac
 
     auto pCacheRequestWrapper = Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>::Unwrap(info[2].ToObject());
 
-    ATL::CComPtr<IUIAutomationElement> pFoundElement;
+    ATL::CComPtr<IUIAutomationElement> pFoundElement = NULL;
     HRESULT hResult = m_pElement->FindFirstBuildCache(treeScope, pConditionWrapper->m_pCondition, pCacheRequestWrapper->m_pCacheRequest, &pFoundElement);
 
     HandleResult(info, hResult);
@@ -201,7 +221,7 @@ Napi::Value IUIAutomationElementWrapper::FindFirstBuildCache(const Napi::Callbac
 
 Napi::Value IUIAutomationElementWrapper::GetCachedChildren(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElementArray> pElementArray;
+    ATL::CComPtr<IUIAutomationElementArray> pElementArray = NULL;
     HRESULT hResult = m_pElement->GetCachedChildren(&pElementArray);
 
     HandleResult(info, hResult);
@@ -211,7 +231,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedChildren(const Napi::CallbackI
 
 Napi::Value IUIAutomationElementWrapper::GetCachedPattern(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUnknown> pProvider;
+    ATL::CComPtr<IUnknown> pProvider = NULL;
 
     auto patternId = static_cast<PATTERNID>(info[0].ToNumber().Int32Value());
 
@@ -272,7 +292,7 @@ Napi::Value IUIAutomationElementWrapper::GetClickablePoint(const Napi::CallbackI
     }
 
     auto pointObject = Napi::Object::New(info.Env());
-    
+
     pointObject.Set("x", point.x);
     pointObject.Set("y", point.y);
 
@@ -598,7 +618,7 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentItemType(const Napi::Callback
 
 Napi::Value IUIAutomationElementWrapper::GetCurrentLabeledBy(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> element;
+    ATL::CComPtr<IUIAutomationElement> element = NULL;
 
     auto hResult = m_pElement->get_CurrentLabeledBy(&element);
 
@@ -1020,7 +1040,7 @@ Napi::Value IUIAutomationElementWrapper::GetCachedItemType(const Napi::CallbackI
 
 Napi::Value IUIAutomationElementWrapper::GetCachedLabeledBy(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> element;
+    ATL::CComPtr<IUIAutomationElement> element = NULL;
 
     auto hResult = m_pElement->get_CachedLabeledBy(&element);
 

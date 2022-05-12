@@ -136,6 +136,15 @@ describe('IUIAutomationElement', () => {
         test.todo('AnnotationPattern');
 
         test.todo('DockPattern');
+        
+        // test.only('DockPattern', () => {
+        //     const dockPattern = this.testApplicationWindow.getCurrentPattern(PatternIds.DockPatternId);
+
+        //     // dockPattern.currentDockPosition
+        //     dockPattern.setDockPosition(DockPositions.Bottom);
+        //     dockPattern.setDockPosition(DockPositions.Top);
+
+        // });
 
         test.todo('DragPattern');
 
@@ -234,7 +243,7 @@ describe('IUIAutomationElement', () => {
 
         test.todo('ObjectModelPattern');
 
-        
+
         test.skip('RangeValuePattern', async () => {
 
         });
@@ -508,7 +517,7 @@ describe('IUIAutomationElement', () => {
         });
     });
 
-    // skipped
+    // skipped: javascript has no support for generics or templating.  
     test.todo('getCurrentPatternAs');
 
     test('getCurrentPropertyValue', () => {

@@ -31,5 +31,5 @@ public:
     ~IUIAutomationStylesPatternWrapper();
 
 private:
-    ATL::CComPtr<IUIAutomationStylesPattern> m_stylesPattern;
+    ATL::CComPtr<IUIAutomationStylesPattern> m_stylesPattern = NULL;
 };

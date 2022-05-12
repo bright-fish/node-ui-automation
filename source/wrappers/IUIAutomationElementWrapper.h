@@ -8,7 +8,7 @@ public:
   static Napi::FunctionReference *Initialize(Napi::Env env);
   static Napi::Value New(Napi::Env env, ATL::CComPtr<IUIAutomationElement> pElement);
 
-  ATL::CComPtr<IUIAutomationElement> m_pElement;
+  ATL::CComPtr<IUIAutomationElement> m_pElement = NULL;
 
   IUIAutomationElementWrapper(const Napi::CallbackInfo &info);
   ~IUIAutomationElementWrapper();

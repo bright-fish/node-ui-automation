@@ -48,7 +48,7 @@ Napi::Value IUIAutomationItemContainerPatternWrapper::FindItemByProperty(const N
 
     auto variant = ToVariant(info.Env(), info[2]);
 
-    ATL::CComPtr<IUIAutomationElement> pFound;
+    ATL::CComPtr<IUIAutomationElement> pFound = NULL;
     
     auto hResult = m_itemContainerPattern->FindItemByProperty(pStartAfterWrapper->m_pElement, propertyId, variant, &pFound);
 

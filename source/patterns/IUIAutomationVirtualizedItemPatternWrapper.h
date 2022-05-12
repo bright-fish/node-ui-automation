@@ -12,5 +12,5 @@ public:
 
     void Realize(const Napi::CallbackInfo &info);
 private:
-    ATL::CComPtr<IUIAutomationVirtualizedItemPattern> m_virtualizedItemPattern;
+    ATL::CComPtr<IUIAutomationVirtualizedItemPattern> m_virtualizedItemPattern = NULL;
 };

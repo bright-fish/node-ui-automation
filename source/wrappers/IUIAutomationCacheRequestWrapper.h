@@ -8,7 +8,7 @@ public:
   static Napi::FunctionReference *Initialize(Napi::Env env);
   static Napi::Value New(Napi::Env env, IUIAutomationCacheRequest *pCacheRequest);
 
-  ATL::CComPtr<IUIAutomationCacheRequest> m_pCacheRequest;
+  ATL::CComPtr<IUIAutomationCacheRequest> m_pCacheRequest = NULL;
 
   IUIAutomationCacheRequestWrapper(const Napi::CallbackInfo &info);
   ~IUIAutomationCacheRequestWrapper();

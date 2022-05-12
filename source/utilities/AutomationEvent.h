@@ -4,6 +4,6 @@
 
 struct AutomationEvent
 {
-    ATL::CComPtr<IUIAutomationElement> pSender;
+    ATL::CComPtr<IUIAutomationElement> pSender = NULL;
     EVENTID eventID;
 };

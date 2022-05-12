@@ -13,5 +13,5 @@ public:
     void ScrollIntoView(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IScrollItemProvider> m_pIScrollItemProvider;
+    ATL::CComPtr<IScrollItemProvider> m_pIScrollItemProvider = NULL;
 };

@@ -17,5 +17,5 @@ public:
     Napi::Value GetCurrentDropTargetEffect(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationDropTargetPattern> m_dropTargetPattern;
+    ATL::CComPtr<IUIAutomationDropTargetPattern> m_dropTargetPattern = NULL;
 };

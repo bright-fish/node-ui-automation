@@ -49,7 +49,7 @@ IUIAutomationTextPatternWrapper::~IUIAutomationTextPatternWrapper()
 
 Napi::Value IUIAutomationTextPatternWrapper::GetDocumentRange(const Napi::CallbackInfo &info)
 {
-    CComPtr<IUIAutomationTextRange> textRange;
+    CComPtr<IUIAutomationTextRange> textRange = NULL;
     auto hResult = m_textPattern->get_DocumentRange(&textRange);
 
     HandleResult(info, hResult);
@@ -70,7 +70,7 @@ Napi::Value IUIAutomationTextPatternWrapper::GetSupportedTextSelection(const Nap
 
 Napi::Value IUIAutomationTextPatternWrapper::GetSelection(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationTextRangeArray> textRangeArray;
+    ATL::CComPtr<IUIAutomationTextRangeArray> textRangeArray = NULL;
 
     auto hResult = m_textPattern->GetSelection(&textRangeArray);
 
@@ -86,7 +86,7 @@ Napi::Value IUIAutomationTextPatternWrapper::GetSelection(const Napi::CallbackIn
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationTextRange> textRange;
+        ATL::CComPtr<IUIAutomationTextRange> textRange = NULL;
         hResult = textRangeArray->GetElement(i, &textRange);
 
         auto columnHeaderItemWrapper = IUIAutomationTextRangeWrapper::New(info.Env(), textRange);
@@ -99,7 +99,7 @@ Napi::Value IUIAutomationTextPatternWrapper::GetSelection(const Napi::CallbackIn
 
 Napi::Value IUIAutomationTextPatternWrapper::GetVisibleRanges(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationTextRangeArray> textRangeArray;
+    ATL::CComPtr<IUIAutomationTextRangeArray> textRangeArray = NULL;
 
     auto hResult = m_textPattern->GetVisibleRanges(&textRangeArray);
 
@@ -115,7 +115,7 @@ Napi::Value IUIAutomationTextPatternWrapper::GetVisibleRanges(const Napi::Callba
 
     for (int i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationTextRange> textRange;
+        ATL::CComPtr<IUIAutomationTextRange> textRange = NULL;
         hResult = textRangeArray->GetElement(i, &textRange);
 
         HandleResult(info, hResult);
@@ -130,7 +130,7 @@ Napi::Value IUIAutomationTextPatternWrapper::RangeFromChild(const Napi::Callback
 {
     auto child = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
 
-    ATL::CComPtr<IUIAutomationTextRange> textRange;
+    ATL::CComPtr<IUIAutomationTextRange> textRange = NULL;
 
     auto hResult = m_textPattern->RangeFromChild(child->m_pElement, &textRange);
 
@@ -147,7 +147,7 @@ Napi::Value IUIAutomationTextPatternWrapper::RangeFromPoint(const Napi::Callback
     point.x = input.Get("x").ToNumber().Int32Value();
     point.y = input.Get("y").ToNumber().Int32Value();
 
-    ATL::CComPtr<IUIAutomationTextRange> textRange;
+    ATL::CComPtr<IUIAutomationTextRange> textRange = NULL;
 
     auto hResult = m_textPattern->RangeFromPoint(point, &textRange);
 

@@ -19,5 +19,5 @@ public:
     Napi::Value GetCurrentSelection(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationSelectionPattern> m_selectionPattern;
+    ATL::CComPtr<IUIAutomationSelectionPattern> m_selectionPattern = NULL;
 };

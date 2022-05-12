@@ -44,7 +44,7 @@ IUIAutomationTextChildPatternWrapper::~IUIAutomationTextChildPatternWrapper()
 
 Napi::Value IUIAutomationTextChildPatternWrapper::GetTextContainer(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> pTextContainer;
+    ATL::CComPtr<IUIAutomationElement> pTextContainer = NULL;
     auto hResult = m_textChildPattern->get_TextContainer(&pTextContainer);
 
     HandleResult(info, hResult);
@@ -54,7 +54,7 @@ Napi::Value IUIAutomationTextChildPatternWrapper::GetTextContainer(const Napi::C
 
 Napi::Value IUIAutomationTextChildPatternWrapper::GetTextRange(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationTextRange> textRange;
+    ATL::CComPtr<IUIAutomationTextRange> textRange = NULL;
 
     auto hResult = m_textChildPattern->get_TextRange(&textRange);
 

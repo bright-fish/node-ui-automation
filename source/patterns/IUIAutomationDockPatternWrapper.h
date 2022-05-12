@@ -16,5 +16,5 @@ public:
     void SetDockPosition(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationDockPattern> m_dockPattern;
+    ATL::CComPtr<IUIAutomationDockPattern> m_dockPattern = NULL;
 };

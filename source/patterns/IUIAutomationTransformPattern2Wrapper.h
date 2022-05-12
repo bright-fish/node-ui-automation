@@ -33,5 +33,5 @@ public:
     void ZoomByUnit(const Napi::CallbackInfo &info);
     
 private:
-    ATL::CComPtr<IUIAutomationTransformPattern2> m_tranformPattern2;
+    ATL::CComPtr<IUIAutomationTransformPattern2> m_tranformPattern2 = NULL;
 };

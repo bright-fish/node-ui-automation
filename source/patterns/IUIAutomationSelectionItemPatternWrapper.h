@@ -20,5 +20,5 @@ public:
     void Select(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationSelectionItemPattern> m_selectionItemPattern;
+    ATL::CComPtr<IUIAutomationSelectionItemPattern> m_selectionItemPattern = NULL;
 };

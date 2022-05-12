@@ -19,5 +19,5 @@ public:
     Napi::Value RangeFromPoint(const Napi::CallbackInfo &info);
     
 private:
-    ATL::CComPtr<IUIAutomationTextPattern> m_textPattern;
+    ATL::CComPtr<IUIAutomationTextPattern> m_textPattern = NULL;
 };

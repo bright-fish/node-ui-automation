@@ -19,5 +19,5 @@ public:
     void SetValue(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationValuePattern> m_pIValueProvider;
+    ATL::CComPtr<IUIAutomationValuePattern> m_pIValueProvider = NULL;
 };
