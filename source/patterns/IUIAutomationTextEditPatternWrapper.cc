@@ -3,6 +3,7 @@
 #include "../utilities/Functions.h"
 #include "../wrappers/Wrappers.h"
 #include "IUIAutomationTextRangeWrapper.h"
+#include "../utilities/ComAutoPointer.h"
 
 Napi::FunctionReference *IUIAutomationTextEditPatternWrapper::Initialize(Napi::Env env)
 {
@@ -71,7 +72,7 @@ Napi::Value IUIAutomationTextEditPatternWrapper::GetSupportedTextSelection(const
 
 Napi::Value IUIAutomationTextEditPatternWrapper::GetSelection(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationTextRangeArray> textRangeArray = NULL;
+    ComAutoPointer<IUIAutomationTextRangeArray> textRangeArray = NULL;
 
     auto hResult = m_textEditPattern->GetSelection(&textRangeArray);
 
@@ -87,7 +88,7 @@ Napi::Value IUIAutomationTextEditPatternWrapper::GetSelection(const Napi::Callba
 
     for (int i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationTextRange> textRange = NULL;
+        ComAutoPointer<IUIAutomationTextRange> textRange = NULL;
         hResult = textRangeArray->GetElement(i, &textRange);
 
         HandleResult(info, hResult);
@@ -100,7 +101,7 @@ Napi::Value IUIAutomationTextEditPatternWrapper::GetSelection(const Napi::Callba
 
 Napi::Value IUIAutomationTextEditPatternWrapper::GetVisibleRanges(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationTextRangeArray> textRangeArray = NULL;
+    ComAutoPointer<IUIAutomationTextRangeArray> textRangeArray = NULL;
 
     auto hResult = m_textEditPattern->GetVisibleRanges(&textRangeArray);
 
@@ -116,7 +117,7 @@ Napi::Value IUIAutomationTextEditPatternWrapper::GetVisibleRanges(const Napi::Ca
 
     for (int i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationTextRange> textRange = NULL;
+        ComAutoPointer<IUIAutomationTextRange> textRange = NULL;
         hResult = textRangeArray->GetElement(i, &textRange);
 
         HandleResult(info, hResult);
@@ -131,7 +132,7 @@ Napi::Value IUIAutomationTextEditPatternWrapper::RangeFromChild(const Napi::Call
 {
     auto child = Napi::ObjectWrap<IUIAutomationElementWrapper>::Unwrap(info[0].ToObject());
 
-    ATL::CComPtr<IUIAutomationTextRange> textRange = NULL;
+    ComAutoPointer<IUIAutomationTextRange> textRange = NULL;
 
     auto hResult = m_textEditPattern->RangeFromChild(child->m_pElement, &textRange);
 
@@ -148,7 +149,7 @@ Napi::Value IUIAutomationTextEditPatternWrapper::RangeFromPoint(const Napi::Call
     point.x = input.Get("x").ToNumber().Int32Value();
     point.y = input.Get("y").ToNumber().Int32Value();
 
-    ATL::CComPtr<IUIAutomationTextRange> textRange = NULL;
+    ComAutoPointer<IUIAutomationTextRange> textRange = NULL;
 
     auto hResult = m_textEditPattern->RangeFromPoint(point, &textRange);
 
@@ -159,7 +160,7 @@ Napi::Value IUIAutomationTextEditPatternWrapper::RangeFromPoint(const Napi::Call
 
 Napi::Value IUIAutomationTextEditPatternWrapper::GetActiveComposition(const Napi::CallbackInfo &info)
 {
-    CComPtr<IUIAutomationTextRange> textRange = NULL;
+    ComAutoPointer<IUIAutomationTextRange> textRange = NULL;
     auto hResult = m_textEditPattern->GetActiveComposition(&textRange);
 
     HandleResult(info, hResult);
@@ -169,7 +170,7 @@ Napi::Value IUIAutomationTextEditPatternWrapper::GetActiveComposition(const Napi
 
 Napi::Value IUIAutomationTextEditPatternWrapper::GetConversionTarget(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationTextRange> textRange = NULL;
+    ComAutoPointer<IUIAutomationTextRange> textRange = NULL;
     auto hResult = m_textEditPattern->GetConversionTarget(&textRange);
 
     HandleResult(info, hResult);

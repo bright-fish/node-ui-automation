@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationTransformPatternWrapper : public Napi::ObjectWrap<IUIAutomationTransformPatternWrapper>
 {
@@ -23,5 +24,5 @@ public:
     void Rotate(const Napi::CallbackInfo &info);
     
 private:
-    ATL::CComPtr<IUIAutomationTransformPattern> m_tranformPattern = NULL;
+    ComAutoPointer<IUIAutomationTransformPattern> m_tranformPattern = NULL;
 };

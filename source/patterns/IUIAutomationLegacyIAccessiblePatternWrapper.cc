@@ -2,6 +2,7 @@
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
 #include "../wrappers/Wrappers.h"
+#include "../utilities/ComAutoPointer.h"
 
 Napi::FunctionReference *IUIAutomationLegacyIAccessiblePatternWrapper::Initialize(Napi::Env env)
 {
@@ -267,7 +268,7 @@ Napi::Value IUIAutomationLegacyIAccessiblePatternWrapper::GetCachedSelection(con
 {
     // todo: Verify this functions correctly.  Most likely it does not.
 
-    ATL::CComPtr<IUIAutomationElementArray> cachedSelection = NULL;
+    ComAutoPointer<IUIAutomationElementArray> cachedSelection = NULL;
 
     auto hResult = m_legacyIAccessiblePattern->GetCachedSelection(&cachedSelection);
 
@@ -283,7 +284,7 @@ Napi::Value IUIAutomationLegacyIAccessiblePatternWrapper::GetCachedSelection(con
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element = NULL;
+        ComAutoPointer<IUIAutomationElement> element = NULL;
 
         hResult = cachedSelection->GetElement(i, &element);
 
@@ -297,7 +298,7 @@ Napi::Value IUIAutomationLegacyIAccessiblePatternWrapper::GetCachedSelection(con
 
 Napi::Value IUIAutomationLegacyIAccessiblePatternWrapper::GetCurrentSelection(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElementArray> currentSelection = NULL;
+    ComAutoPointer<IUIAutomationElementArray> currentSelection = NULL;
 
     auto hResult = m_legacyIAccessiblePattern->GetCurrentSelection(&currentSelection);
 
@@ -313,7 +314,7 @@ Napi::Value IUIAutomationLegacyIAccessiblePatternWrapper::GetCurrentSelection(co
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element = NULL;
+        ComAutoPointer<IUIAutomationElement> element = NULL;
 
         hResult = currentSelection->GetElement(i, &element);
 
@@ -336,7 +337,7 @@ void IUIAutomationLegacyIAccessiblePatternWrapper::Select(const Napi::CallbackIn
 
 void IUIAutomationLegacyIAccessiblePatternWrapper::SetValue(const Napi::CallbackInfo &info)
 {
-    CComBSTR value = _com_util::ConvertStringToBSTR(info[0].ToString().Utf8Value().c_str());
+    BSTR value = _com_util::ConvertStringToBSTR(info[0].ToString().Utf8Value().c_str());
 
     auto hResult = m_legacyIAccessiblePattern->SetValue(value);
 

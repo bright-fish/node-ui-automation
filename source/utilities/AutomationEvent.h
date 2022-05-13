@@ -1,9 +1,10 @@
 #pragma once
 
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 struct AutomationEvent
 {
-    ATL::CComPtr<IUIAutomationElement> pSender = NULL;
+    ComAutoPointer<IUIAutomationElement> pSender = NULL;
     EVENTID eventID;
 };

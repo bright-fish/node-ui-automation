@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationDockPatternWrapper : public Napi::ObjectWrap<IUIAutomationDockPatternWrapper>
 {
@@ -16,5 +17,5 @@ public:
     void SetDockPosition(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationDockPattern> m_dockPattern = NULL;
+    ComAutoPointer<IUIAutomationDockPattern> m_dockPattern = NULL;
 };

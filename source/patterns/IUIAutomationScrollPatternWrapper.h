@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationScrollPatternWrapper : public Napi::ObjectWrap<IUIAutomationScrollPatternWrapper>
 {
@@ -28,5 +29,5 @@ public:
     void SetScrollPercent(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationScrollPattern> m_scrollPattern = NULL;
+    ComAutoPointer<IUIAutomationScrollPattern> m_scrollPattern = NULL;
 };

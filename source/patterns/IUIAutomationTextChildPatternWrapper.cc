@@ -3,6 +3,7 @@
 #include "../utilities/Functions.h"
 #include "../wrappers/Wrappers.h"
 #include "IUIAutomationTextRangeWrapper.h"
+#include "../utilities/ComAutoPointer.h"
 
 Napi::FunctionReference *IUIAutomationTextChildPatternWrapper::Initialize(Napi::Env env)
 {
@@ -44,7 +45,7 @@ IUIAutomationTextChildPatternWrapper::~IUIAutomationTextChildPatternWrapper()
 
 Napi::Value IUIAutomationTextChildPatternWrapper::GetTextContainer(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> pTextContainer = NULL;
+    ComAutoPointer<IUIAutomationElement> pTextContainer = NULL;
     auto hResult = m_textChildPattern->get_TextContainer(&pTextContainer);
 
     HandleResult(info, hResult);
@@ -54,7 +55,7 @@ Napi::Value IUIAutomationTextChildPatternWrapper::GetTextContainer(const Napi::C
 
 Napi::Value IUIAutomationTextChildPatternWrapper::GetTextRange(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationTextRange> textRange = NULL;
+    ComAutoPointer<IUIAutomationTextRange> textRange = NULL;
 
     auto hResult = m_textChildPattern->get_TextRange(&textRange);
 

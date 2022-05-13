@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationAnnotationPatternWrapper : public Napi::ObjectWrap<IUIAutomationAnnotationPatternWrapper>
 {
@@ -23,5 +24,5 @@ public:
     Napi::Value GetCurrentTarget(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationAnnotationPattern> m_annotationProvider = NULL;
+    ComAutoPointer<IUIAutomationAnnotationPattern> m_annotationProvider = NULL;
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationCacheRequestWrapper : public Napi::ObjectWrap<IUIAutomationCacheRequestWrapper>
 {
@@ -8,7 +9,7 @@ public:
   static Napi::FunctionReference *Initialize(Napi::Env env);
   static Napi::Value New(Napi::Env env, IUIAutomationCacheRequest *pCacheRequest);
 
-  ATL::CComPtr<IUIAutomationCacheRequest> m_pCacheRequest = NULL;
+  ComAutoPointer<IUIAutomationCacheRequest> m_pCacheRequest = NULL;
 
   IUIAutomationCacheRequestWrapper(const Napi::CallbackInfo &info);
   ~IUIAutomationCacheRequestWrapper();

@@ -2,6 +2,8 @@
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
 #include "../wrappers/Wrappers.h"
+#include "../utilities/ComAutoPointer.h"
+#include "../utilities/AutoSafeArray.h"
 
 Napi::FunctionReference *IUIAutomationSpreadsheetItemPatternWrapper::Initialize(Napi::Env env)
 {
@@ -48,7 +50,7 @@ IUIAutomationSpreadsheetItemPatternWrapper::~IUIAutomationSpreadsheetItemPattern
 
 Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCachedFormula(const Napi::CallbackInfo &info)
 {
-    CComBSTR formula;
+    BSTR formula;
 
     auto hResult = m_spreadsheetItemPattern->get_CachedFormula(&formula);
 
@@ -59,7 +61,7 @@ Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCachedFormula(const N
 
 Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCurrentFormula(const Napi::CallbackInfo &info)
 {
-    CComBSTR formula;
+    BSTR formula;
 
     auto hResult = m_spreadsheetItemPattern->get_CurrentFormula(&formula);
 
@@ -71,7 +73,7 @@ Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCurrentFormula(const 
 
 Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCachedAnnotationObjects(const Napi::CallbackInfo &info)
 {
-    CComPtr<IUIAutomationElementArray> annotationObjects = NULL;
+    ComAutoPointer<IUIAutomationElementArray> annotationObjects = NULL;
 
     auto hResult = m_spreadsheetItemPattern->GetCachedAnnotationObjects(&annotationObjects);
 
@@ -85,7 +87,7 @@ Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCachedAnnotationObjec
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element = NULL;
+        ComAutoPointer<IUIAutomationElement> element = NULL;
 
         hResult = annotationObjects->GetElement(i, &element);
 
@@ -101,7 +103,7 @@ Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCachedAnnotationObjec
 
 Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCachedAnnotationTypes(const Napi::CallbackInfo &info)
 {
-    CComSafeArray<int> annotationTypes;
+    AutoSafeArray<int> annotationTypes;
 
     auto hResult = m_spreadsheetItemPattern->GetCachedAnnotationTypes(&annotationTypes.m_psa);
 
@@ -121,7 +123,7 @@ Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCachedAnnotationTypes
 
 Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCurrentAnnotationObjects(const Napi::CallbackInfo &info)
 {
-    CComPtr<IUIAutomationElementArray> annotationObjects = NULL;
+    ComAutoPointer<IUIAutomationElementArray> annotationObjects = NULL;
 
     auto hResult = m_spreadsheetItemPattern->GetCurrentAnnotationObjects(&annotationObjects);
 
@@ -135,7 +137,7 @@ Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCurrentAnnotationObje
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element = NULL;
+        ComAutoPointer<IUIAutomationElement> element = NULL;
 
         hResult = annotationObjects->GetElement(i, &element);
 
@@ -151,7 +153,7 @@ Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCurrentAnnotationObje
 
 Napi::Value IUIAutomationSpreadsheetItemPatternWrapper::GetCurrentAnnotationTypes(const Napi::CallbackInfo &info)
 {
-    CComSafeArray<int> annotationTypes;
+    AutoSafeArray<int> annotationTypes;
 
     auto hResult = m_spreadsheetItemPattern->GetCurrentAnnotationTypes(&annotationTypes.m_psa);
 

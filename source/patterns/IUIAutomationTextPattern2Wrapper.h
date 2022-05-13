@@ -1,5 +1,7 @@
 #pragma once
+
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationTextPattern2Wrapper : public Napi::ObjectWrap<IUIAutomationTextPattern2Wrapper>
 {
@@ -21,5 +23,5 @@ public:
     Napi::Value RangeFromAnnotation(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationTextPattern2> m_pITextProvider2 = NULL;
+    ComAutoPointer<IUIAutomationTextPattern2> m_pITextProvider2 = NULL;
 };

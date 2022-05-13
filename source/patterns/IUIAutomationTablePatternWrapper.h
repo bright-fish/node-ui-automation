@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationTablePatternWrapper : public Napi::ObjectWrap<IUIAutomationTablePatternWrapper>
 {
@@ -19,5 +20,5 @@ public:
     Napi::Value GetCurrentRowHeaders(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationTablePattern> m_tablePattern = NULL;
+    ComAutoPointer<IUIAutomationTablePattern> m_tablePattern = NULL;
 };

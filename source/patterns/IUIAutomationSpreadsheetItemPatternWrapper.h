@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationSpreadsheetItemPatternWrapper : public Napi::ObjectWrap<IUIAutomationSpreadsheetItemPatternWrapper>
 {
@@ -19,5 +20,5 @@ public:
     Napi::Value GetCurrentAnnotationTypes(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationSpreadsheetItemPattern> m_spreadsheetItemPattern = NULL;
+    ComAutoPointer<IUIAutomationSpreadsheetItemPattern> m_spreadsheetItemPattern = NULL;
 };

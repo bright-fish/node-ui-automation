@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationRangeValuePatternWrapper : public Napi::ObjectWrap<IUIAutomationRangeValuePatternWrapper>
 {
@@ -27,5 +28,5 @@ public:
     void SetValue(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationRangeValuePattern> m_rangeValuePattern = NULL;
+    ComAutoPointer<IUIAutomationRangeValuePattern> m_rangeValuePattern = NULL;
 };

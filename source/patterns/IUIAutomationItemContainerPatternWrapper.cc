@@ -2,6 +2,7 @@
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
 #include "../wrappers/Wrappers.h"
+#include "../utilities/ComAutoPointer.h"
 
 Napi::FunctionReference *IUIAutomationItemContainerPatternWrapper::Initialize(Napi::Env env)
 {
@@ -48,7 +49,7 @@ Napi::Value IUIAutomationItemContainerPatternWrapper::FindItemByProperty(const N
 
     auto variant = ToVariant(info.Env(), info[2]);
 
-    ATL::CComPtr<IUIAutomationElement> pFound = NULL;
+    ComAutoPointer<IUIAutomationElement> pFound = NULL;
     
     auto hResult = m_itemContainerPattern->FindItemByProperty(pStartAfterWrapper->m_pElement, propertyId, variant, &pFound);
 

@@ -2,6 +2,7 @@
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
 #include "../wrappers/Wrappers.h"
+#include "../utilities/ComAutoPointer.h"
 
 Napi::FunctionReference *IUIAutomationSelectionPattern2Wrapper::Initialize(Napi::Env env)
 {
@@ -77,7 +78,7 @@ Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCachedIsSelectionRequired(
 
 Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCachedCurrentSelectedItem(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> pCurrentSelectedItem = NULL;
+    ComAutoPointer<IUIAutomationElement> pCurrentSelectedItem = NULL;
 
     auto hResult = m_selectionPattern2->get_CachedCurrentSelectedItem(&pCurrentSelectedItem);
 
@@ -88,7 +89,7 @@ Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCachedCurrentSelectedItem(
 
 Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCachedFirstSelectedItem(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> pFirstSelectedItem = NULL;
+    ComAutoPointer<IUIAutomationElement> pFirstSelectedItem = NULL;
 
     auto hResult = m_selectionPattern2->get_CachedFirstSelectedItem(&pFirstSelectedItem);
 
@@ -110,7 +111,7 @@ Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCachedItemCount(const Napi
 
 Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCachedLastSelectedItem(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> pLastSelectedItem = NULL;
+    ComAutoPointer<IUIAutomationElement> pLastSelectedItem = NULL;
 
     auto hResult = m_selectionPattern2->get_CachedLastSelectedItem(&pLastSelectedItem);
 
@@ -141,7 +142,7 @@ Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCurrentIsSelectionRequired
 
 Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCurrentCurrentSelectedItem(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> pCurrentSelectedItem = NULL;
+    ComAutoPointer<IUIAutomationElement> pCurrentSelectedItem = NULL;
 
     auto hResult = m_selectionPattern2->get_CurrentCurrentSelectedItem(&pCurrentSelectedItem);
 
@@ -152,7 +153,7 @@ Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCurrentCurrentSelectedItem
 
 Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCurrentFirstSelectedItem(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> pFirstSelectedItem = NULL;
+    ComAutoPointer<IUIAutomationElement> pFirstSelectedItem = NULL;
 
     auto hResult = m_selectionPattern2->get_CurrentFirstSelectedItem(&pFirstSelectedItem);
 
@@ -174,7 +175,7 @@ Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCurrentItemCount(const Nap
 
 Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCurrentLastSelectedItem(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> pLastSelectedItem = NULL;
+    ComAutoPointer<IUIAutomationElement> pLastSelectedItem = NULL;
 
     auto hResult = m_selectionPattern2->get_CurrentLastSelectedItem(&pLastSelectedItem);
 
@@ -185,7 +186,7 @@ Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCurrentLastSelectedItem(co
 
 Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCachedSelection(const Napi::CallbackInfo &info)
 {
-    CComPtr<IUIAutomationElementArray> selection = NULL;
+    ComAutoPointer<IUIAutomationElementArray> selection = NULL;
 
     auto hResult = m_selectionPattern2->GetCachedSelection(&selection);
 
@@ -200,7 +201,7 @@ Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCachedSelection(const Napi
     for (long i = 0; i < length; i++)
     {
 
-        CComPtr<IUIAutomationElement> element = NULL;
+        ComAutoPointer<IUIAutomationElement> element = NULL;
 
         hResult = selection->GetElement(i, &element);
 
@@ -214,7 +215,7 @@ Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCachedSelection(const Napi
 
 Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCurrentSelection(const Napi::CallbackInfo &info)
 {
-    CComPtr<IUIAutomationElementArray> selection = NULL;
+    ComAutoPointer<IUIAutomationElementArray> selection = NULL;
 
     auto hResult = m_selectionPattern2->GetCurrentSelection(&selection);
 
@@ -228,7 +229,7 @@ Napi::Value IUIAutomationSelectionPattern2Wrapper::GetCurrentSelection(const Nap
 
     for (long i = 0; i < length; i++)
     {
-        CComPtr<IUIAutomationElement> element = NULL;
+        ComAutoPointer<IUIAutomationElement> element = NULL;
 
         hResult = selection->GetElement(i, &element);
 

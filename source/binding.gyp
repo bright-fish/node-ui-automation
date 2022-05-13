@@ -9,6 +9,7 @@
       },
       "sources": [ 
             "AutomationAddon.cc",
+
             "enumerations/AnnotationTypeIdsWrapper.cc",
             "enumerations/AttributeIdsWrapper.cc",
             "enumerations/ControlTypeIdsWrapper.cc",
@@ -33,6 +34,11 @@
             "enumerations/WindowVisualStatesWrapper.cc",
             "enumerations/ZoomUnitsWrapper.cc",
 
+            "utilities/AutomationEventHandler.cc",
+            "utilities/FocusChangedEventHandler.cc",
+            "utilities/PropertyChangedEventHandler.cc",
+            "utilities/StructureChangedEventHandler.cc",
+            "utilities/Functions.cc",
 
             "wrappers/RectWrapper.cc",
             "wrappers/IUnknownWrapper.cc",
@@ -50,14 +56,7 @@
             "wrappers/IUIAutomationPropertyChangedEventHandlerWrapper.cc",
             "wrappers/IUIAutomationStructureChangedEventHandlerWrapper.cc",
 
-            "utilities/AutomationEventHandler.cc",
-            "utilities/FocusChangedEventHandler.cc",
-            "utilities/PropertyChangedEventHandler.cc",
-            "utilities/StructureChangedEventHandler.cc",
-            "utilities/Functions.cc",
-
             "patterns/IUIAutomationTextRangeWrapper.cc",
-
             "patterns/IUIAutomationAnnotationPatternWrapper.cc",
             "patterns/IUIAutomationDockPatternWrapper.cc",
             "patterns/IUIAutomationDragPatternWrapper.cc",

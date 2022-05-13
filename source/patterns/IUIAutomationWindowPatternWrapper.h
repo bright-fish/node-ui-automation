@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationWindowPatternWrapper : public Napi::ObjectWrap<IUIAutomationWindowPatternWrapper>
 {
@@ -29,5 +30,5 @@ public:
     Napi::Value WaitForInputIdle(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationWindowPattern> m_windowPattern = NULL;
+    ComAutoPointer<IUIAutomationWindowPattern> m_windowPattern = NULL;
 };

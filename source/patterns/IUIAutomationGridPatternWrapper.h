@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationGridPatternWrapper : public Napi::ObjectWrap<IUIAutomationGridPatternWrapper>
 {
@@ -18,5 +19,5 @@ public:
     Napi::Value GetItem(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationGridPattern> m_gridPattern = NULL;
+    ComAutoPointer<IUIAutomationGridPattern> m_gridPattern = NULL;
 };

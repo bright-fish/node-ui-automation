@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationWrapper : public Napi::ObjectWrap<IUIAutomationWrapper>
 {
@@ -49,5 +50,5 @@ public:
   Napi::Value GetReservedNotSupportedValue(const Napi::CallbackInfo &info);
 
 private:
-  ATL::CComPtr<IUIAutomation> m_pAutomation = NULL;
+  ComAutoPointer<IUIAutomation> m_pAutomation = NULL;
 };

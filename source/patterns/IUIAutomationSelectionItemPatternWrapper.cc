@@ -2,6 +2,7 @@
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
 #include "../wrappers/Wrappers.h"
+#include "../utilities/ComAutoPointer.h"
 
 Napi::FunctionReference *IUIAutomationSelectionItemPatternWrapper::Initialize(Napi::Env env)
 {
@@ -59,7 +60,7 @@ Napi::Value IUIAutomationSelectionItemPatternWrapper::GetCachedIsSelected(const 
 
 Napi::Value IUIAutomationSelectionItemPatternWrapper::GetCachedSelectionContainer(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> pSelectionContainer = NULL;
+    ComAutoPointer<IUIAutomationElement> pSelectionContainer = NULL;
     auto hResult = m_selectionItemPattern->get_CachedSelectionContainer(&pSelectionContainer);
 
     HandleResult(info, hResult);
@@ -80,7 +81,7 @@ Napi::Value IUIAutomationSelectionItemPatternWrapper::GetCurrentIsSelected(const
 
 Napi::Value IUIAutomationSelectionItemPatternWrapper::GetCurrentSelectionContainer(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> pSelectionContainer = NULL;
+    ComAutoPointer<IUIAutomationElement> pSelectionContainer = NULL;
     auto hResult = m_selectionItemPattern->get_CurrentSelectionContainer(&pSelectionContainer);
 
     HandleResult(info, hResult);

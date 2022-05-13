@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationTransformPattern2Wrapper : public Napi::ObjectWrap<IUIAutomationTransformPattern2Wrapper>
 {
@@ -33,5 +34,5 @@ public:
     void ZoomByUnit(const Napi::CallbackInfo &info);
     
 private:
-    ATL::CComPtr<IUIAutomationTransformPattern2> m_tranformPattern2 = NULL;
+    ComAutoPointer<IUIAutomationTransformPattern2> m_tranformPattern2 = NULL;
 };

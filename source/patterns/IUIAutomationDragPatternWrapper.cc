@@ -2,6 +2,8 @@
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
 #include "../wrappers/Wrappers.h"
+#include "../utilities/ComAutoPointer.h"
+#include "../utilities/AutoSafeArray.h"
 
 Napi::FunctionReference *IUIAutomationDragPatternWrapper::Initialize(Napi::Env env)
 {
@@ -32,7 +34,7 @@ Napi::Value IUIAutomationDragPatternWrapper::New(Napi::Env env, IUIAutomationDra
     {
         return env.Null();
     }
-    
+
     auto automationAddon = env.GetInstanceData<AutomationAddon>();
 
     return automationAddon->IUIAutomationDragPatternWrapperConstructor->New({Napi::External<IUIAutomationDragPattern>::New(env, pDragPattern)});
@@ -48,19 +50,19 @@ IUIAutomationDragPatternWrapper::~IUIAutomationDragPatternWrapper()
     m_dragPattern.Release();
 }
 
-
 Napi::Value IUIAutomationDragPatternWrapper::GetCachedDropEffects(const Napi::CallbackInfo &info)
 {
-    CComSafeArray<BSTR> dropEffects;
-    auto hResult = m_dragPattern->get_CachedDropEffects(&dropEffects.m_psa);
+    AutoSafeArray<BSTR> pSafeArray;
+
+    auto hResult = m_dragPattern->get_CachedDropEffects(&pSafeArray.m_psa);
 
     HandleResult(info, hResult);
 
     auto array = Napi::Array::New(info.Env());
 
-    for (unsigned long i = 0; i < dropEffects.GetCount(); i++)
+    for (unsigned long i = 0; i < pSafeArray.GetCount(); i++)
     {
-        auto dropEffect = Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(dropEffects.GetAt(i)));
+        auto dropEffect = Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(pSafeArray.GetAt(i)));
 
         array.Set(i, dropEffect);
     }
@@ -90,16 +92,17 @@ Napi::Value IUIAutomationDragPatternWrapper::GetCachedIsGrabbed(const Napi::Call
 
 Napi::Value IUIAutomationDragPatternWrapper::GetCurrentDropEffects(const Napi::CallbackInfo &info)
 {
-    CComSafeArray<BSTR> dropEffects;
-    auto hResult = m_dragPattern->get_CurrentDropEffects(&dropEffects.m_psa);
+    AutoSafeArray<BSTR> pSafeArray;
+    
+    auto hResult = m_dragPattern->get_CurrentDropEffects(&pSafeArray.m_psa);
 
     HandleResult(info, hResult);
 
     auto array = Napi::Array::New(info.Env());
 
-    for (unsigned long i = 0; i < dropEffects.GetCount(); i++)
+    for (unsigned long i = 0; i < pSafeArray.GetCount(); i++)
     {
-        auto dropEffect = Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(dropEffects.GetAt(i)));
+        auto dropEffect = Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(pSafeArray.GetAt(i)));
 
         array.Set(i, dropEffect);
     }
@@ -127,11 +130,9 @@ Napi::Value IUIAutomationDragPatternWrapper::GetCurrentIsGrabbed(const Napi::Cal
     return Napi::Boolean::New(info.Env(), isGrabbed);
 }
 
-
-
 Napi::Value IUIAutomationDragPatternWrapper::GetCachedGrabbedItems(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElementArray> grabbedItems = NULL;
+    ComAutoPointer<IUIAutomationElementArray> grabbedItems = NULL;
     auto hResult = m_dragPattern->GetCachedGrabbedItems(&grabbedItems);
 
     HandleResult(info, hResult);
@@ -141,7 +142,7 @@ Napi::Value IUIAutomationDragPatternWrapper::GetCachedGrabbedItems(const Napi::C
 
 Napi::Value IUIAutomationDragPatternWrapper::GetCurrentGrabbedItems(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElementArray> grabbedItems = NULL;
+    ComAutoPointer<IUIAutomationElementArray> grabbedItems = NULL;
     auto hResult = m_dragPattern->GetCurrentGrabbedItems(&grabbedItems);
 
     HandleResult(info, hResult);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationStylesPatternWrapper : public Napi::ObjectWrap<IUIAutomationStylesPatternWrapper>
 {
@@ -31,5 +32,5 @@ public:
     ~IUIAutomationStylesPatternWrapper();
 
 private:
-    ATL::CComPtr<IUIAutomationStylesPattern> m_stylesPattern = NULL;
+    ComAutoPointer<IUIAutomationStylesPattern> m_stylesPattern = NULL;
 };

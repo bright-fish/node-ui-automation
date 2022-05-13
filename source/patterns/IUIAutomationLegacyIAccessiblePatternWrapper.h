@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationLegacyIAccessiblePatternWrapper : public Napi::ObjectWrap<IUIAutomationLegacyIAccessiblePatternWrapper>
 {
@@ -40,5 +41,5 @@ public:
     void SetValue(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationLegacyIAccessiblePattern> m_legacyIAccessiblePattern = NULL;
+    ComAutoPointer<IUIAutomationLegacyIAccessiblePattern> m_legacyIAccessiblePattern = NULL;
 };

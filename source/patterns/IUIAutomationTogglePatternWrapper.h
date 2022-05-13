@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationTogglePatternWrapper : public Napi::ObjectWrap<IUIAutomationTogglePatternWrapper>
 {
@@ -16,5 +17,5 @@ public:
     void Toggle(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationTogglePattern> m_togglePattern = NULL;
+    ComAutoPointer<IUIAutomationTogglePattern> m_togglePattern = NULL;
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationSynchronizedInputPatternWrapper : public Napi::ObjectWrap<IUIAutomationSynchronizedInputPatternWrapper>
 {
@@ -14,5 +15,5 @@ public:
     void StartListening(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationSynchronizedInputPattern> m_synchronizedInputPattern = NULL;
+    ComAutoPointer<IUIAutomationSynchronizedInputPattern> m_synchronizedInputPattern = NULL;
 };

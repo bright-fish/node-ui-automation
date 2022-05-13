@@ -8,7 +8,7 @@ public:
   static Napi::FunctionReference *Initialize(Napi::Env env);
   static Napi::Value New(Napi::Env env, IUIAutomationTreeWalker *pTreeWalker);
 
-  ATL::CComPtr<IUIAutomationTreeWalker> m_pTreeWalker = NULL;
+  ComAutoPointer<IUIAutomationTreeWalker> m_pTreeWalker = NULL;
 
   IUIAutomationTreeWalkerWrapper(const Napi::CallbackInfo &info);
   ~IUIAutomationTreeWalkerWrapper();

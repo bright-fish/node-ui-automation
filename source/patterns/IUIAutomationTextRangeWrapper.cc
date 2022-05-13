@@ -2,6 +2,9 @@
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
 #include "../wrappers/Wrappers.h"
+#include "../utilities/ComAutoPointer.h"
+#include "../utilities/AutoSafeArray.h"
+
 // skipping:  #include "IAccessibleWrapper.h"
 
 Napi::FunctionReference *IUIAutomationTextRangeWrapper::Initialize(Napi::Env env)
@@ -67,7 +70,7 @@ void IUIAutomationTextRangeWrapper::AddToSelection(const Napi::CallbackInfo &inf
 
 Napi::Value IUIAutomationTextRangeWrapper::Clone(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationTextRange> clonedTextRangeProvider = NULL;
+    ComAutoPointer<IUIAutomationTextRange> clonedTextRangeProvider = NULL;
     auto hResult = m_textRange->Clone(&clonedTextRangeProvider);
 
     HandleResult(info, hResult);
@@ -118,7 +121,7 @@ Napi::Value IUIAutomationTextRangeWrapper::FindAttribute(const Napi::CallbackInf
     auto variant = ToVariant(info.Env(), info[1]);
     auto backward = info[2].ToBoolean().Value();
 
-    ATL::CComPtr<IUIAutomationTextRange> outputTextRange = NULL;
+    ComAutoPointer<IUIAutomationTextRange> outputTextRange = NULL;
     auto hResult = m_textRange->FindAttribute(textAttributeId, variant, backward, &outputTextRange);
 
     HandleResult(info, hResult);
@@ -132,7 +135,7 @@ Napi::Value IUIAutomationTextRangeWrapper::FindText(const Napi::CallbackInfo &in
     auto backward = info[1].ToBoolean().Value();
     auto ignoreCase = info[2].ToBoolean().Value();
 
-    ATL::CComPtr<IUIAutomationTextRange> outputTextRange = NULL;
+    ComAutoPointer<IUIAutomationTextRange> outputTextRange = NULL;
     auto hResult = m_textRange->FindText(text, backward, ignoreCase, &outputTextRange);
 
     HandleResult(info, hResult);
@@ -144,7 +147,7 @@ Napi::Value IUIAutomationTextRangeWrapper::GetAttributeValue(const Napi::Callbac
 {
     auto attributeId = static_cast<TEXTATTRIBUTEID>(info[0].ToNumber().Int32Value());
 
-    CComVariant variant;
+    VARIANT variant;
     auto hResult = m_textRange->GetAttributeValue(attributeId, &variant);
 
     HandleResult(info, hResult);
@@ -154,7 +157,7 @@ Napi::Value IUIAutomationTextRangeWrapper::GetAttributeValue(const Napi::Callbac
 
 Napi::Value IUIAutomationTextRangeWrapper::GetBoundingRectangles(const Napi::CallbackInfo &info)
 {
-    CComSafeArray<VARIANT> boundingRectangles;
+    AutoSafeArray<VARIANT> boundingRectangles;
     auto hResult = m_textRange->GetBoundingRectangles(&boundingRectangles.m_psa);
 
     HandleResult(info, hResult);
@@ -173,7 +176,7 @@ Napi::Value IUIAutomationTextRangeWrapper::GetBoundingRectangles(const Napi::Cal
 
 Napi::Value IUIAutomationTextRangeWrapper::GetChildren(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElementArray> children = NULL;
+    ComAutoPointer<IUIAutomationElementArray> children = NULL;
 
     auto hResult = m_textRange->GetChildren(&children);
 
@@ -187,7 +190,7 @@ Napi::Value IUIAutomationTextRangeWrapper::GetChildren(const Napi::CallbackInfo 
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element = NULL;
+        ComAutoPointer<IUIAutomationElement> element = NULL;
 
         auto variant = children->GetElement(i, &element);
 
@@ -199,7 +202,7 @@ Napi::Value IUIAutomationTextRangeWrapper::GetChildren(const Napi::CallbackInfo 
 
 Napi::Value IUIAutomationTextRangeWrapper::GetEnclosingElement(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> enclosingElement = NULL;
+    ComAutoPointer<IUIAutomationElement> enclosingElement = NULL;
     auto hResult = m_textRange->GetEnclosingElement(&enclosingElement);
 
     HandleResult(info, hResult);
@@ -211,7 +214,7 @@ Napi::Value IUIAutomationTextRangeWrapper::GetText(const Napi::CallbackInfo &inf
 {
     long maxLength = info[0].ToNumber().Int32Value();
 
-    CComBSTR text;
+    BSTR text;
     auto hResult = m_textRange->GetText(maxLength, &text);
 
     HandleResult(info, hResult);

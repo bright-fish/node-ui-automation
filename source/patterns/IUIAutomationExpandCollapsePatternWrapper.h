@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationExpandCollapsePatternWrapper : public Napi::ObjectWrap<IUIAutomationExpandCollapsePatternWrapper>
 {
@@ -17,5 +18,5 @@ public:
     void Expand(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationExpandCollapsePattern> m_expandCollapsePattern = NULL;
+    ComAutoPointer<IUIAutomationExpandCollapsePattern> m_expandCollapsePattern = NULL;
 };

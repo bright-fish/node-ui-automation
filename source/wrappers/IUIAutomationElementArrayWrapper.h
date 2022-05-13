@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationElementArrayWrapper : public Napi::ObjectWrap<IUIAutomationElementArrayWrapper>
 {
@@ -8,7 +9,7 @@ public:
   static Napi::FunctionReference *Initialize(Napi::Env env);
   static Napi::Value New(Napi::Env env, IUIAutomationElementArray * pElementArray);
 
-  ATL::CComPtr<IUIAutomationElementArray> m_pElementArray = NULL;
+  ComAutoPointer<IUIAutomationElementArray> m_pElementArray = NULL;
 
   IUIAutomationElementArrayWrapper(const Napi::CallbackInfo &info);
   ~IUIAutomationElementArrayWrapper();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationTextChildPatternWrapper : public Napi::ObjectWrap<IUIAutomationTextChildPatternWrapper>
 {
@@ -15,5 +16,5 @@ public:
     Napi::Value GetTextRange(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationTextChildPattern> m_textChildPattern = NULL;
+    ComAutoPointer<IUIAutomationTextChildPattern> m_textChildPattern = NULL;
 };

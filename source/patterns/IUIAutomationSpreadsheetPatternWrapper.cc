@@ -2,6 +2,7 @@
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
 #include "../wrappers/Wrappers.h"
+#include "../utilities/ComAutoPointer.h"
 
 
 Napi::FunctionReference *IUIAutomationSpreadsheetPatternWrapper::Initialize(Napi::Env env)
@@ -43,9 +44,9 @@ IUIAutomationSpreadsheetPatternWrapper::~IUIAutomationSpreadsheetPatternWrapper(
 
 Napi::Value IUIAutomationSpreadsheetPatternWrapper::GetItemByName(const Napi::CallbackInfo &info)
 {
-    CComBSTR name = _com_util::ConvertStringToBSTR(info[0].ToString().Utf8Value().c_str());
+    BSTR name = _com_util::ConvertStringToBSTR(info[0].ToString().Utf8Value().c_str());
 
-    ATL::CComPtr<IUIAutomationElement> pItem = NULL;
+    ComAutoPointer<IUIAutomationElement> pItem = NULL;
     
     auto hResult = m_spreadsheetPattern->GetItemByName(name, &pItem);
 

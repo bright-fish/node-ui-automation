@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationVirtualizedItemPatternWrapper : public Napi::ObjectWrap<IUIAutomationVirtualizedItemPatternWrapper>
 {
@@ -12,5 +13,5 @@ public:
 
     void Realize(const Napi::CallbackInfo &info);
 private:
-    ATL::CComPtr<IUIAutomationVirtualizedItemPattern> m_virtualizedItemPattern = NULL;
+    ComAutoPointer<IUIAutomationVirtualizedItemPattern> m_virtualizedItemPattern = NULL;
 };

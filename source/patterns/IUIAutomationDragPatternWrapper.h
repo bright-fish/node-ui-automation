@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationDragPatternWrapper : public Napi::ObjectWrap<IUIAutomationDragPatternWrapper>
 {
@@ -21,5 +22,5 @@ public:
     Napi::Value GetCurrentGrabbedItems(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationDragPattern> m_dragPattern = NULL;
+    ComAutoPointer<IUIAutomationDragPattern> m_dragPattern = NULL;
 };

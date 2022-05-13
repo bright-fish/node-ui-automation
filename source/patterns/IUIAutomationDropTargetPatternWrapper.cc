@@ -1,6 +1,7 @@
 #include "IUIAutomationDropTargetPatternWrapper.h"
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
+#include "../utilities/AutoSafeArray.h"
 
 Napi::FunctionReference *IUIAutomationDropTargetPatternWrapper::Initialize(Napi::Env env)
 {
@@ -54,7 +55,7 @@ Napi::Value IUIAutomationDropTargetPatternWrapper::GetCachedDropTargetEffect(con
 
 Napi::Value IUIAutomationDropTargetPatternWrapper::GetCachedDropTargetEffects(const Napi::CallbackInfo &info)
 {
-    CComSafeArray<BSTR> dropEffects;
+    AutoSafeArray<BSTR> dropEffects;
     auto hResult = m_dropTargetPattern->get_CachedDropTargetEffects(&dropEffects.m_psa);
 
     HandleResult(info, hResult);
@@ -83,7 +84,7 @@ Napi::Value IUIAutomationDropTargetPatternWrapper::GetCurrentDropTargetEffect(co
 
 Napi::Value IUIAutomationDropTargetPatternWrapper::GetCurrentDropTargetEffects(const Napi::CallbackInfo &info)
 {
-    CComSafeArray<BSTR> dropEffects;
+    AutoSafeArray<BSTR> dropEffects;
     auto hResult = m_dropTargetPattern->get_CurrentDropTargetEffects(&dropEffects.m_psa);
 
     HandleResult(info, hResult);

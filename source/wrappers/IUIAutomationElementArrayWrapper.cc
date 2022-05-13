@@ -1,6 +1,7 @@
 #include "Wrappers.h"
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
+#include "../utilities/ComAutoPointer.h"
 
 Napi::FunctionReference *IUIAutomationElementArrayWrapper::Initialize(Napi::Env env)
 {
@@ -53,7 +54,7 @@ Napi::Value IUIAutomationElementArrayWrapper::GetElement(const Napi::CallbackInf
         return number.Env().Null();
     }
 
-    ATL::CComPtr<IUIAutomationElement> pElement = NULL;
+    ComAutoPointer<IUIAutomationElement> pElement = NULL;
     auto hResult = m_pElementArray->GetElement(number.Int32Value(), &pElement);
 
     HandleResult(info, hResult);

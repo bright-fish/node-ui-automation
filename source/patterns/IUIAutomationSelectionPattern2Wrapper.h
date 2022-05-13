@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationSelectionPattern2Wrapper : public Napi::ObjectWrap<IUIAutomationSelectionPattern2Wrapper>
 {
@@ -28,5 +29,5 @@ public:
     Napi::Value GetCurrentSelection(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationSelectionPattern2> m_selectionPattern2 = NULL;
+    ComAutoPointer<IUIAutomationSelectionPattern2> m_selectionPattern2 = NULL;
 };

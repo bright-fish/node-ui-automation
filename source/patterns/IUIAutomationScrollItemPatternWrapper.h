@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationScrollItemPatternWrapper : public Napi::ObjectWrap<IUIAutomationScrollItemPatternWrapper>
 {
@@ -13,5 +14,5 @@ public:
     void ScrollIntoView(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IScrollItemProvider> m_pIScrollItemProvider = NULL;
+    ComAutoPointer<IScrollItemProvider> m_pIScrollItemProvider = NULL;
 };

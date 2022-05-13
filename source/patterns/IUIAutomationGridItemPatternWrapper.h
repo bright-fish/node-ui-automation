@@ -1,5 +1,7 @@
 #pragma once
+
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationGridItemPatternWrapper : public Napi::ObjectWrap<IUIAutomationGridItemPatternWrapper>
 {
@@ -23,5 +25,5 @@ public:
     ~IUIAutomationGridItemPatternWrapper();
 
 private:
-    ATL::CComPtr<IUIAutomationGridItemPattern> m_gridItemPattern = NULL;
+    ComAutoPointer<IUIAutomationGridItemPattern> m_gridItemPattern = NULL;
 };

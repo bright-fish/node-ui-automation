@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationMultipleViewPatternWrapper : public Napi::ObjectWrap<IUIAutomationMultipleViewPatternWrapper>
 {
@@ -20,5 +21,5 @@ public:
     void SetCurrentView(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationMultipleViewPattern> m_multipleViewPattern = NULL;
+    ComAutoPointer<IUIAutomationMultipleViewPattern> m_multipleViewPattern = NULL;
 };

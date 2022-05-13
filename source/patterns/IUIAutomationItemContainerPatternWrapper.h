@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationItemContainerPatternWrapper : public Napi::ObjectWrap<IUIAutomationItemContainerPatternWrapper>
 {
@@ -13,5 +14,5 @@ public:
     Napi::Value FindItemByProperty(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationItemContainerPattern> m_itemContainerPattern = NULL;
+    ComAutoPointer<IUIAutomationItemContainerPattern> m_itemContainerPattern = NULL;
 };

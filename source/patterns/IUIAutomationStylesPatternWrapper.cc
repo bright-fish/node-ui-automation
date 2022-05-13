@@ -47,7 +47,7 @@ IUIAutomationStylesPatternWrapper::~IUIAutomationStylesPatternWrapper()
 
 Napi::Value IUIAutomationStylesPatternWrapper::GetCachedExtendedProperties(const Napi::CallbackInfo &info)
 {
-    CComBSTR extendedProperties;
+    BSTR extendedProperties;
     auto hResult = m_stylesPattern->get_CachedExtendedProperties(&extendedProperties);
 
     HandleResult(info, hResult);
@@ -107,7 +107,7 @@ Napi::Value IUIAutomationStylesPatternWrapper::GetCachedStyleId(const Napi::Call
 
 Napi::Value IUIAutomationStylesPatternWrapper::GetCachedStyleName(const Napi::CallbackInfo &info)
 {
-    CComBSTR styleName;
+    BSTR styleName;
     auto hResult = m_stylesPattern->get_CachedStyleName(&styleName);
 
     HandleResult(info, hResult);
@@ -118,7 +118,7 @@ Napi::Value IUIAutomationStylesPatternWrapper::GetCachedStyleName(const Napi::Ca
 
 Napi::Value IUIAutomationStylesPatternWrapper::GetCurrentExtendedProperties(const Napi::CallbackInfo &info)
 {
-    CComBSTR extendedProperties;
+    BSTR extendedProperties;
     auto hResult = m_stylesPattern->get_CurrentExtendedProperties(&extendedProperties);
 
     HandleResult(info, hResult);
@@ -178,7 +178,7 @@ Napi::Value IUIAutomationStylesPatternWrapper::GetCurrentStyleId(const Napi::Cal
 
 Napi::Value IUIAutomationStylesPatternWrapper::GetCurrentStyleName(const Napi::CallbackInfo &info)
 {
-    CComBSTR styleName;
+    BSTR styleName;
     auto hResult = m_stylesPattern->get_CurrentStyleName(&styleName);
 
     HandleResult(info, hResult);

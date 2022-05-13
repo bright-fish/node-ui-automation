@@ -1,14 +1,15 @@
 #pragma once
 
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationElementWrapper : public Napi::ObjectWrap<IUIAutomationElementWrapper>
 {
 public:
   static Napi::FunctionReference *Initialize(Napi::Env env);
-  static Napi::Value New(Napi::Env env, ATL::CComPtr<IUIAutomationElement> pElement);
+  static Napi::Value New(Napi::Env env, ComAutoPointer<IUIAutomationElement> pElement);
 
-  ATL::CComPtr<IUIAutomationElement> m_pElement = NULL;
+  ComAutoPointer<IUIAutomationElement> m_pElement = NULL;
 
   IUIAutomationElementWrapper(const Napi::CallbackInfo &info);
   ~IUIAutomationElementWrapper();

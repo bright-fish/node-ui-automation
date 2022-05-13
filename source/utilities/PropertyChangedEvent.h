@@ -1,8 +1,10 @@
 #pragma once
 
+#include "../utilities/ComAutoPointer.h"
+
 struct PropertyChangedEvent
 {
-    ATL::CComPtr<IUIAutomationElement> pSender = NULL;
+    ComAutoPointer<IUIAutomationElement> pSender = NULL;
     PROPERTYID propertyId;
     VARIANT newValue;
 };

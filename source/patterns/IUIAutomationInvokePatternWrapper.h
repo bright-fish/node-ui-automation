@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationInvokePatternWrapper : public Napi::ObjectWrap<IUIAutomationInvokePatternWrapper>
 {
@@ -12,5 +13,5 @@ public:
 
     void Invoke(const Napi::CallbackInfo &info);
 private:
-    ATL::CComPtr<IUIAutomationInvokePattern> m_invokePattern = NULL;
+    ComAutoPointer<IUIAutomationInvokePattern> m_invokePattern = NULL;
 };

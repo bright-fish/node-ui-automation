@@ -2,6 +2,7 @@
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
 #include "../wrappers/Wrappers.h"
+#include "../utilities/ComAutoPointer.h"
 
 Napi::FunctionReference *IUIAutomationGridPatternWrapper::Initialize(Napi::Env env)
 {
@@ -96,7 +97,7 @@ Napi::Value IUIAutomationGridPatternWrapper::GetItem(const Napi::CallbackInfo &i
     auto row = info[0].ToNumber().Uint32Value();
     auto column = info[1].ToNumber().Uint32Value();
 
-    ATL::CComPtr<IUIAutomationElement> item = NULL;
+    ComAutoPointer<IUIAutomationElement> item = NULL;
 
     auto hResult = m_gridPattern->GetItem(row, column, &item);
 

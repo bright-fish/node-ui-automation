@@ -1,5 +1,6 @@
 #pragma once
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationDropTargetPatternWrapper : public Napi::ObjectWrap<IUIAutomationDropTargetPatternWrapper>
 {
@@ -17,5 +18,5 @@ public:
     Napi::Value GetCurrentDropTargetEffect(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationDropTargetPattern> m_dropTargetPattern = NULL;
+    ComAutoPointer<IUIAutomationDropTargetPattern> m_dropTargetPattern = NULL;
 };

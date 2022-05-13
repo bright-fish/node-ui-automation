@@ -453,7 +453,7 @@ export declare enum SupportedTextSelections {
 }
 
 export declare interface ITextPattern {
-    get documentRange() : ITextRange;
+    get documentRange(): ITextRange;
     supportedTextSelection: SupportedTextSelections;
 
     getSelection(): ITextRange[];
@@ -664,7 +664,7 @@ export declare interface IWindowPattern {
 export declare interface AutomationElement {
     buildUpdatedCache(cacheRequest: AutomationCacheRequest): AutomationElement;
     findAll(treeScope: TreeScopes, condition: AutomationCondition): AutomationElement[];
-    findAllBuildCache(treeScope: TreeScopes, cacheRequest: AutomationCacheRequest, condition: AutomationCondition): AutomationElementArray;
+    findAllBuildCache(treeScope: TreeScopes, condition: AutomationCondition, cacheRequest: AutomationCacheRequest): AutomationElement[];
     findFirst(treeScope: TreeScopes, condition: AutomationCondition): AutomationElement;
     findFirstBuildCache(treeScope: TreeScopes, condition: AutomationCondition, cacheRequest: AutomationCacheRequest): AutomationElement;
     getCachedChildren(): AutomationElementArray;
@@ -872,7 +872,7 @@ export declare class Automation {
     createNotCondition(condition: AutomationCondition): AutomationCondition;
     createOrCondition(conditionOne: AutomationCondition, conditionTwo: AutomationCondition): AutomationCondition;
     createPropertyCondition(propertyId: PropertyIds, value: Variant): AutomationCondition;
-    createTreeWalker(condition: AutomationCondition);
+    createTreeWalker(condition: AutomationCondition): AutomationTreeWalker;
     createTrueCondition(): AutomationCondition;
     elementFromPoint(point: Point): AutomationElement;
     elementFromPointBuildCache(point: Point, cacheRequest: AutomationCacheRequest): AutomationElement;

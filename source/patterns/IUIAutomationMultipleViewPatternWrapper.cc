@@ -2,6 +2,7 @@
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
 #include "../wrappers/Wrappers.h"
+#include "../utilities/AutoSafeArray.h"
 
 Napi::FunctionReference *IUIAutomationMultipleViewPatternWrapper::Initialize(Napi::Env env)
 {
@@ -59,21 +60,17 @@ Napi::Value IUIAutomationMultipleViewPatternWrapper::GetCachedCurrentView(const 
 
 Napi::Value IUIAutomationMultipleViewPatternWrapper::GetCachedSupportedViews(const Napi::CallbackInfo &info)
 {
-    SAFEARRAY *pSafeArray;
+    AutoSafeArray<BSTR> supportedViews;
 
-    auto hResult = m_multipleViewPattern->GetCachedSupportedViews(&pSafeArray);
+    auto hResult = m_multipleViewPattern->GetCachedSupportedViews(&supportedViews.m_psa);
 
     HandleResult(info, hResult);
-
-    ATL::CComSafeArray<long> supportedViews = pSafeArray;
 
     auto output = Napi::Array::New(info.Env());
 
     for (unsigned long i = 0; i < supportedViews.GetCount(); i++)
     {
-        auto value = supportedViews.GetAt(i);
-
-        output.Set(i, value);
+        output.Set(i, _com_util::ConvertBSTRToString(supportedViews.GetAt(i)));
     }
 
     return output;
@@ -91,19 +88,17 @@ Napi::Value IUIAutomationMultipleViewPatternWrapper::GetCurrentCurrentView(const
 
 Napi::Value IUIAutomationMultipleViewPatternWrapper::GetCurrentSupportedViews(const Napi::CallbackInfo &info)
 {
-    SAFEARRAY *pSafeArray;
+    AutoSafeArray<long> pSafeArray;
 
-    auto hResult = m_multipleViewPattern->GetCurrentSupportedViews(&pSafeArray);
+    auto hResult = m_multipleViewPattern->GetCurrentSupportedViews(&pSafeArray.m_psa);
 
     HandleResult(info, hResult);
 
-    ATL::CComSafeArray<long> supportedViews = pSafeArray;
-
     auto output = Napi::Array::New(info.Env());
 
-    for (unsigned long i = 0; i < supportedViews.GetCount(); i++)
+    for (unsigned long i = 0; i < pSafeArray.GetCount(); i++)
     {
-        auto value = supportedViews.GetAt(i);
+        auto value = pSafeArray.GetAt(i);
 
         output.Set(i, value);
     }
@@ -115,7 +110,7 @@ Napi::Value IUIAutomationMultipleViewPatternWrapper::GetViewName(const Napi::Cal
 {
     auto viewId = info[0].ToNumber().Int32Value();
 
-    CComBSTR viewName;
+    BSTR viewName;
 
     auto hResult = m_multipleViewPattern->GetViewName(viewId, &viewName);
 

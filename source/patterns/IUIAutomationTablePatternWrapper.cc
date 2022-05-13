@@ -2,6 +2,7 @@
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
 #include "../wrappers/Wrappers.h"
+#include "../utilities/ComAutoPointer.h"
 
 Napi::FunctionReference *IUIAutomationTablePatternWrapper::Initialize(Napi::Env env)
 {
@@ -68,7 +69,7 @@ Napi::Value IUIAutomationTablePatternWrapper::GetCurrentRowOrColumnMajor(const N
 
 Napi::Value IUIAutomationTablePatternWrapper::GetCachedColumnHeaders(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElementArray> columnHeaderItems = NULL;
+    ComAutoPointer<IUIAutomationElementArray> columnHeaderItems = NULL;
 
     auto hResult = m_tablePattern->GetCachedColumnHeaders(&columnHeaderItems);
 
@@ -81,7 +82,7 @@ Napi::Value IUIAutomationTablePatternWrapper::GetCachedColumnHeaders(const Napi:
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element = NULL;
+        ComAutoPointer<IUIAutomationElement> element = NULL;
         hResult = columnHeaderItems->GetElement(i, &element);
 
         auto columnHeaderItemWrapper = IUIAutomationElementWrapper::New(info.Env(), element);
@@ -94,7 +95,7 @@ Napi::Value IUIAutomationTablePatternWrapper::GetCachedColumnHeaders(const Napi:
 
 Napi::Value IUIAutomationTablePatternWrapper::GetCachedRowHeaders(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElementArray> rowHeaderItems = NULL;
+    ComAutoPointer<IUIAutomationElementArray> rowHeaderItems = NULL;
 
     auto hResult = m_tablePattern->GetCachedRowHeaders(&rowHeaderItems);
 
@@ -110,7 +111,7 @@ Napi::Value IUIAutomationTablePatternWrapper::GetCachedRowHeaders(const Napi::Ca
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element = NULL;
+        ComAutoPointer<IUIAutomationElement> element = NULL;
 
         auto variant = rowHeaderItems->GetElement(i, &element);
 
@@ -124,7 +125,7 @@ Napi::Value IUIAutomationTablePatternWrapper::GetCachedRowHeaders(const Napi::Ca
 
 Napi::Value IUIAutomationTablePatternWrapper::GetCurrentColumnHeaders(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElementArray> columnHeaderItems = NULL;
+    ComAutoPointer<IUIAutomationElementArray> columnHeaderItems = NULL;
 
     auto hResult = m_tablePattern->GetCurrentColumnHeaders(&columnHeaderItems);
 
@@ -137,7 +138,7 @@ Napi::Value IUIAutomationTablePatternWrapper::GetCurrentColumnHeaders(const Napi
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element = NULL;
+        ComAutoPointer<IUIAutomationElement> element = NULL;
         hResult = columnHeaderItems->GetElement(i, &element);
 
         auto columnHeaderItemWrapper = IUIAutomationElementWrapper::New(info.Env(), element);
@@ -150,7 +151,7 @@ Napi::Value IUIAutomationTablePatternWrapper::GetCurrentColumnHeaders(const Napi
 
 Napi::Value IUIAutomationTablePatternWrapper::GetCurrentRowHeaders(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElementArray> rowHeaderItems = NULL;
+    ComAutoPointer<IUIAutomationElementArray> rowHeaderItems = NULL;
 
     auto hResult = m_tablePattern->GetCurrentRowHeaders(&rowHeaderItems);
 
@@ -166,7 +167,7 @@ Napi::Value IUIAutomationTablePatternWrapper::GetCurrentRowHeaders(const Napi::C
 
     for (long i = 0; i < length; i++)
     {
-        ATL::CComPtr<IUIAutomationElement> element = NULL;
+        ComAutoPointer<IUIAutomationElement> element = NULL;
 
         auto variant = rowHeaderItems->GetElement(i, &element);
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Shared.h"
+#include "../utilities/ComAutoPointer.h"
 
 class IUIAutomationTextEditPatternWrapper : public Napi::ObjectWrap<IUIAutomationTextEditPatternWrapper>
 {
@@ -22,5 +23,5 @@ public:
     Napi::Value GetConversionTarget(const Napi::CallbackInfo &info);
 
 private:
-    ATL::CComPtr<IUIAutomationTextEditPattern> m_textEditPattern = NULL;
+    ComAutoPointer<IUIAutomationTextEditPattern> m_textEditPattern = NULL;
 };

@@ -2,6 +2,7 @@
 #include "../Shared.h"
 #include "PropertyChangedEvent.h"
 #include "../wrappers/IUIAutomationElementWrapper.h"
+#include "../utilities/ComAutoPointer.h"
 
 StructureChangedEventHandler::StructureChangedEventHandler(Napi::ThreadSafeFunction threadSafeFunction)
 {
@@ -54,7 +55,7 @@ HRESULT STDMETHODCALLTYPE StructureChangedEventHandler::QueryInterface(REFIID ri
 
 struct StructureChangedEvent
 {
-    ATL::CComPtr<IUIAutomationElement> m_pSender = NULL;
+    ComAutoPointer<IUIAutomationElement> m_pSender = NULL;
     StructureChangeType m_eChangeType;
     SAFEARRAY *m_pRuntimeId;
 };

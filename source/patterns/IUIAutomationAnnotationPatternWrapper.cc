@@ -2,6 +2,7 @@
 #include "../AutomationAddon.h"
 #include "../utilities/Functions.h"
 #include "../wrappers/Wrappers.h"
+#include "../utilities/ComAutoPointer.h"
 
 Napi::FunctionReference *IUIAutomationAnnotationPatternWrapper::Initialize(Napi::Env env)
 {
@@ -92,7 +93,7 @@ Napi::Value IUIAutomationAnnotationPatternWrapper::GetCachedDateTime(const Napi:
 
 Napi::Value IUIAutomationAnnotationPatternWrapper::GetCachedTarget(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> pTarget = NULL;
+    ComAutoPointer<IUIAutomationElement> pTarget = NULL;
     auto hResult = m_annotationProvider->get_CachedTarget(&pTarget);
 
     HandleResult(info, hResult);
@@ -143,7 +144,7 @@ Napi::Value IUIAutomationAnnotationPatternWrapper::GetCurrentDateTime(const Napi
 
 Napi::Value IUIAutomationAnnotationPatternWrapper::GetCurrentTarget(const Napi::CallbackInfo &info)
 {
-    ATL::CComPtr<IUIAutomationElement> pTarget = NULL;
+    ComAutoPointer<IUIAutomationElement> pTarget = NULL;
     auto hResult = m_annotationProvider->get_CurrentTarget(&pTarget);
 
     HandleResult(info, hResult);
