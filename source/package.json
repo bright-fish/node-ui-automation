@@ -12,14 +12,14 @@
   "types": "./index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bright-fish/node-microsoft-ui-automation.git"
+    "url": "git+https://github.com/bright-fish/node-ui-automation.git"
   },
   "author": "Chris Nimmons, Jake Cyr",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bright-fish/node-microsoft-ui-automation/issues"
+    "url": "https://github.com/bright-fish/node-ui-automation/issues"
   },
-  "homepage": "https://github.com/bright-fish/node-microsoft-ui-automation#readme",
+  "homepage": "https://github.com/bright-fish/node-ui-automation#readme",
   "dependencies": {
     "bindings": "^1.5.0",
     "node-addon-api": "^4.1.0"
