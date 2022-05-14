@@ -1,3 +1,1 @@
-const Library = require('bindings')('Automation');
-
-module.exports = Library;
+module.exports = require('bindings')('Automation');

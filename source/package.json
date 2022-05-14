@@ -1,13 +1,13 @@
 {
-  "name": "microsoft-ui-automation",
-  "version": "1.0.0",
+  "name": "@bright-fish/node-ui-automation",
+  "version": "0.1.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "configure": "node-gyp configure",
     "build": "node-gyp build",
     "clean": "node-gyp clean",
-    "rebuild": "node-gyp rebuild --debug"
+    "rebuild": "node-gyp rebuild"
   },
   "types": "./index.d.ts",
   "repository": {
