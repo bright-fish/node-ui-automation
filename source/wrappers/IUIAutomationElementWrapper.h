@@ -28,6 +28,8 @@ public:
   Napi::Value GetCurrentPattern(const Napi::CallbackInfo &info);
   Napi::Value GetCurrentPropertyValue(const Napi::CallbackInfo &info);
   Napi::Value GetCurrentPropertyValueEx(const Napi::CallbackInfo &info);
+  Napi::Value GetRuntimeId(const Napi::CallbackInfo &info);
+  
   void SetFocus(const Napi::CallbackInfo &info);
 
   Napi::Value GetCurrentName(const Napi::CallbackInfo &info);

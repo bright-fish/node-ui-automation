@@ -3,6 +3,7 @@
 #include "../utilities/Functions.h"
 #include "../patterns/Patterns.h"
 #include "../utilities/ComAutoPointer.h"
+#include "../utilities/AutoSafeArray.h"
 
 Napi::FunctionReference *IUIAutomationElementWrapper::Initialize(Napi::Env env)
 {
@@ -21,6 +22,8 @@ Napi::FunctionReference *IUIAutomationElementWrapper::Initialize(Napi::Env env)
         InstanceMethod<&IUIAutomationElementWrapper::GetCurrentPattern>("getCurrentPattern"),
         InstanceMethod<&IUIAutomationElementWrapper::GetCurrentPropertyValue>("getCurrentPropertyValue"),
         InstanceMethod<&IUIAutomationElementWrapper::GetCurrentPropertyValueEx>("getCurrentPropertyValueEx"),
+        InstanceMethod<&IUIAutomationElementWrapper::GetRuntimeId>("getRuntimeId"),
+
         InstanceMethod<&IUIAutomationElementWrapper::SetFocus>("setFocus"),
 
         InstanceAccessor<&IUIAutomationElementWrapper::GetCurrentName>("currentName"),
@@ -344,6 +347,25 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentPropertyValueEx(const Napi::C
     HandleResult(info, hResult);
 
     return FromVariant(info.Env(), variant);
+}
+
+Napi::Value IUIAutomationElementWrapper::GetRuntimeId(const Napi::CallbackInfo &info)
+{
+    AutoSafeArray<int32_t> pSafeArray;
+    auto hResult = m_pElement->GetRuntimeId(&pSafeArray.m_psa);
+
+    HandleResult(info, hResult);
+
+    auto array = Napi::Array::New(info.Env());
+
+    for (unsigned long i = 0; i < pSafeArray.GetCount(); i++)
+    {
+        auto number = Napi::Number::New(info.Env(), pSafeArray.GetAt(i));
+
+        array.Set(i, number);
+    }
+
+    return array;
 }
 
 void IUIAutomationElementWrapper::SetFocus(const Napi::CallbackInfo &info)

@@ -752,6 +752,7 @@ export declare interface AutomationElement {
 
     getCurrentPropertyValue(propertyId: PropertyIds): Variant;
     getCurrentPropertyValueEx(propertyId: PropertyIds, ignoreDefaultValues: boolean): Variant;
+    getRuntimeId(): number[]
     setFocus(): void;
 
     currentName: string;
