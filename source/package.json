@@ -1,6 +1,6 @@
 {
   "name": "@bright-fish/node-ui-automation",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,5 @@
     "bindings": "^1.5.0",
     "node-addon-api": "^4.1.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
