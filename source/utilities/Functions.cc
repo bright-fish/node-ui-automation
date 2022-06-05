@@ -46,13 +46,15 @@ VARIANT ToVariant(Napi::Env env, Napi::Value local)
         variant.vt = VT_ARRAY | VT_I4;
         variant.parray = SafeArrayCreateVector(VT_I4, 0, array.Length());
 
-        for (long i = 0; i < array.Length(); i++)
+        for (uint32_t i = 0; i < array.Length(); i++)
         {
             auto element = array.Get(i);
 
             auto value = element.ToNumber().Int32Value();
 
-            SafeArrayPutElement(variant.parray, &i, &value);
+            long index = static_cast<long>(i);
+
+            SafeArrayPutElement(variant.parray, &index, &value);
         }
     }
     else

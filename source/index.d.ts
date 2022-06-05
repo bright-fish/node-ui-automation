@@ -21,7 +21,7 @@ export declare interface Point {
     y: number;
 }
 
-export declare type Variant = string | number | boolean | null;
+export declare type Variant = string | number | number[] | boolean | null;
 
 export declare interface IAnnotationPattern {
     cachedAnnotationTypeId: string;
