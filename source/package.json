@@ -25,7 +25,5 @@
     "node-addon-api": "^4.1.0"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.1",
-    "jest": "^27.0.6"
   }
 }

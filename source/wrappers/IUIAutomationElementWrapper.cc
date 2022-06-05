@@ -383,6 +383,11 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentName(const Napi::CallbackInfo
 
     HandleResult(info, hResult);
 
+    if (!name)
+    {
+        return info.Env().Null();
+    }
+
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(name));
 }
 
@@ -393,6 +398,11 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentAcceleratorKey(const Napi::Ca
     auto hResult = m_pElement->get_CurrentAcceleratorKey(&acceloratorKey);
 
     HandleResult(info, hResult);
+
+    if (!acceloratorKey)
+    {
+        return info.Env().Null();
+    }
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(acceloratorKey));
 }
@@ -405,6 +415,11 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentAccessKey(const Napi::Callbac
 
     HandleResult(info, hResult);
 
+    if (!accessKey)
+    {
+        return info.Env().Null();
+    }
+
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(accessKey));
 }
 
@@ -415,6 +430,11 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentAriaProperties(const Napi::Ca
     auto hResult = m_pElement->get_CurrentAriaProperties(&ariaProperties);
 
     HandleResult(info, hResult);
+
+    if (!ariaProperties)
+    {
+        return info.Env().Null();
+    }
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(ariaProperties));
 }
@@ -427,6 +447,11 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentAriaRole(const Napi::Callback
 
     HandleResult(info, hResult);
 
+    if (!ariaRole)
+    {
+        return info.Env().Null();
+    }
+
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(ariaRole));
 }
 
@@ -437,6 +462,11 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentAutomationId(const Napi::Call
     auto hResult = m_pElement->get_CurrentAutomationId(&automationId);
 
     HandleResult(info, hResult);
+
+    if (!automationId)
+    {
+        return info.Env().Null();
+    }
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(automationId));
 }
@@ -466,6 +496,11 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentClassName(const Napi::Callbac
     auto hResult = m_pElement->get_CurrentClassName(&className);
 
     HandleResult(info, hResult);
+
+    if (!className)
+    {
+        return info.Env().Null();
+    }
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(className));
 }
@@ -532,6 +567,11 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentFrameworkId(const Napi::Callb
 
     HandleResult(info, hResult);
 
+    if (!frameworkId)
+    {
+        return info.Env().Null();
+    }
+
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(frameworkId));
 }
 
@@ -552,6 +592,11 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentHelpText(const Napi::Callback
     auto hResult = m_pElement->get_CurrentHelpText(&helpText);
 
     HandleResult(info, hResult);
+
+    if (!helpText)
+    {
+        return info.Env().Null();
+    }
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(helpText));
 }
@@ -652,6 +697,11 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentItemStatus(const Napi::Callba
 
     HandleResult(info, hResult);
 
+    if (!itemStatus)
+    {
+        return info.Env().Null();
+    }
+
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(itemStatus));
 }
 
@@ -662,6 +712,11 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentItemType(const Napi::Callback
     auto hResult = m_pElement->get_CurrentItemType(&itemType);
 
     HandleResult(info, hResult);
+
+    if (!itemType)
+    {
+        return info.Env().Null();
+    }
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(itemType));
 }
@@ -684,6 +739,11 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentLocalizedControlType(const Na
     auto hResult = m_pElement->get_CurrentLocalizedControlType(&localizedControlType);
 
     HandleResult(info, hResult);
+
+    if (!localizedControlType)
+    {
+        return info.Env().Null();
+    }
 
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(localizedControlType));
 }
@@ -743,6 +803,11 @@ Napi::Value IUIAutomationElementWrapper::GetCurrentProviderDescription(const Nap
 
     HandleResult(info, hResult);
 
+    if (!providerDescription)
+    {
+        return info.Env().Null();
+    }
+
     return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(providerDescription));
 }
 
@@ -764,18 +829,18 @@ Napi::Value IUIAutomationElementWrapper::GetCachedName(const Napi::CallbackInfo 
 
 Napi::Value IUIAutomationElementWrapper::GetCachedAcceleratorKey(const Napi::CallbackInfo &info)
 {
-    BSTR acceloratorKey = NULL;
+    BSTR acceleratorKey = NULL;
 
-    auto hResult = m_pElement->get_CachedAcceleratorKey(&acceloratorKey);
+    auto hResult = m_pElement->get_CachedAcceleratorKey(&acceleratorKey);
 
     HandleResult(info, hResult);
 
-    if (!acceloratorKey)
+    if (!acceleratorKey)
     {
         return info.Env().Null();
     }
 
-    return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(acceloratorKey));
+    return Napi::String::New(info.Env(), _com_util::ConvertBSTRToString(acceleratorKey));
 }
 
 Napi::Value IUIAutomationElementWrapper::GetCachedAccessKey(const Napi::CallbackInfo &info)
